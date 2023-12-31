@@ -5,10 +5,10 @@ import colors from "../../../assets/colors/colors";
 export default Splash = () => {
     return (
         <View style={styles.container}>
-            <Image
+            {/* <Image
                 style={styles.image}
                 source={require("../../../assets/images/splash.png")}
-            />
+            /> */}
         </View>
     );
 }

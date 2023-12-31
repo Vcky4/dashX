@@ -9,33 +9,22 @@ import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
 import endpoints from "../../../assets/endpoints/endpoints";
-import StarIcon from "../../../assets/icons/Star.svg";
-import Button from "../../component/Button";
-import CallIcon from '../../../assets/icons/call.svg'
-import ChatIcon from '../../../assets/icons/chat.svg'
-import CancelIcon from '../../../assets/icons/cancel-primary.svg'
-import dings from '../../../assets/sounds/trilla.mp3'
-import MenuIcon from '../../../assets/icons/menu.svg'
-import LocateIcon from '../../../assets/icons/locate.svg'
-import PickupIcon from '../../../assets/icons/pickup.svg'
-import DropOffIcon from '../../../assets/icons/dropoff.svg'
-import StarLgIcon from '../../../assets/icons/Star-lg.svg'
+// import dings from '../../../assets/sounds/trilla.mp3'
 import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
-import ErrorIcon from '../../../assets/icons/info.svg'
 
 var Sound = require('react-native-sound');
 
 
-Sound.setCategory('Playback');
-var ding = new Sound(dings, error => {
-    if (error) {
-        console.log('failed to load the sound', error);
-        return;
-    }
-    // if loaded successfully
-    console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
-});
+// Sound.setCategory('Playback');
+// var ding = new Sound(dings, error => {
+//     if (error) {
+//         console.log('failed to load the sound', error);
+//         return;
+//     }
+//     // if loaded successfully
+//     console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
+// });
 
 export default Home = ({ navigation }) => {
     const [helpCoordinates, setHelpCoordinate] = useState(null);
@@ -481,7 +470,7 @@ export default Home = ({ navigation }) => {
                 style={{
                     marginHorizontal: 4,
                 }}>
-                <StarLgIcon fill={rating > i ? colors.primary : colors.inactiveBt} />
+                {/* <StarLgIcon fill={rating > i ? colors.primary : colors.inactiveBt} /> */}
             </TouchableOpacity>
         )
     }
@@ -506,7 +495,7 @@ export default Home = ({ navigation }) => {
                 borderRadius: 8,
             }}>
                 <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                    <MenuIcon />
+                    {/* <MenuIcon /> */}
                 </TouchableOpacity>
 
                 <Text style={{
@@ -563,7 +552,7 @@ export default Home = ({ navigation }) => {
                     right: 20,
                     bottom: 100,
                 }}>
-                <LocateIcon />
+                {/* <LocateIcon /> */}
             </TouchableOpacity>
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -689,32 +678,7 @@ export default Home = ({ navigation }) => {
                 {/* <Marker coordinate={coordinates[0]} />
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>
-            <Animated.View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: colors.warning,
-                borderRadius: 5,
-                padding: 10,
-                opacity: fadeIn,
-                position: 'absolute',
-                width: '90%',
-                alignSelf: 'center',
-                bottom: 30,
-                zIndex: 1,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-
-            }}>
-                <ErrorIcon />
-                <Text style={{
-                    fontSize: 13,
-                    fontFamily: 'Inter-Regular',
-                    color: colors.textDark,
-                    marginLeft: 10,
-                    width: '95%',
-                }}>{"We're verifying your account to ensure the safety and security of your personal information."}</Text>
-
-            </Animated.View>
+       
             <BottomSheet isOpen={helpCoordinates != null}
                 wrapperStyle={{
                     marginHorizontal: 10,
@@ -727,7 +691,7 @@ export default Home = ({ navigation }) => {
                 }}
                 sliderMinHeight={helpCoordinates ? 50 : 0}
                 ref={ref => panelRef.current = ref}>
-                <View>
+                {/* <View>
                     {
                         (!accepted || arrived && !delivered) &&
                         <View style={{
@@ -1015,7 +979,7 @@ export default Home = ({ navigation }) => {
 
                         />
                     </View>
-                </View>
+                </View> */}
             </BottomSheet>
         </View>
 
