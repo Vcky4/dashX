@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, useColorScheme } from "react-native";
 
 import colors from "../../../assets/colors/colors";
 import authRouts from "../../navigation/routs/authRouts";
@@ -7,11 +7,14 @@ import Swiper from "react-native-swiper";
 
 
 const { width, height } = Dimensions.get("window");
-
 export default Intro = ({ navigation }) => {
+    const appearance = useColorScheme();
     const [page, setPage] = useState(0);
     return (
-        <View style={styles.container}>
+        <View style={{
+            flex: 1,
+            backgroundColor: colors[appearance].background
+        }}>
             <Image
                 style={styles.image}
                 source={require("../../../assets/images/onb.png")}
@@ -76,7 +79,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 20,
                         fontWeight: 'bold',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginTop: height * 0.1,
                         marginBottom: 10,
                         marginStart: 20,
@@ -85,7 +88,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 18,
                         fontWeight: 'normal',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75
@@ -105,7 +108,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 20,
                         fontWeight: 'bold',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginTop: height * 0.1,
                         marginBottom: 10,
                         marginStart: 20,
@@ -114,7 +117,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 18,
                         fontWeight: 'normal',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75
@@ -134,7 +137,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 20,
                         fontWeight: 'bold',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginTop: height * 0.1,
                         marginBottom: 10,
                         marginStart: 20,
@@ -143,7 +146,7 @@ export default Intro = ({ navigation }) => {
                     <Text style={{
                         fontSize: 18,
                         fontWeight: 'normal',
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75
@@ -167,7 +170,7 @@ export default Intro = ({ navigation }) => {
                                     style={{
                                         height: 5,
                                         width: page === i - 1 ? 25 : 20,
-                                        backgroundColor: page === i - 1 ? colors.primary : colors.inactive,
+                                        backgroundColor: page === i - 1 ?  colors[appearance].primary :  colors[appearance].inactive,
                                         borderRadius: 10,
                                         marginHorizontal: 2
                                     }}
@@ -188,7 +191,7 @@ export default Intro = ({ navigation }) => {
                     }}
                 >
                     <Text style={{
-                        color: colors.textDark,
+                        color: colors[appearance].textDark,
                         fontSize: 16,
                         fontWeight: '600',
                     }}>{page < 2 ? 'Skip >>' : 'Start ->'}</Text>
