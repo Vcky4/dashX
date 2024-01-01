@@ -120,8 +120,8 @@ export default Login = ({ navigation }) => {
                     marginLeft: 15,
                 }}>
                     <View style={{
-                        height: 25,
-                        width: 25,
+                        height: 22,
+                        width: 22,
                         borderRadius: 15,
                         borderWidth: 5,
                         borderColor: colors[appearance].primary,
@@ -131,16 +131,9 @@ export default Login = ({ navigation }) => {
                         fontSize: 16,
                         color: colors[appearance].textDark,
                         marginLeft: 15,
-                    }}>Create account.</Text>
+                    }}>Sign in.</Text>
                 </View>
 
-                <InputField
-                    theme={appearance}
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    placeholder="Full Name"
-                    containerStyle={styles.input}
-                />
                 <InputField
                     theme={appearance}
                     value={email}
@@ -168,7 +161,7 @@ export default Login = ({ navigation }) => {
 
 
                 <Button
-                    title="Sign Up"
+                    title="Sign in"
                     buttonStyle={{
                         marginTop: 30,
                         marginHorizontal: 20,
@@ -190,15 +183,15 @@ export default Login = ({ navigation }) => {
                     textAlign: 'center',
                     marginTop: 20,
                     fontStyle: 'italic'
-                }}>Already have an account?
+                }}>Don’t have a DashX Account? 
                     <Text
                         onPress={() => {
-                            navigation.navigate(authRouts.login)
+                            navigation.navigate(authRouts.signUp)
                         }}
                         style={{
                             color: colors[appearance].primary,
                             fontWeight: 'bold',
-                        }}>  Sign in</Text></Text>
+                        }}>  Sign Up</Text></Text>
 
                 <Text style={{
                     fontFamily: 'Inter-Regular',

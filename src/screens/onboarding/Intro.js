@@ -17,11 +17,31 @@ export default Intro = ({ navigation }) => {
             flex: 1,
             backgroundColor: colors[appearance].background
         }}>
-            <Image
-                style={styles.image}
-                source={require("../../../assets/images/onb.png")}
-            />
             <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+                        if (page === 2) {
+                            // navigation.navigate(authRouts.LOGIN)
+                        } else {
+                            setPage(page + 1)
+                        }
+                    }}
+             style={{
+                position: 'absolute',
+                zIndex: 10,
+                right: 0,
+            }}>
+                <Image
+                    style={styles.image}
+                    source={page === 0
+                        ? require("../../../assets/images/sli.png")
+                        : page === 1
+                            ? require("../../../assets/images/sli1.png")
+                            : require("../../../assets/images/sli2.png")}
+                />
+            </TouchableOpacity>
+
+            {/* <TouchableOpacity
                 onPress={() => {
                     if (page === 2) {
                         // navigation.navigate(authRouts.LOGIN)
@@ -31,7 +51,7 @@ export default Intro = ({ navigation }) => {
                 }}
                 style={{
                     position: 'absolute',
-                    bottom: 220,
+                    bottom: height * 0.29,
                     right: 12,
                     zIndex: 10,
                 }}>
@@ -60,7 +80,7 @@ export default Intro = ({ navigation }) => {
                         source={require("../../../assets/images/Icon_arrow.png")}
                     />
                 </ImageBackground>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Swiper
                 loop={false}
                 showsPagination={false}
@@ -214,9 +234,6 @@ const styles = StyleSheet.create({
     image: {
         width: height * 0.093,
         height: height,
-        position: 'absolute',
-        // top: 0,
-        right: 0,
         resizeMode: 'contain',
     },
     page: {

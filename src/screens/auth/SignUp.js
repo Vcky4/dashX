@@ -120,8 +120,8 @@ export default SignUp = ({ navigation }) => {
                     marginLeft: 15,
                 }}>
                     <View style={{
-                        height: 25,
-                        width: 25,
+                        height: 22,
+                        width: 22,
                         borderRadius: 15,
                         borderWidth: 5,
                         borderColor: colors[appearance].primary,
@@ -155,17 +155,6 @@ export default SignUp = ({ navigation }) => {
                     placeholder="Password"
                     containerStyle={styles.input}
                 />
-
-                <TouchableOpacity>
-                    <Text style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: 14,
-                        color: colors[appearance].primary,
-                        marginTop: 16,
-                        marginLeft: 35
-                    }}>Forgot password?</Text>
-                </TouchableOpacity>
-
 
                 <Button
                     title="Sign Up"
