@@ -6,34 +6,25 @@ import colors from "../../assets/colors/colors";
 type Props = {
     // leftComponet?: React.ReactNode,
     containerStyle?: object,
-    label: string,
+    theme?: 'dark' | 'light'
 } & TextInputProps;
 
 
-export default function InputField({ containerStyle, label, ...rest }: Props) {
+export default function InputField({ theme = 'dark', containerStyle, ...rest }: Props) {
     const [isFocused, setIsFocused] = useState(false);
     return (
         <View style={[{
-            borderColor: isFocused ? colors.primary : colors.inactive,
-            borderRadius: 5,
+            borderColor: colors[theme].primary,
+            borderRadius: 50,
             borderWidth: 1,
             paddingHorizontal: 10,
             height: 50,
         }, containerStyle]}>
-            <Text style={{
-                color: colors.black,
-                fontSize: 10,
-                fontFamily: 'Inter-Regular',
-                position: 'absolute',
-                top: 5,
-                left: 14,
-            }}>{label}</Text>
             <TextInput
                 style={{
-                    transform: [{ translateY: 6 }],
-                    fontSize: 14,
+                    fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                    color: colors.black,
+                    color: colors[theme].textDark,
                 }}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}

@@ -5,10 +5,13 @@ import Toast from 'react-native-toast-message';
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
+import InputField from "../../component/InputField";
+import PasswordInput from "../../component/PasswordInput";
 
 
 export default SignUp = ({ navigation }) => {
-    const { saveToken, saveUser } = useContext(AuthContext)
+    const { saveToken, saveUser, colorScheme } = useContext(AuthContext)
+    const appearance = colorScheme
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
     const [firstName, setFirstName] = useState("")
@@ -82,12 +85,88 @@ export default SignUp = ({ navigation }) => {
     //         })
     // }
     return (
-        <View>
+        <View style={{
+            flex: 1,
+            backgroundColor: colors[appearance].background
+        }}>
+            <View style={{
+                flexDirection: 'row',
+                backgroundColor: colors[appearance].primary,
+                height: 50,
+                alignItems: 'center',
+                width: '100%',
+                paddingHorizontal: 20
+            }}>
+                <Image
+                    source={require('../../../assets/images/logo.png')}
+                    style={{
+                        width: 70,
+                        resizeMode: 'contain'
+                    }}
+                />
+            </View>
+
+            <View style={{
+                paddingHorizontal: 20,
+                paddingVertical: 16,
+            }}>
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 32,
+                    color: colors[appearance].textDark,
+                }}>Welcome</Text>
+
+                <View style={{
+                    marginTop: 30,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginLeft: 15,
+                }}>
+                    <View style={{
+                        height: 25,
+                        width: 25,
+                        borderRadius: 15,
+                        borderWidth: 5,
+                        borderColor: colors[appearance].primary,
+                    }} />
+                    <Text style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: 16,
+                        color: colors[appearance].textDark,
+                        marginLeft: 15,
+                    }}>Create account.</Text>
+                </View>
+
+                <InputField
+                    theme={appearance}
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    placeholder="Full Name"
+                    containerStyle={styles.input}
+                />
+                <InputField
+                    theme={appearance}
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder="Enter e-mail or phone number"
+                    containerStyle={styles.input}
+                />
+                <PasswordInput
+                    theme={appearance}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Password"
+                    containerStyle={styles.input}
+                />
+            </View>
 
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
+    input: {
+        marginTop: 20,
+        marginHorizontal: 20,
+    }
 });
