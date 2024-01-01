@@ -205,6 +205,7 @@ export default Intro = ({ navigation }) => {
             <View style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
+                zIndex: 100,
             }}>
                 <TouchableOpacity
                     onPress={() => {
