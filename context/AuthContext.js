@@ -1,28 +1,16 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import type { PropsWithChildren } from 'react';
 
-interface AuthContextProps {
-    login: (token: string, user: any) => void;
-    logout: () => void;
-    saveUser: (user: any) => void;
-    token: string | null;
-    user: any;
-    isLoading: boolean;
-    saveToken: (token: string) => void;
-}
+export const AuthContext = createContext(null);
 
-export const AuthContext = createContext<AuthContextProps | null>(null);
 
-type Props = PropsWithChildren;
-
-export const AuthContextProvider = ({ children }: Props) => {
+export const AuthContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [token, setToken] = useState<string | null>(null);
+    const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
 
 
-    const login = (token: string, user: any) => {
+    const login = (token, user) => {
         setIsLoading(true);
         setToken(token);
         setUser(user);
@@ -31,13 +19,13 @@ export const AuthContextProvider = ({ children }: Props) => {
         setIsLoading(false);
     }
 
-    const saveToken = (token: string) => {
+    const saveToken = (token) => {
         setIsLoading(true);
         setToken(token);
         AsyncStorage.setItem('token', token);
         setIsLoading(false);
     }
-    const saveUser = (user: any) => {
+    const saveUser = (user) => {
         setIsLoading(true);
         setUser(user);
         AsyncStorage.setItem('user', JSON.stringify(user));
