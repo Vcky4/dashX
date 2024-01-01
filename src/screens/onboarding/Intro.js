@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, useColorScheme } from "react-native";
 
 import colors from "../../../assets/colors/colors";
 import authRouts from "../../navigation/routs/authRouts";
 import Swiper from "react-native-swiper";
+import { AuthContext } from "../../../context/AuthContext";
 
 
 const { width, height } = Dimensions.get("window");
 export default Intro = ({ navigation }) => {
-    const appearance = useColorScheme();
+    const { colorScheme } = useContext(AuthContext)
+    const appearance = colorScheme
     const [page, setPage] = useState(0);
     return (
         <View style={{
@@ -45,8 +47,8 @@ export default Intro = ({ navigation }) => {
                         page === 0
                             ? require("../../../assets/images/loader.png")
                             : page === 1
-                            ? require("../../../assets/images/loader1.png")
-                            : require("../../../assets/images/loader2.png")
+                                ? require("../../../assets/images/loader1.png")
+                                : require("../../../assets/images/loader2.png")
                     }
                 >
                     <Image
@@ -170,7 +172,7 @@ export default Intro = ({ navigation }) => {
                                     style={{
                                         height: 5,
                                         width: page === i - 1 ? 25 : 20,
-                                        backgroundColor: page === i - 1 ?  colors[appearance].primary :  colors[appearance].inactive,
+                                        backgroundColor: page === i - 1 ? colors[appearance].primary : colors[appearance].inactive,
                                         borderRadius: 10,
                                         marginHorizontal: 2
                                     }}

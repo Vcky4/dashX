@@ -52,6 +52,11 @@ export const AuthContextProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        setColorScheme(appearance)
+        AsyncStorage.setItem('theme', appearance)
+    }, [appearance])
+
     const isLoggedIn = async () => {
         try {
             setIsLoading(true);
