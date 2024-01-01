@@ -10,10 +10,11 @@ type Props = {
     enabled?: boolean,
     textColor?: string,
     loading?: boolean,
-    buttonColor?: string
+    buttonColor?: string,
+    theme?: 'dark' | 'light'
 };
 
-const Button: React.FC<Props> = ({ title, onPress, buttonStyle, enabled, textColor, loading, buttonColor = colors.primary }) => {
+const Button: React.FC<Props> = ({theme='dark', title, onPress, buttonStyle, enabled, textColor, loading, buttonColor = colors[theme].primary }) => {
     return (
         <View pointerEvents={(enabled && !loading) ? 'auto' : 'none'}
             style={[buttonStyle, {
@@ -33,15 +34,15 @@ const Button: React.FC<Props> = ({ title, onPress, buttonStyle, enabled, textCol
                     justifyContent: 'flex-end'
                 }}>
                     <Text style={{
-                        fontSize: 18,
+                        fontSize: 24,
                         textAlign: 'center',
-                        fontFamily: 'Inter-Regular',
-                        color: textColor ? textColor : colors.white,
+                        fontFamily: 'Inter-SemiBold',
+                        color: textColor ? textColor : colors[theme].white,
                         flex: 1
                     }}>{title}</Text>
 
                     <ActivityIndicator size={'large'}
-                        color={colors.white}
+                        color={colors[theme].white}
                         hidesWhenStopped={true}
                         animating={loading ? loading : false}
                         style={{

@@ -7,6 +7,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
 import InputField from "../../component/InputField";
 import PasswordInput from "../../component/PasswordInput";
+import Button from "../../component/Button";
+import authRouts from "../../navigation/routs/authRouts";
 
 
 export default SignUp = ({ navigation }) => {
@@ -15,18 +17,13 @@ export default SignUp = ({ navigation }) => {
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
     const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
-    const [city, setCity] = useState("")
-    const [gender, setGender] = useState("MALE")
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const canProceed =
-        phone?.length > 9 &&
+        // phone?.length > 9 &&
         password?.length > 0 &&
-        firstName?.length > 0 &&
-        lastName?.length > 0 &&
-        emailRegex.test(email) &&
-        city?.length > 0
+        firstName?.split(' ').length > 1 &&
+        emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -106,7 +103,7 @@ export default SignUp = ({ navigation }) => {
                 />
             </View>
 
-            <View style={{
+            <ScrollView style={{
                 paddingHorizontal: 20,
                 paddingVertical: 16,
             }}>
@@ -148,7 +145,7 @@ export default SignUp = ({ navigation }) => {
                     theme={appearance}
                     value={email}
                     onChangeText={setEmail}
-                    placeholder="Enter e-mail or phone number"
+                    placeholder="Enter e-mail"
                     containerStyle={styles.input}
                 />
                 <PasswordInput
@@ -158,7 +155,68 @@ export default SignUp = ({ navigation }) => {
                     placeholder="Password"
                     containerStyle={styles.input}
                 />
-            </View>
+
+                <TouchableOpacity>
+                    <Text style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: 14,
+                        color: colors[appearance].primary,
+                        marginTop: 16,
+                        marginLeft: 35
+                    }}>Forgot password?</Text>
+                </TouchableOpacity>
+
+
+                <Button
+                    title="Sign Up"
+                    buttonStyle={{
+                        marginTop: 30,
+                        marginHorizontal: 20,
+                        borderRadius: 30,
+                    }}
+                    loading={processing}
+                    enabled={canProceed && !processing}
+                    textColor={colors[appearance].textDark}
+                    buttonColor={colors[appearance].primary}
+                    onPress={() => {
+                        // navigation.navigate(authRouts.otpVerification)
+                    }}
+                />
+
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 14,
+                    color: colors[appearance].textDark,
+                    textAlign: 'center',
+                    marginTop: 20,
+                    fontStyle: 'italic'
+                }}>Already have an account?
+                    <Text
+                        onPress={() => {
+                            navigation.navigate(authRouts.login)
+                        }}
+                        style={{
+                            color: colors[appearance].primary,
+                            fontWeight: 'bold',
+                        }}>  Sign in</Text></Text>
+
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 14,
+                    color: colors[appearance].textDark,
+                    textAlign: 'center',
+                    marginTop: 30,
+                    fontStyle: 'italic',
+                    paddingHorizontal: 20
+                }}>By continuing, you agree to Dash X
+                    <Text style={{
+                        color: colors[appearance].primary,
+                        fontWeight: 'bold',
+                    }}> Conditions of use </Text> and<Text style={{
+                        color: colors[appearance].primary,
+                        fontWeight: 'bold',
+                    }}> Privacy Notice</Text></Text>
+            </ScrollView>
 
         </View>
     );

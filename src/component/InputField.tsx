@@ -26,6 +26,7 @@ export default function InputField({ theme = 'dark', containerStyle, ...rest }: 
                     fontFamily: 'Inter-Medium',
                     color: colors[theme].textDark,
                 }}
+                cursorColor={colors[theme].primary}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 {...rest}
