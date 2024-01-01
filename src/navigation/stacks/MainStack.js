@@ -1,42 +1,37 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import mainRouts from '../routs/mainRouts';
-import colors from '../../../assets/colors/colors';
-import profileRouts from '../routs/profileRouts';
 import Home from '../../screens/home/Home';
 
 
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+// const Drawer = createDrawerNavigator();
 
-export default DrawerStack = () => {
-    return (
-        <Drawer.Navigator 
-        // drawerContent={DrawerContent}
-        >
-            <Drawer.Screen
-                name="Main"
-                component={AuthPassed}
-                options={{ headerShown: false }}
-            />
-            {/* <Drawer.Screen
-                name={mainRouts.home}
-                component={Home}
-                options={{ headerShown: false }}
-            />
-            <Drawer.Screen name={profileRouts.welcome} component={Welcome} options={{ headerShown: false }} />
-            <Drawer.Screen name={mainRouts.updateVehicle} component={updateVehicleInfo} options={{ headerShown: false }} /> */}
+// export default DrawerStack = () => {
+//     return (
+//         <Drawer.Navigator 
+//         // drawerContent={DrawerContent}
+//         >
+//             <Drawer.Screen
+//                 name="Main"
+//                 component={AuthPassed}
+//                 options={{ headerShown: false }}
+//             />
+//             {/* <Drawer.Screen
+//                 name={mainRouts.home}
+//                 component={Home}
+//                 options={{ headerShown: false }}
+//             />
+//             <Drawer.Screen name={profileRouts.welcome} component={Welcome} options={{ headerShown: false }} />
+//             <Drawer.Screen name={mainRouts.updateVehicle} component={updateVehicleInfo} options={{ headerShown: false }} /> */}
 
-        </Drawer.Navigator>
-    );
-};
+//         </Drawer.Navigator>
+//     );
+// };
 
 // const BottomNavStack = () => {
 //     return (
@@ -78,7 +73,7 @@ export default DrawerStack = () => {
 // };
 
 
-const AuthPassed = ({ navigation }) => {
+export default AuthPassed = () => {
     // const { user } = useContext(AuthContext);
     // const [isLoading, setIsLoading] = useState(true);
     // useEffect(() => {
@@ -105,7 +100,7 @@ const AuthPassed = ({ navigation }) => {
 
     return (
         <Stack.Navigator>
-            <Drawer.Screen
+            <Stack.Screen
                 name={mainRouts.home}
                 component={Home}
                 options={{ headerShown: false }}

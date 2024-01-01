@@ -7,7 +7,7 @@ const colors = {
   textDark: '#221662',
   textGray: '#8A817C',
   aliceBlue: '#E9F1F7',
-  inactive: '#FFBCD8',
+  inactive: 'rgba(34, 22, 98, 0.15)',
   success: '#AEFFB2',
   error:'#FFAEAE',
   inactiveBt:'#D7D7D7',

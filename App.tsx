@@ -11,13 +11,13 @@ import Splash from "./src/screens/onboarding/Splash";
 
 
 const RootNavigator: React.FC = () => {
-  // const authContext = useContext(AuthContext);
-  // if (!authContext) {
-  //   return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //     <Text>Broken!</Text>
-  //   </View>
-  // }
-  // const { token, } = authContext
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Broken!</Text>
+    </View>
+  }
+  const { token, } = authContext
   const [isLoading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 2000) });
 
@@ -25,7 +25,7 @@ const RootNavigator: React.FC = () => {
     <NavigationContainer>
       {
         isLoading ? <Splash /> :
-          // token ? <MainStack /> :
+          token ? <MainStack /> :
             <AuthStack />}
     </NavigationContainer>
   )
@@ -36,10 +36,10 @@ export default function App() {
   }
   return (
     <>
-      {/* <AuthContextProvider> */}
+      <AuthContextProvider>
         <StatusBar backgroundColor={"#000"} />
         <RootNavigator />
-      {/* </AuthContextProvider> */}
+      </AuthContextProvider>
       <Toast />
     </>
   );
