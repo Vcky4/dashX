@@ -3,254 +3,228 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, 
 import Toast from 'react-native-toast-message';
 
 import colors from "../../../assets/colors/colors";
-import authRouts from "../../navigation/routs/authRouts";
-import Button from "../../component/Button";
-import PasswordInput from "../../component/PasswordInput";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
-import ArrowBack from '../../../assets/icons/arrow_back.svg'
 import InputField from "../../component/InputField";
-import SuccessIcon from '../../../assets/icons/success.svg'
-import ErrorIcon from '../../../assets/icons/error.svg'
+import PasswordInput from "../../component/PasswordInput";
+import Button from "../../component/Button";
+import authRouts from "../../navigation/routs/authRouts";
 
 
 export default Login = ({ navigation }) => {
-    const { login, playerId, user } = useContext(AuthContext)
-    const [email, setEmail] = useState("")
+    const { saveToken, saveUser, colorScheme } = useContext(AuthContext)
+    const appearance = colorScheme
+    const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-    const canProceed = email.length > 5
-        && password.length > 0;
+    const [firstName, setFirstName] = useState("")
+    const [email, setEmail] = useState("")
+    let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const canProceed =
+        // phone?.length > 9 &&
+        password?.length > 0 &&
+        firstName?.split(' ').length > 1 &&
+        emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [message, setMessage] = useState('')
-    const [fadeIn] = useState(new Animated.Value(0));
-    const [fade, setFade] = useState(0);
-    useEffect(() => {
-        message != '' && setFade(1)
-        setTimeout(() => { setFade(0); setMessage('') }, 2500)
-    }, [message]);
 
-    useEffect(() => {
-        Animated.timing(fadeIn, {
-            toValue: fade,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start();
-    }, [fade]);
+    // const signUpUser = async () => {
+    //     setProcessing(true)
+    //     const response = await fetch(endpoints.baseUrl + endpoints.register, {
+    //         method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(
+    //             {
+    //                 "firstName": firstName,
+    //                 "lastName": lastName,
+    //                 "email": email,
+    //                 "password": password,
+    //                 "city": city,
+    //                 "gender": gender,
+    //                 "phone": phone
+    //             }
+    //         ) // body data type must match "Content-Type" header
+    //     });
+    //     response.json()
+    //         .then((data) => {
+    //             console.log(data); // JSON data parsed by `data.json()` call
+    //             setProcessing(false)
+    //             if (response.ok) {
+    //                 Toast.show({
+    //                     type: 'success',
+    //                     text1: 'SignUp successful',
+    //                     text2: data.message
+    //                 })
+    //                 saveUser(data.user)
+    //                 navigation.navigate(authRouts.otpVerification, { token: data.data.accessToken })
+    //             } else {
+    //                 Toast.show({
+    //                     type: 'error',
+    //                     text1: 'SignUp failed',
+    //                     text2: data.message
+    //                 });
+    //                 // navigation.navigate(authRouts.otpVerification, { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE4MDczOWY3NGE2NDdmM2Q5N2YyYmYiLCJyb2xlIjoiUklERVIiLCJnZW5lcmF0b3IiOiIyMDIzMDcwNzEzMzgxN09BQkpNTlBWIiwiaWF0IjoxNjg4NzMzNDk3LCJleHAiOjE2ODg4MTk4OTd9.quJHfi-_YMVGrvc7e40ycvHLuB_wynf1LBxPxaIlvGk' })
+    //                 console.log('response: ', response)
+    //                 console.log('SignUp error:', data)
+    //             }
 
-    const loginUser = async () => {
-        setProcessing(true)
-        const response = await fetch(endpoints.baseUrl + endpoints.login, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    "email": email,
-                    "password": password
-                }
-            ) // body data type must match "Content-Type" header
-        });
-        response.json()
-            .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
-                setProcessing(false)
-                if (response.ok) {
-                    Toast.show({
-                        type: 'success',
-                        text1: 'Login successful',
-                        text2: data.message
-                    })
-                    login(data.data.accessToken, data.data.user)
-                } else {
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Login failed',
-                        text2: data.message
-                    });
-                    console.log('response: ', response)
-                    console.log('Login error:', data.message)
-                }
-
-            })
-            .catch((error) => {
-                setProcessing(false)
-                Toast.show({
-                    type: 'error',
-                    text1: 'Login failed',
-                    text2: error.message
-                });
-                console.log('Login error:', error);
-            })
-    }
+    //         })
+    //         .catch((error) => {
+    //             setProcessing(false)
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: 'SignUp failed',
+    //                 text2: error.message
+    //             });
+    //             console.log('response: ', response)
+    //             console.log('SignUp error:', error);
+    //         })
+    // }
     return (
-        <>
+        <View style={{
+            flex: 1,
+            backgroundColor: colors[appearance].background
+        }}>
             <View style={{
-                backgroundColor: colors.white,
-                width: '100%',
                 flexDirection: 'row',
+                backgroundColor: colors[appearance].primary,
+                height: 50,
                 alignItems: 'center',
-                paddingHorizontal: 24,
-                paddingVertical: 20,
+                width: '100%',
+                paddingHorizontal: 20
             }}>
-                <TouchableOpacity onPress={() => navigation.goBack()}
-                    style={{}}>
-                    <ArrowBack width={20} height={20} />
-                </TouchableOpacity>
-                <Text style={{
-                    fontSize: 16,
-                    alignSelf: 'center',
-                    flex: 1,
-                    textAlign: 'center',
-                    marginRight: 20,
-                    color: colors.black,
-                    fontFamily: 'Inter-Regular'
-                }}>Sign in</Text>
-
+                <Image
+                    source={require('../../../assets/images/logo.png')}
+                    style={{
+                        width: 70,
+                        resizeMode: 'contain'
+                    }}
+                />
             </View>
-            <ScrollView
-                vertical
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: 'flex-start',
-                    width: '100%',
+
+            <ScrollView style={{
+                paddingHorizontal: 20,
+                paddingVertical: 16,
+            }}>
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 32,
+                    color: colors[appearance].textDark,
+                }}>Welcome</Text>
+
+                <View style={{
+                    marginTop: 30,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginLeft: 15,
                 }}>
-                <View style={styles.container}>
-                    <View>
-                        <Text style={styles.greetings}>Sign in to start accepting
-                            delivery request  </Text>
-
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === "ios" ? "padding" : "height"}
-                            style={styles.inputWrapper} >
-
-                            <InputField
-                                label="Email Address"
-                                placeholder={'example@email.com'}
-                                value={email} onChangeText={text => setEmail(text)}
-                                selectionColor={colors.primary}
-                                placeholderTextColor={colors.textGray} />
-                        </KeyboardAvoidingView>
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === "ios" ? "padding" : "height"}
-                            style={styles.inputWrapper} >
-
-                            <PasswordInput
-                                label="Password"
-                                value={password}
-                                placeholder={'At least 6 characters'}
-                                onChangeText={text => setPassword(text)}
-                                selectionColor={colors.primary}
-                                placeholderTextColor={colors.textGray}
-                            />
-                        </KeyboardAvoidingView>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate(authRouts.resetPassword)}
-                            style={styles.forgotPassword}>
-                            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                        </TouchableOpacity>
-
-                    </View>
-
                     <View style={{
-                        marginTop: 34,
-                        marginBottom: 70,
-                    }}>
-                        <Animated.View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 30,
-                            backgroundColor: success ? colors.success : colors.error,
-                            borderRadius: 5,
-                            padding: 10,
-                            opacity: fadeIn,
-
-                        }}>
-                            {success ? <SuccessIcon /> : <ErrorIcon />}
-                            <Text style={{
-                                fontSize: 13,
-                                fontFamily: 'Inter-Regular',
-                                color: colors.textDark,
-                                marginLeft: 10,
-                            }}>{message}</Text>
-
-                        </Animated.View>
-                        <Button title={'Continue'}
-                            onPress={() => {
-                                loginUser()
-                            }}
-                            buttonStyle={styles.createAccountButton}
-                            loading={processing}
-                            enabled={canProceed & !processing}
-
-                        />
-                    </View>
-
+                        height: 25,
+                        width: 25,
+                        borderRadius: 15,
+                        borderWidth: 5,
+                        borderColor: colors[appearance].primary,
+                    }} />
+                    <Text style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: 16,
+                        color: colors[appearance].textDark,
+                        marginLeft: 15,
+                    }}>Create account.</Text>
                 </View>
+
+                <InputField
+                    theme={appearance}
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    placeholder="Full Name"
+                    containerStyle={styles.input}
+                />
+                <InputField
+                    theme={appearance}
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder="Enter e-mail"
+                    containerStyle={styles.input}
+                />
+                <PasswordInput
+                    theme={appearance}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Password"
+                    containerStyle={styles.input}
+                />
+
+                <TouchableOpacity>
+                    <Text style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: 14,
+                        color: colors[appearance].primary,
+                        marginTop: 16,
+                        marginLeft: 35
+                    }}>Forgot password?</Text>
+                </TouchableOpacity>
+
+
+                <Button
+                    title="Sign Up"
+                    buttonStyle={{
+                        marginTop: 30,
+                        marginHorizontal: 20,
+                        borderRadius: 30,
+                    }}
+                    loading={processing}
+                    enabled={canProceed && !processing}
+                    textColor={colors[appearance].textDark}
+                    buttonColor={colors[appearance].primary}
+                    onPress={() => {
+                        // navigation.navigate(authRouts.otpVerification)
+                    }}
+                />
+
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 14,
+                    color: colors[appearance].textDark,
+                    textAlign: 'center',
+                    marginTop: 20,
+                    fontStyle: 'italic'
+                }}>Already have an account?
+                    <Text
+                        onPress={() => {
+                            navigation.navigate(authRouts.login)
+                        }}
+                        style={{
+                            color: colors[appearance].primary,
+                            fontWeight: 'bold',
+                        }}>  Sign in</Text></Text>
+
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 14,
+                    color: colors[appearance].textDark,
+                    textAlign: 'center',
+                    marginTop: 30,
+                    fontStyle: 'italic',
+                    paddingHorizontal: 20
+                }}>By continuing, you agree to Dash X
+                    <Text style={{
+                        color: colors[appearance].primary,
+                        fontWeight: 'bold',
+                    }}> Conditions of use </Text> and<Text style={{
+                        color: colors[appearance].primary,
+                        fontWeight: 'bold',
+                    }}> Privacy Notice</Text></Text>
             </ScrollView>
-        </>
+
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.white,
-        paddingHorizontal: 24,
-        paddingTop: 10,
-        justifyContent: 'space-between',
-    },
-
-    greetings: {
-        fontSize: 20,
-        fontFamily: "Inter-Bold",
-        color: colors.textDark,
-        width: '80%',
-    },
-    inputWrapper: {
+    input: {
         marginTop: 20,
-    },
-    emailInput: {
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        width: '100%',
-        fontSize: 14,
-        color: colors.activeText,
-        fontFamily: "Poppins-Regular",
-        height: 44,
-        backgroundColor: colors.aliceBlue,
-    },
-    label: {
-        fontSize: 14,
-        fontFamily: 'Popins-Regular',
-        color: colors.textLight,
-        marginBottom: 8,
-    },
-    passwordInput: {
-        borderRadius: 8,
-        color: colors.textDark,
-        backgroundColor: colors.aliceBlue,
-        fontFamily: "Poppins-Regular",
-    },
-    forgotPassword: {
-        flexDirection: "row",
-        marginTop: 4,
-        width: "100%",
-        justifyContent: "flex-end",
-    },
-
-    forgotPasswordText: {
-        fontFamily: "Poppins-Medium",
-        fontSize: 12,
-        color: colors.primary,
-    },
-    createAccountButton: {
-        borderRadius: 8,
-        height: 55,
-
-    },
-
-
+        marginHorizontal: 20,
+    }
 });

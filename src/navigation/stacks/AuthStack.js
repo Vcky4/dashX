@@ -4,6 +4,7 @@ import authRouts from "../routs/authRouts";
 import Intro from "../../screens/onboarding/Intro";
 import { AuthContext } from "../../../context/AuthContext";
 import SignUp from "../../screens/auth/SignUp";
+import Login from "../../screens/auth/Login";
 
 
 const Stack = createNativeStackNavigator();
@@ -17,6 +18,7 @@ export default AuthStack = () => {
                     ? <Stack.Screen name={authRouts.signUp} component={SignUp} options={{ headerShown: false }} />
                     : <Stack.Screen name={authRouts.intro} component={Intro} options={{ headerShown: false }} />
             }
+            <Stack.Screen name={authRouts.login} component={Login} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }
