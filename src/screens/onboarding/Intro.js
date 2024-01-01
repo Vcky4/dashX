@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground } from "react-native";
 
 import colors from "../../../assets/colors/colors";
-import Button from "../../component/Button";
 import authRouts from "../../navigation/routs/authRouts";
 import Swiper from "react-native-swiper";
 
@@ -15,42 +14,48 @@ export default Intro = ({ navigation }) => {
         <View style={styles.container}>
             <Image
                 style={styles.image}
-                source={require("../../../assets/images/background.png")}
+                source={require("../../../assets/images/onb.png")}
             />
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 20,
-                marginTop: 20,
-                alignItems: 'center'
-            }}>
-                <View style={{
-                    flexDirection: 'row'
-                }}>
-                    {
-                        [1, 2, 3].map((i) => {
-                            return (
-                                <View key={i}
-                                    style={{
-                                        height: 2.5,
-                                        width: page === i - 1 ? 65 : 50,
-                                        backgroundColor: colors.white,
-                                        borderRadius: 10,
-                                        marginHorizontal: 2
-                                    }}
-                                />
-                            )
-                        })
+            <TouchableOpacity
+                onPress={() => {
+                    if (page === 2) {
+                        // navigation.navigate(authRouts.LOGIN)
+                    } else {
+                        setPage(page + 1)
                     }
-                </View>
-
-                <TouchableOpacity>
-                    <Text style={{
-                        color: colors.white,
-                        fontSize: 16,
-                    }}>Skip</Text>
-                </TouchableOpacity>
-            </View>
+                }}
+                style={{
+                    position: 'absolute',
+                    bottom: 220,
+                    right: 12,
+                    zIndex: 10,
+                }}>
+                <ImageBackground
+                    style={{
+                        width: 40,
+                        height: 40,
+                        resizeMode: 'contain',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    source={
+                        page === 0
+                            ? require("../../../assets/images/loader.png")
+                            : page === 1
+                            ? require("../../../assets/images/loader1.png")
+                            : require("../../../assets/images/loader2.png")
+                    }
+                >
+                    <Image
+                        style={{
+                            width: 30,
+                            height: 30,
+                            resizeMode: 'contain',
+                        }}
+                        source={require("../../../assets/images/Icon_arrow.png")}
+                    />
+                </ImageBackground>
+            </TouchableOpacity>
             <Swiper
                 loop={false}
                 showsPagination={false}
@@ -61,99 +66,134 @@ export default Intro = ({ navigation }) => {
                     <Image
                         style={{
                             width: '100%',
-                            height: width * 0.6,
+                            height: width * 0.9,
                             resizeMode: 'contain',
                             alignSelf: 'center',
                             marginTop: height * 0.1,
                         }}
-                        source={require("../../../assets/images/cuate.png")}
+                        source={require("../../../assets/images/delivery2.png")}
                     />
                     <Text style={{
-                        fontSize: 32,
+                        fontSize: 20,
                         fontWeight: 'bold',
-                        color: colors.white,
+                        color: colors.textDark,
                         marginTop: height * 0.1,
                         marginBottom: 10,
                         marginStart: 20,
-                    }}>Effortless Delivery Solutions</Text>
+                        width: width * 0.5,
+                    }}>Swift Solutions, Speedy Service</Text>
                     <Text style={{
                         fontSize: 18,
                         fontWeight: 'normal',
-                        color: colors.white,
+                        color: colors.textDark,
                         marginStart: 20,
                         marginEnd: 20,
-                    }}>Vehicles are available for all kinds of product irrespectiveof the product size.</Text>
-                </View>
-                <View style={styles.page}>
-                    <Text style={{
-                        fontSize: 32,
-                        fontWeight: 'bold',
-                        color: colors.white,
-                        marginTop: height * 0.02,
-                        marginBottom: 10,
-                        marginStart: 20,
-                    }}>Tailor Your Delivery Experience</Text>
-                    <Text style={{
-                        fontSize: 18,
-                        color: colors.white,
-                        marginStart: 20,
-                        marginEnd: 20,
-                    }}>Select the Perfect Vehicle Type for Your Cargo Needs.</Text>
-                    <Image
-                        style={{
-                            width: '100%',
-                            height: height * 0.42,
-                            resizeMode: 'contain',
-                            alignSelf: 'center',
-                            marginTop: height * 0.1,
-                        }}
-                        source={require("../../../assets/images/amico.png")}
-                    />
-
+                        width: width * 0.75
+                    }}>Experience the thrill of swift deliveries with DashX. Your goods, our priority – because time matters</Text>
                 </View>
                 <View style={styles.page}>
                     <Image
                         style={{
                             width: '100%',
-                            height: width * 0.6,
+                            height: width * 0.9,
                             resizeMode: 'contain',
                             alignSelf: 'center',
                             marginTop: height * 0.1,
                         }}
-                        source={require("../../../assets/images/pana.png")}
+                        source={require("../../../assets/images/delivery1.png")}
                     />
                     <Text style={{
-                        fontSize: 32,
+                        fontSize: 20,
                         fontWeight: 'bold',
-                        color: colors.white,
+                        color: colors.textDark,
                         marginTop: height * 0.1,
                         marginBottom: 10,
                         marginStart: 20,
-                    }}>Effortless Dispatching at Your Fingertips</Text>
+                        width: width * 0.5,
+                    }}>Affordable Delivery, Unbeatable Value</Text>
                     <Text style={{
                         fontSize: 18,
-                        color: colors.white,
+                        fontWeight: 'normal',
+                        color: colors.textDark,
                         marginStart: 20,
                         marginEnd: 20,
-                    }}>Request a Dispatcher Ride Anytime, Anywhere – Seamless and Swift Logistics Solutions</Text>
+                        width: width * 0.75
+                    }}>Enjoy the luxury of low-cost delivery without compromising on service. DashX brings you quality at a price that fits your budget.</Text>
+                </View>
+                <View style={styles.page}>
+                    <Image
+                        style={{
+                            width: '100%',
+                            height: width * 0.9,
+                            resizeMode: 'contain',
+                            alignSelf: 'center',
+                            marginTop: height * 0.1,
+                        }}
+                        source={require("../../../assets/images/delivery3.png")}
+                    />
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        color: colors.textDark,
+                        marginTop: height * 0.1,
+                        marginBottom: 10,
+                        marginStart: 20,
+                        width: width * 0.5,
+                    }}>Versatile Rides, Infinite Possibilities</Text>
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: 'normal',
+                        color: colors.textDark,
+                        marginStart: 20,
+                        marginEnd: 20,
+                        width: width * 0.75
+                    }}>No matter the size, we've got the wheels. From small parcels to bulky items, DashX delivers convenience at every dimension</Text>
                 </View>
             </Swiper>
-
-            <Button
-                textColor={colors.primary}
-                buttonColor={colors.white}
-                enabled={true}
-                buttonStyle={styles.button}
-                loading={false}
-                title={page === 2 ? "Sign up Now" : "Next"}
-                onPress={() => {
-                    if (page === 2) {
-                        // navigation.navigate(authRouts.LOGIN)
-                    } else {
-                        setPage(page + 1)
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginBottom: 60,
+                alignItems: 'center'
+            }}>
+                <View style={{
+                    flexDirection: 'row'
+                }}>
+                    {
+                        [1, 2, 3].map((i) => {
+                            return (
+                                <View key={i}
+                                    style={{
+                                        height: 5,
+                                        width: page === i - 1 ? 25 : 20,
+                                        backgroundColor: page === i - 1 ? colors.primary : colors.inactive,
+                                        borderRadius: 10,
+                                        marginHorizontal: 2
+                                    }}
+                                />
+                            )
+                        })
                     }
-                }}
-            />
+                </View>
+            </View>
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+            }}>
+                <TouchableOpacity
+                    style={{
+                        marginBottom: 20,
+                        marginEnd: 30,
+                    }}
+                >
+                    <Text style={{
+                        color: colors.textDark,
+                        fontSize: 16,
+                        fontWeight: '600',
+                    }}>{page < 2 ? 'Skip >>' : 'Start ->'}</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -161,12 +201,14 @@ export default Intro = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.primary,
     },
     image: {
-        width: '100%',
-        height: '100%',
+        width: height * 0.093,
+        height: height,
         position: 'absolute',
+        // top: 0,
+        right: 0,
+        resizeMode: 'contain',
     },
     page: {
         flex: 1,
@@ -174,9 +216,4 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         flexDirection: 'column',
     },
-    button: {
-        marginHorizontal: 20,
-        marginBottom: height * 0.07,
-        borderRadius: 25,
-    }
 });
