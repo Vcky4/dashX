@@ -1,22 +1,20 @@
 import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, TextInputProps } from "react-native";
 import colors from "../../assets/colors/colors";
-import NigerianFlag from "../../assets/icons/Nigeria-Flag.svg";
 
 type Props = {
-    // leftComponet?: React.ReactNode,
     containerStyle?: object,
-    // label: string,
+    theme?: 'dark' | 'light'
     onPress?: () => void,
 } & TextInputProps;
 
 
-const PhoneInput: React.FC<Props> = ({ containerStyle, onPress, ...rest }: Props) => {
+const PhoneInput: React.FC<Props> = ({ theme = 'dark', containerStyle, onPress, ...rest }: Props) => {
     const [isFocused, setIsFocused] = useState(false);
     return (
         <View style={[{
-            borderColor: isFocused ? colors.primary : colors.inactive,
-            borderRadius: 5,
+            borderColor: colors[theme].primary,
+            borderRadius: 50,
             borderWidth: 1,
             paddingHorizontal: 10,
             height: 50,
@@ -28,29 +26,11 @@ const PhoneInput: React.FC<Props> = ({ containerStyle, onPress, ...rest }: Props
                 alignItems: "center",
                 width: "100%",
             }}>
-                <TouchableOpacity
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderEndWidth: 1,
-                        borderEndColor: colors.primary,
-                        paddingRight: 8,
-                    }}
-                    onPress={onPress}>
-                    <NigerianFlag />
-                    <Text style={{
-                        color: colors.textGray,
-                        fontSize: 14,
-                        fontFamily: 'Inter-Regular',
-                        marginLeft: 5,
-                    }}>+234</Text>
-                </TouchableOpacity>
                 <TextInput
                     style={{
-                        // transform: [{ translateY: 6 }],
                         fontSize: 14,
                         fontFamily: 'Inter-Medium',
-                        color: colors.black,
+                        color: colors[theme].textDark,
                         flexGrow: 1,
                         paddingLeft: 8,
                     }}
@@ -78,11 +58,6 @@ const styles = StyleSheet.create({
         // borderColor: colors.inactive,
         // borderWidth: 1,
         // elevation: 1
-    },
-    passwordInput: {
-        fontSize: 14,
-        color: colors.textDark,
-        fontFamily: "NunitoSans-Regular",
     },
 });
 
