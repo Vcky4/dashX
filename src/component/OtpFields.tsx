@@ -9,10 +9,12 @@ type Props = {
     onChangeText?: (text: string) => void,
     value: string,
     pointerEvents?: 'auto' | 'none',
-    isSecured?: boolean
+    isSecured?: boolean,
+    theme?: 'light' | 'dark'
 };
 
 const OtpFields: React.FC<Props> = ({
+    theme = 'dark',
     nuberOfFields,
     style,
     fieldStyle,
@@ -31,9 +33,13 @@ const OtpFields: React.FC<Props> = ({
                 key={t} >
                 <View
                     style={[styles.otpField, {
-                        borderColor: value.length > t ? colors.primary : colors.inactive,
+                        borderColor: colors[theme].primary,
                     }]}>
-                    <Text style={[styles.otpText, fieldStyle]}>{isSecured ? value[t] && '*' : value[t]}</Text>
+                    <Text style={[{
+                        color: colors[theme].primary,
+                        fontSize: 24,
+                        fontFamily: 'Inter-Bold',
+                    }, fieldStyle]}>{isSecured ? value[t] && '*' : value[t]}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -47,7 +53,7 @@ const OtpFields: React.FC<Props> = ({
 
             </View>
             <TextInput ref={refsFocus}
-                keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
+                // keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
                 value={value}
                 secureTextEntry={isSecured}
                 selectionColor={'transparent'}
@@ -65,21 +71,16 @@ const styles = StyleSheet.create({
     otpWraper: {
         flexDirection: 'row',
         alignItems: "center",
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
     otpField: {
-        width: 62,
-        height: 54,
-        borderRadius: 5,
+        width: 42,
+        height: 40,
+        borderRadius: 40,
         justifyContent: "center",
         alignItems: "center",
         borderWidth: 2,
-        marginHorizontal: 6,
-    },
-    otpText: {
-        fontSize: 25,
-        color: colors.black,
-        fontFamily: "Poppins-Regular",
+        marginHorizontal: 4,
     },
 })
 
