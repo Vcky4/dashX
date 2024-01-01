@@ -6,6 +6,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import SignUp from "../../screens/auth/SignUp";
 import Login from "../../screens/auth/Login";
 import OtpVerification from "../../screens/auth/OtpVerification";
+import ForgetPassword from "../../screens/auth/ForgetPassword";
+import ResetPassword from "../../screens/auth/ResetPassword";
 
 
 const Stack = createNativeStackNavigator();
@@ -21,6 +23,8 @@ export default AuthStack = () => {
             }
             <Stack.Screen name={authRouts.login} component={Login} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.otpVerification} component={OtpVerification} options={{ headerShown: false }} />
+            <Stack.Screen name={authRouts.forgotPassword} component={ForgetPassword} options={{ headerShown: false }} />
+            <Stack.Screen name={authRouts.resetPassword} component={ResetPassword} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }

@@ -19,6 +19,7 @@ export default SignUp = ({ navigation }) => {
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
+    const [accountType, setAccountType] = useState("Personal")
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const canProceed =
         phone?.length === 11 &&
@@ -42,7 +43,7 @@ export default SignUp = ({ navigation }) => {
                     "name": name,
                     "password": password,
                     "phone": phone,
-                    "personel_account": true
+                    "personel_account": accountType === 'Personal' ? true : false,
                 }
             ) // body data type must match "Content-Type" header
         });
@@ -132,6 +133,62 @@ export default SignUp = ({ navigation }) => {
                         color: colors[appearance].textDark,
                         marginLeft: 15,
                     }}>Create account.</Text>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row',
+                    marginTop: 20,
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setAccountType('Personal')
+                        }}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 20,
+                            marginLeft: 15,
+                        }}>
+                        <View style={{
+                            height: 22,
+                            width: 22,
+                            borderRadius: 15,
+                            borderWidth: 5,
+                            borderColor: accountType === 'Personal' ? colors[appearance].primary : colors[appearance].textLight,
+                        }} />
+                        <Text style={{
+                            fontFamily: 'Inter-Regular',
+                            fontSize: 16,
+                            color: colors[appearance].textDark,
+                            marginLeft: 15,
+                        }}>Personal</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            setAccountType('Business')
+                        }}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 20,
+                            marginLeft: 15,
+                        }}>
+                        <View style={{
+                            height: 22,
+                            width: 22,
+                            borderRadius: 15,
+                            borderWidth: 5,
+                            borderColor: accountType === 'Business' ? colors[appearance].primary : colors[appearance].textLight,
+                        }} />
+                        <Text style={{
+                            fontFamily: 'Inter-Regular',
+                            fontSize: 16,
+                            color: colors[appearance].textDark,
+                            marginLeft: 15,
+                        }}>Business</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <InputField
