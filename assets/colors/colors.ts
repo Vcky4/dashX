@@ -1,4 +1,5 @@
 const common = {
+  primary: '#A10F7E',
   secondary: '#19A7FD',
   white: '#FFFFFF',
   black: '#000000',
@@ -16,7 +17,6 @@ const common = {
 
 
 const light = {
-  primary: '#B847EF',
   background: '#FFFFFF',
   textDark: '#221662',
   inactive: 'rgba(34, 22, 98, 0.15)',
@@ -24,7 +24,6 @@ const light = {
 }
 
 const dark = {
-  primary: '#B847EF',
   background: '#221662',
   textDark: '#FFFFFF',
   inactive: 'rgba(34, 22, 98, 0.15)',

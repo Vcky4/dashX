@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useColorScheme } from "react-native";
 
 export const AuthContext = createContext(null);
 
@@ -8,6 +9,8 @@ export const AuthContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [colorScheme, setColorScheme] = useState('dark')
+    const appearance = useColorScheme()
 
 
     const login = (token, user) => {
@@ -39,6 +42,16 @@ export const AuthContextProvider = ({ children }) => {
         setIsLoading(false);
     }
 
+    const getTheme = async () => {
+        let theme = await AsyncStorage.getItem('theme');
+        if (theme) {
+            setColorScheme(theme)
+        } else {
+            setColorScheme(appearance)
+            AsyncStorage.setItem('theme', appearance)
+        }
+    }
+
     const isLoggedIn = async () => {
         try {
             setIsLoading(true);
@@ -53,10 +66,11 @@ export const AuthContextProvider = ({ children }) => {
     }
     useEffect(() => { setTimeout(() => setIsLoading(false), 2000) });
     useEffect(() => {
+        getTheme()
         isLoggedIn();
     }, []);
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme }}>
             {children}
         </AuthContext.Provider>
     );
