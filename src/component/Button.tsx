@@ -37,7 +37,7 @@ const Button: React.FC<Props> = ({theme='dark', title, onPress, buttonStyle, ena
                         fontSize: 24,
                         textAlign: 'center',
                         fontFamily: 'Inter-SemiBold',
-                        color: textColor ? textColor : colors[theme].white,
+                        color: colors[theme].white,
                         flex: 1
                     }}>{title}</Text>
 
