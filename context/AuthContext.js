@@ -10,6 +10,7 @@ export const AuthContextProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
     const [colorScheme, setColorScheme] = useState('dark')
+    const [isOnboarded, setIsOnboarded] = useState(false)
     const appearance = useColorScheme()
 
 
@@ -33,6 +34,11 @@ export const AuthContextProvider = ({ children }) => {
         setUser(user);
         AsyncStorage.setItem('user', JSON.stringify(user));
         setIsLoading(false);
+    }
+
+    const onboard = () => {
+        setIsOnboarded(true)
+        AsyncStorage.setItem('onboarded', 'true')
     }
 
     const logout = () => {
@@ -62,6 +68,8 @@ export const AuthContextProvider = ({ children }) => {
             setIsLoading(true);
             let token = await AsyncStorage.getItem('token');
             let user = await AsyncStorage.getItem('user');
+            let onboarded = await AsyncStorage.getItem('onboarded')
+            setIsOnboarded(onboarded === 'true' ? true : false)
             setToken(token);
             setUser(JSON.parse(user ?? "{}"));
             setIsLoading(false);
@@ -75,7 +83,7 @@ export const AuthContextProvider = ({ children }) => {
         isLoggedIn();
     }, []);
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme, isOnboarded, onboard }}>
             {children}
         </AuthContext.Provider>
     );

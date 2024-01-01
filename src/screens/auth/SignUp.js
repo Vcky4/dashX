@@ -3,16 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, 
 import Toast from 'react-native-toast-message';
 
 import colors from "../../../assets/colors/colors";
-import authRouts from "../../navigation/routs/authRouts";
-import Button from "../../component/Button";
-import PasswordInput from "../../component/PasswordInput";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
-import ArrowBack from '../../../assets/icons/arrow_back.svg'
-import InputField from "../../component/InputField";
-import SuccessIcon from '../../../assets/icons/success.svg'
-import ErrorIcon from '../../../assets/icons/error.svg'
-import PhoneInput from "../../component/PhoneInput";
 
 
 export default SignUp = ({ navigation }) => {

@@ -9,7 +9,7 @@ import { AuthContext } from "../../../context/AuthContext";
 
 const { width, height } = Dimensions.get("window");
 export default Intro = ({ navigation }) => {
-    const { colorScheme } = useContext(AuthContext)
+    const { colorScheme, onboard } = useContext(AuthContext)
     const appearance = colorScheme
     const [page, setPage] = useState(0);
     return (
@@ -187,6 +187,10 @@ export default Intro = ({ navigation }) => {
                 justifyContent: 'flex-end',
             }}>
                 <TouchableOpacity
+                    onPress={() => {
+                        page < 2 ? setPage(2)
+                            : onboard()
+                    }}
                     style={{
                         marginBottom: 20,
                         marginEnd: 30,
