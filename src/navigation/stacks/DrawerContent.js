@@ -8,7 +8,7 @@ import profileRouts from "../routs/profileRouts";
 
 
 export default function DrawerContent(props) {
-    const { logout, user, colorScheme } = useContext(AuthContext);
+    const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
     // console.log('from drawer', user);
     const [modalVisible, setModalVisible] = useState(false);
     return (
@@ -78,7 +78,7 @@ export default function DrawerContent(props) {
                                     }}>View Profile</Text>
                                 </View>
                             </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => toggleTheme()}>
                                 <Image
                                     source={
                                         colorScheme === 'light' ?

@@ -58,10 +58,14 @@ export const AuthContextProvider = ({ children }) => {
         }
     }
 
-    useEffect(() => {
-        setColorScheme(appearance)
-        AsyncStorage.setItem('theme', appearance)
-    }, [appearance])
+    const toggleTheme = async () => {
+        setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
+        AsyncStorage.setItem('theme', colorScheme === 'dark' ? 'light' : 'dark')
+    }
+    // useEffect(() => {
+    //     setColorScheme(appearance)
+    //     AsyncStorage.setItem('theme', appearance)
+    // }, [appearance])
 
     const isLoggedIn = async () => {
         try {
@@ -83,7 +87,7 @@ export const AuthContextProvider = ({ children }) => {
         isLoggedIn();
     }, []);
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme, isOnboarded, onboard }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme, isOnboarded, onboard, toggleTheme }}>
             {children}
         </AuthContext.Provider>
     );
