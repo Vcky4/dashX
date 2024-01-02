@@ -7,6 +7,7 @@ import Button from "../../component/Button";
 import Toast from "react-native-toast-message";
 import endpoints from "../../../assets/endpoints/endpoints";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 
 export default EditProfile = ({ navigation }) => {
@@ -30,7 +31,7 @@ export default EditProfile = ({ navigation }) => {
     const [acceptTerms, setAcceptTerms] = useState(false)
     const [selectVehicleType, setSelectVehicleType] = useState(false)
     const [processing, setProcessing] = useState(false);
-    const [step, setStep] = useState(4)
+    const [step, setStep] = useState(1)
 
     const step1Pass = userData?.name?.length > 0 && userData?.phone?.length > 0 && userData?.kin_name?.length > 0 && userData?.kin_number?.length > 0
     const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0
@@ -357,9 +358,70 @@ export default EditProfile = ({ navigation }) => {
                 <View style={{
                     display: step === 4 ? 'flex' : 'none',
                     height: '70%',
+                    paddingHorizontal: 20,
+                }}>
+                    <Image
+                        source={require('../../../assets/images/terms.png')}
+                        style={{
+                            width: 60,
+                            height: 60,
+                            resizeMode: 'contain',
+                        }}
+                    />
+                    <Text style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 24,
+                        width: '80%',
+                        color: colors[appearance].textDark,
+
+                    }}>Accept SmartBest Terms & Review Privacy Policy</Text>
+                    <Text style={{
+                        fontFamily: 'Inter-Regular',
+                        fontSize: 14,
+                        width: '95%',
+                        color: colors[appearance].textGray,
+                        marginTop: 10,
+                    }}>By selecting “I Agree” Below, I have reviewed and agree to the
+                        <Text style={{
+                            color: colors[appearance].primary,
+                        }}> Terms of Use</Text> and acknowledge the
+                        <Text style={{
+                            color: colors[appearance].primary,
+                        }}> Privacy Policy</Text>. I am at least 18 years of age.
+                    </Text>
+                </View>
+                <View style={{
+                    display: step === 4 ? 'flex' : 'none',
+                    marginStart: 20,
+                    flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                
+                    <BouncyCheckbox
+                        innerIconStyle={{
+                            borderRadius: 5,
+                            borderColor: colors[appearance].inactive,
+                            borderWidth: 1,
+                            width: 20,
+                            height: 20,
+                        }}
+                        fillColor={colors[appearance].primary}
+                        iconStyle={{
+                            borderRadius: 5,
+                            borderColor: colors[appearance].textGray,
+                            borderWidth: 1,
+                            width: 20,
+                            height: 20,
+                        }}
+                        isChecked={acceptTerms}
+                        text=""
+                        disableBuiltInState
+                        onPress={() => setAcceptTerms(!acceptTerms)}
+                    />
+                    <Text style={{
+                        fontFamily: 'Inter-Regular',
+                        fontSize: 14,
+                        color: colors[appearance].textGray,
+                    }}>I Agree</Text>
                 </View>
                 <Button
                     title={step < 3 ? 'Continue' : step === 4 ? 'Submit' : 'Finish Setup'}
