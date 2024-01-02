@@ -9,28 +9,28 @@ import { AuthContext } from "../../../context/AuthContext";
 
 const { width, height } = Dimensions.get("window");
 export default Intro = ({ navigation }) => {
-    const { colorScheme, onboard } = useContext(AuthContext)
+    const { colorScheme, onboard, isOnboarded } = useContext(AuthContext)
     const appearance = 'light'
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(isOnboarded ? 2 : 0);
     return (
         <View style={{
             flex: 1,
             backgroundColor: colors[appearance].background
         }}>
             <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-                        if (page === 2) {
-                            // navigation.navigate(authRouts.LOGIN)
-                        } else {
-                            setPage(page + 1)
-                        }
-                    }}
-             style={{
-                position: 'absolute',
-                zIndex: 10,
-                right: 0,
-            }}>
+                activeOpacity={0.9}
+                onPress={() => {
+                    if (page === 2) {
+                        // navigation.navigate(authRouts.LOGIN)
+                    } else {
+                        setPage(page + 1)
+                    }
+                }}
+                style={{
+                    position: 'absolute',
+                    zIndex: 10,
+                    right: 0,
+                }}>
                 <Image
                     style={styles.image}
                     source={page === 0
@@ -41,46 +41,6 @@ export default Intro = ({ navigation }) => {
                 />
             </TouchableOpacity>
 
-            {/* <TouchableOpacity
-                onPress={() => {
-                    if (page === 2) {
-                        // navigation.navigate(authRouts.LOGIN)
-                    } else {
-                        setPage(page + 1)
-                    }
-                }}
-                style={{
-                    position: 'absolute',
-                    bottom: height * 0.29,
-                    right: 12,
-                    zIndex: 10,
-                }}>
-                <ImageBackground
-                    style={{
-                        width: 40,
-                        height: 40,
-                        resizeMode: 'contain',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    source={
-                        page === 0
-                            ? require("../../../assets/images/loader.png")
-                            : page === 1
-                                ? require("../../../assets/images/loader1.png")
-                                : require("../../../assets/images/loader2.png")
-                    }
-                >
-                    <Image
-                        style={{
-                            width: 30,
-                            height: 30,
-                            resizeMode: 'contain',
-                        }}
-                        source={require("../../../assets/images/Icon_arrow.png")}
-                    />
-                </ImageBackground>
-            </TouchableOpacity> */}
             <Swiper
                 loop={false}
                 showsPagination={false}
@@ -113,7 +73,8 @@ export default Intro = ({ navigation }) => {
                         color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
-                        width: width * 0.75
+                        width: width * 0.75,
+                        marginBottom: 20,
                     }}>Experience the thrill of swift deliveries with DashX. Your goods, our priority – because time matters</Text>
                 </View>
                 <View style={styles.page}>
@@ -142,7 +103,8 @@ export default Intro = ({ navigation }) => {
                         color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
-                        width: width * 0.75
+                        width: width * 0.75,
+                        marginBottom: 20,
                     }}>Enjoy the luxury of low-cost delivery without compromising on service. DashX brings you quality at a price that fits your budget.</Text>
                 </View>
                 <View style={styles.page}>
@@ -171,7 +133,8 @@ export default Intro = ({ navigation }) => {
                         color: colors[appearance].textDark,
                         marginStart: 20,
                         marginEnd: 20,
-                        width: width * 0.75
+                        width: width * 0.75,
+                        marginBottom: 20,
                     }}>No matter the size, we've got the wheels. From small parcels to bulky items, DashX delivers convenience at every dimension</Text>
                 </View>
             </Swiper>
@@ -207,21 +170,60 @@ export default Intro = ({ navigation }) => {
                 justifyContent: 'flex-end',
                 zIndex: 100,
             }}>
+                <TouchableOpacity onPress={() => {
+                    onboard()
+                    navigation.navigate(authRouts.login)
+                }}
+                    style={{
+                        display: page === 2 ? 'flex' : 'none',
+                        paddingHorizontal: 16,
+                        paddingVertical: 10,
+                        backgroundColor: colors[appearance].primary,
+                        borderRadius: 10,
+                        marginEnd: 10,
+                        marginBottom: 20,
+                    }}>
+                    <Text style={{
+                        color: colors[appearance].white,
+                        fontSize: 16,
+                        fontFamily: 'Inter-SemiBold',
+                    }}>Sign in</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    onboard()
+                    navigation.navigate(authRouts.signUp)
+                }}
+                    style={{
+                        display: page === 2 ? 'flex' : 'none',
+                        paddingHorizontal: 16,
+                        paddingVertical: 10,
+                        borderColor: colors[appearance].primary,
+                        borderRadius: 10,
+                        marginEnd: 30,
+                        marginBottom: 20,
+                        borderWidth: 1,
+                    }}>
+                    <Text style={{
+                        color: colors[appearance].textDark,
+                        fontSize: 16,
+                        fontFamily: 'Inter-SemiBold',
+                    }}>Sign up</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        page < 2 ? setPage(2)
-                            : onboard()
+                        setPage(2)
                     }}
                     style={{
                         marginBottom: 20,
                         marginEnd: 30,
+                        display: page === 2 ? 'none' : 'flex'
                     }}
                 >
                     <Text style={{
                         color: colors[appearance].textDark,
                         fontSize: 16,
                         fontWeight: '600',
-                    }}>{page < 2 ? 'Skip >>' : 'Start ->'}</Text>
+                    }}>{'Skip >>'}</Text>
                 </TouchableOpacity>
             </View>
         </View>

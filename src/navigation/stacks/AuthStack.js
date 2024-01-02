@@ -13,14 +13,14 @@ import ResetPassword from "../../screens/auth/ResetPassword";
 const Stack = createNativeStackNavigator();
 
 export default AuthStack = () => {
-    const { isOnboarded } = React.useContext(AuthContext)
+    // const { isOnboarded } = React.useContext(AuthContext)
     return (
         <Stack.Navigator>
-            {
+            {/* {
                 isOnboarded
                     ? <Stack.Screen name={authRouts.signUp} component={SignUp} options={{ headerShown: false }} />
-                    : <Stack.Screen name={authRouts.intro} component={Intro} options={{ headerShown: false }} />
-            }
+            } */}
+                     <Stack.Screen name={authRouts.intro} component={Intro} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.login} component={Login} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.otpVerification} component={OtpVerification} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.forgotPassword} component={ForgetPassword} options={{ headerShown: false }} />
