@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } from "react-native";
+import DeviceInfo from 'react-native-device-info';
 
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
@@ -70,7 +71,7 @@ export default function DrawerContent(props) {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 18,
                                         fontFamily: 'Inter-Bold',
-                                    }}>Travor</Text>
+                                    }}>{user?.name}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textGray,
                                         fontSize: 16,
@@ -98,7 +99,7 @@ export default function DrawerContent(props) {
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            width: '90%',
+                            // width: '90%',
                             marginTop: 20,
                         }}>
                             <View>
@@ -125,53 +126,163 @@ export default function DrawerContent(props) {
                         <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <Text style={styles.items}>Order History</Text>
+                                <Image
+                                    source={require('../../../assets/images/time.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Pending orders</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 20 }} onPress={() => props.navigation.navigate(profileRouts.profile)}>
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <Text style={styles.items}>Profile Settings</Text>
+                                <Image
+                                    source={require('../../../assets/images/time.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>History</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => props.navigation.navigate(mainRoute.help)}
-                            style={{ marginTop: 20 }} >
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <Text style={styles.items}>Help &  Support</Text>
+                                <Image
+                                    source={require('../../../assets/images/wallet.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Wallet</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => props.navigation.navigate(profileRouts.myEarnings)}
-                            style={{ marginTop: 20 }} >
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <Text style={styles.items}>My earnings</Text>
+                                <Image
+                                    source={require('../../../assets/images/chat.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Message</Text>
                             </View>
                         </TouchableOpacity>
-
-                        {/* <TouchableOpacity
-                            onPress={() => props.navigation.navigate(profileRouts.myRating)}
-                            style={{ marginTop: 20 }} >
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <StarLgIcon fill={colors.white} height={20} width={20} />
-                                <Text style={styles.items}>My rating</Text>
+                                <Image
+                                    source={require('../../../assets/images/support.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Support</Text>
                             </View>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                            <View style={styles.itemWrapper}>
+                                <Image
+                                    source={require('../../../assets/images/setting.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Settings</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                            <View style={styles.itemWrapper}>
+                                <Image
+                                    source={require('../../../assets/images/help.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>About</Text>
+                            </View>
+                        </TouchableOpacity>
                     </ScrollView>
 
                     <View style={{
-                        flex: 1,
-                        justifyContent: 'flex-end',
+                        justifyContent: 'flex-start',
                         paddingBottom: 50,
                         paddingHorizontal: 30,
+                        width: '100%',
                     }}>
-                        <TouchableOpacity onPress={() =>
-                            // logout()
-                            setModalVisible(true)
-                        }>
-                            <View style={styles.itemWrapper}>
-                                <Text style={styles.items}>Logout</Text>
-                            </View>
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            marginBottom: 10,
+                        }}
+                            onPress={() =>
+                                setModalVisible(true)
+                            }>
+                            <Image
+                                source={require('../../../assets/images/logout.png')}
+                                style={{
+                                    width: 33,
+                                    height: 33,
+                                    resizeMode: "contain",
+                                    marginRight: 20,
+                                    tintColor: colors[colorScheme].textGray,
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textGray,
+                                fontSize: 20,
+                                fontFamily: 'Inter-Medium',
+                            }}>Logout</Text>
                         </TouchableOpacity>
+
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 18,
+                            fontFamily: 'Inter-SemiBold',
+                            marginTop: 20,
+                        }}>V {DeviceInfo.getVersion()}</Text>
                     </View>
                 </View>
             </View>
@@ -281,6 +392,8 @@ const styles = StyleSheet.create({
     },
     itemWrapper: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%',
+        marginStart: 10,
     },
 });
