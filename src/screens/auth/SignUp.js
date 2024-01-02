@@ -113,7 +113,7 @@ export default SignUp = ({ navigation }) => {
                     color: colors[appearance].textDark,
                 }}>Welcome</Text>
 
-                <View style={{
+                {/* <View style={{
                     marginTop: 30,
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -132,7 +132,7 @@ export default SignUp = ({ navigation }) => {
                         color: colors[appearance].textDark,
                         marginLeft: 15,
                     }}>Create account.</Text>
-                </View>
+                </View> */}
 
                 <View style={{
                     flexDirection: 'row',

@@ -8,16 +8,33 @@ import profileRouts from "../routs/profileRouts";
 
 
 export default function DrawerContent(props) {
-    const { logout, user } = useContext(AuthContext);
+    const { logout, user, colorScheme } = useContext(AuthContext);
     // console.log('from drawer', user);
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <>
             <View style={{
                 flex: 1,
-                backgroundColor: colors.primary,
+                backgroundColor: colors[colorScheme].background,
             }}>
                 <View style={styles.content}>
+                    <View style={{
+                        backgroundColor: colors[colorScheme].primary,
+                        width: '100%',
+                        height: 150,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Image
+                            source={require('../../../assets/images/logo.png')}
+                            style={{
+                                width: '50%',
+                                // height: 60,
+                                resizeMode: "contain",
+                            }}
+
+                        />
+                    </View>
                     <ScrollView
                         vertical
                         showsHorizontalScrollIndicator={false}
@@ -25,32 +42,86 @@ export default function DrawerContent(props) {
                             flexGrow: 1,
                             justifyContent: 'flex-start',
                             width: '100%',
-                            paddingVertical: 30,
-                            paddingHorizontal: 30,
+                            paddingBottom: 20,
+                            paddingHorizontal: 20,
                         }}>
-                        <View style={{
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 20,
+                            justifyContent: 'space-between',
                         }}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}>
+                                <Image
+                                    source={require('../../../assets/images/profile.jpg')}
+                                    style={{
+                                        width: 46,
+                                        height: 46,
+                                        resizeMode: "cover",
+                                        borderRadius: 50,
+                                        marginRight: 14,
+                                    }}
+                                />
+                                <View>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 18,
+                                        fontFamily: 'Inter-Bold',
+                                    }}>Travor</Text>
+                                    <Text style={{
+                                        color: colors[colorScheme].textGray,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Regular',
+                                    }}>View Profile</Text>
+                                </View>
+                            </View>
+                            <TouchableOpacity>
+                                <Image
+                                    source={
+                                        colorScheme === 'light' ?
+                                            require('../../../assets/images/night.png') :
+                                            require('../../../assets/images/light.png')
+                                    }
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textDark,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '90%',
+                            marginTop: 20,
+                        }}>
+                            <View>
+                                <Text style={{
+                                    color: colors[colorScheme].textGray,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter-Regular',
+                                }}>Today’s Earnings:</Text>
+                                <Text style={{
+                                    color: colors[colorScheme].textGray,
+                                    fontSize: 25,
+                                    fontFamily: 'Inter-SemiBold',
+                                }}>₦8,900</Text>
+                            </View>
                             <Image
-                                source={user?.kyc?.selfie
-                                    ? { uri: user?.kyc?.selfie }
-                                    : require('../../../assets/images/logo.png')}
+                                source={require('../../../assets/images/outline.png')}
                                 style={{
-                                    width: 60,
-                                    height: 60,
+                                    width: 33,
+                                    height: 33,
                                     resizeMode: "contain",
-                                    borderRadius: 30,
                                 }}
-
                             />
-                            {/* <Text style={{
-                                color: colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Poppins-Bold',
-                                marginTop: 8,
-                                marginBottom: 10,
-                            }}>{user?.firstName} {user?.lastName}</Text> */}
-
-                        </View>
+                        </TouchableOpacity>
                         <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
@@ -204,7 +275,6 @@ const styles = StyleSheet.create({
     },
     items: {
         flexDirection: 'row',
-        color: colors.white,
         fontSize: 16,
         fontFamily: 'Inter-Regular',
         marginStart: 20,
