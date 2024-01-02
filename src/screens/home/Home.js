@@ -9,28 +9,28 @@ import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
 import endpoints from "../../../assets/endpoints/endpoints";
-// import dings from '../../../assets/sounds/trilla.mp3'
+import dings from '../../../assets/sounds/trilla.mp3'
 import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
 
 var Sound = require('react-native-sound');
 
 
-// Sound.setCategory('Playback');
-// var ding = new Sound(dings, error => {
-//     if (error) {
-//         console.log('failed to load the sound', error);
-//         return;
-//     }
-//     // if loaded successfully
-//     console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
-// });
+Sound.setCategory('Playback');
+var ding = new Sound(dings, error => {
+    if (error) {
+        console.log('failed to load the sound', error);
+        return;
+    }
+    // if loaded successfully
+    console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
+});
 
 export default Home = ({ navigation }) => {
     const [helpCoordinates, setHelpCoordinate] = useState(null);
     const { width, height } = Dimensions.get('window');
     const GOOGLE_API_KEY = endpoints.gg;
-    const { user, token, saveUser, notification, updateNotification } = useContext(AuthContext);
+    const { user, token, saveUser } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
     const [accepting, setAccepting] = useState(false);
     const [accepted, setAccepted] = useState(false);
@@ -115,233 +115,6 @@ export default Home = ({ navigation }) => {
         });
         ding.setNumberOfLoops(-1);
     };
-    //send user status to server
-    const updateUserStatus = async (status) => {
-        const response = await fetch(endpoints.baseUrl + endpoints.userStatus, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                is_online: status,
-            }),
-        });
-        response.json()
-            .then((responseJson) => {
-                // saveUser(responseJson);
-                setVariableUser(responseJson);
-                // setOnline(responseJson.data.is_online == 1 && variableUser.data.latitude != 0);
-                // console.log('responseJson', responseJson)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-    }
-
-    //set user status to online
-    const updateUserInfo = async () => {
-        const response = await fetch(endpoints.baseUrl + endpoints.updateUser, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                username: user.data.username,
-                email: user.data.email,
-                longitude: coordinate.longitude,
-                latitude: coordinate.latitude,
-            }),
-        });
-        response.json()
-            .then((data) => {
-                // saveUser(data);
-                // console.log('update user info', data)
-                setVariableUser(data);
-                // console.log('responseJson', data)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-
-
-    //get request details from server
-    const getRequests = async () => {
-        if (notification) {
-            const response = await fetch(endpoints.baseUrl + endpoints.oderDetails + `?id=${notification.id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-            });
-            response.json()
-                .then((data) => {
-                    if (response.ok) {
-                        console.log('ride data ', data)
-                        if (data.data.status == "canceled") {
-                            console.log('ride canceled')
-                            updateNotification(null);
-                            setHelpCoordinate(null)
-                            setAlert(null)
-                            setAccepted(false);
-                            setArrived(false);
-                            setDelivered(false);
-                            setAddComment(false);
-                            // panelRef.current.togglePanel()
-                        } else if (data.data.status == "new_ride_requested") {
-                            console.log('new ride requested', {
-                                latitude: data.data.start_latitude,
-                                longitude: data.data.start_longitude,
-                            })
-                            setAlert(data.data);
-                            setHelpCoordinate({
-                                latitude: parseFloat(data.data.start_latitude),
-                                longitude: parseFloat(data.data.start_longitude),
-                            })
-                            panelRef.current.togglePanel()
-                        }
-
-                    }
-                })
-                .catch((error) => {
-                    console.log('error', error)
-                });
-        }
-    }
-
-    //accept request
-    const acceptRequest = async () => {
-        setAccepting(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.acceptRide, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                id: notification.id,
-                is_accept: 1,
-                driver_id: user.data.id,
-            }),
-        });
-        response.json()
-            .then((data) => {
-                console.log('accept response', response)
-                console.log('accept request', data)
-                if (response.ok) {
-                    setAccepting(false);
-                    setAccepted(true);
-                    // setAlert(null)
-                    // panelRef.current.togglePanel()
-                }
-            })
-            .catch((error) => {
-                setAccepting(false);
-                console.log('accept error', error)
-            });
-    }
-
-    //accept request
-    const arrivedRequest = async () => {
-        setAccepting(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.arrive, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                id: notification.id,
-                driver_id: user?.data?.id,
-            }),
-        });
-        response.json()
-            .then((data) => {
-                console.log('arrived response', response)
-                console.log('arrived request', data)
-                if (response.ok) {
-                    setAccepting(false);
-                    setArrived(true);
-                    // setAlert(null)
-                    // panelRef.current.togglePanel()
-                }
-            })
-            .catch((error) => {
-                setAccepting(false);
-                console.log('arrived error', error)
-            });
-    }
-
-
-    //complete request
-    const completeRequest = async () => {
-        setAccepting(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.complete, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                id: notification.id,
-                driver_id: user?.data?.id,
-            }),
-        });
-        response.json()
-            .then((data) => {
-                console.log('complete response', response)
-                console.log('complete request', data)
-                if (response.ok) {
-                    setAccepting(false);
-                    setDelivered(true)
-                    // setAlert(null)
-                    // panelRef.current.togglePanel()
-                }
-            })
-            .catch((error) => {
-                setAccepting(false);
-                console.log('complete response', response)
-                console.log('complete error', error)
-            });
-    }
-
-    //decline request 
-    const declineRequest = async () => {
-        setAccepting(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.declineRide + `/${notification.id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({}),
-        });
-        response.json()
-            .then((data) => {
-                console.log('decline response', response)
-                console.log('decline request', data)
-                if (response.ok) {
-                    setAccepting(false);
-                    setHelpCoordinate(null);
-                    setAlert(null);
-                    setAccepted(false);
-                    setArrived(false);
-                    setDelivered(false);
-                    setAddComment(false);
-                    ding.stop();
-                } else {
-                    setAccepting(false);
-                }
-            })
-            .catch((error) => {
-                setAccepting(false);
-                console.log('decline error', error)
-            });
-    }
 
 
     const onMapPress = (e) => {
@@ -416,30 +189,17 @@ export default Home = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        if (helpCoordinates) {
-            playPause();
-        }
-        if (accepted) {
-            ding.stop();
-        }
-    }, [helpCoordinates, accepted])
-
-    useEffect(() => {
         ding.setVolume(1);
         return () => {
             ding.release();
         };
     }, []);
 
-    useEffect(() => {
-        getRequests();
-    }, [notification])
-
     // Subscribe to network state updates
     useEffect(() => {
         NetInfo.addEventListener(state => {
             console.log("Connection type", state.type);
-            updateUserStatus(state.isConnected && forceOnline);
+            // updateUserStatus(state.isConnected && forceOnline);
         });
     }, [forceOnline])
 
@@ -450,7 +210,7 @@ export default Home = ({ navigation }) => {
                 || coordinate.longitude - variableUser?.data?.longitude > 0.0001)
         ) {
             setInterval(() => {
-                updateUserInfo();
+                // updateUserInfo();
             }, 30000);
         }
     }, [online])
@@ -480,86 +240,13 @@ export default Home = ({ navigation }) => {
     return (
 
         <View style={[styles.container, {}]}>
-            <View style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                backgroundColor: colors.white,
-                zIndex: 1,
-                elevation: 5,
-                margin: 20,
-                position: 'absolute',
-                width: width - 40,
-                borderRadius: 8,
-            }}>
-                <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                    {/* <MenuIcon /> */}
-                </TouchableOpacity>
-
-                <Text style={{
-                    color: colors.textDark,
-                    fontSize: 16,
-                    marginHorizontal: 10,
-                    fontFamily: "Inter-Medium",
-                }}>{online ? 'Online' : 'offline'}</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (user.verified) {
-                            setForceOnline(!forceOnline)
-                        } else {
-                            setMessageTrigger(true)
-                        }
-                    }}
-                    style={{
-                        width: 42,
-                        height: 20,
-                        alignItems: "center",
-                        elevation: 5,
-                        backgroundColor: online ? colors.primary : colors.inactiveBt,
-                        borderRadius: 30,
-                        padding: 1
-                    }}>
-                    <View style={{
-                        height: '100%',
-                        width: 18,
-                        borderRadius: 19,
-                        backgroundColor: colors.white,
-                        alignSelf: !online ? "flex-start" : "flex-end",
-                    }} />
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-                onPress={() => {
-                    this.mapView.animateToRegion({
-                        latitude: coordinate.latitude,
-                        longitude: coordinate.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                    });
-                }}
-                style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: colors.white,
-                    zIndex: 1,
-                    elevation: 5,
-                    position: 'absolute',
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    right: 20,
-                    bottom: 100,
-                }}>
-                {/* <LocateIcon /> */}
-            </TouchableOpacity>
+  
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapView}
                 onPress={onMapPress}
                 ref={c => this.mapView = c}
-                showsMyLocationButton={false}
+                showsMyLocationButton={true}
                 showsUserLocation={true}
                 showsTraffic={true}
                 showsBuildings={true}
