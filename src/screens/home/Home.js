@@ -290,7 +290,27 @@ export default Home = ({ navigation }) => {
     return (
 
         <View style={[styles.container, {}]}>
-
+            <TouchableOpacity onPress={() => navigation.openDrawer()}
+             style={{
+                position: 'absolute',
+                top: 20,
+                left: 20,
+                zIndex: 100,
+                backgroundColor: colors[colorScheme].white,
+                borderRadius: 40,
+                padding: 6,
+                elevation: 10,
+            }} >
+                <Image
+                    source={require('../../../assets/images/menu.png')}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        resizeMode: "contain",
+                        borderRadius: 40,
+                    }}
+                />
+            </TouchableOpacity>
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapView}

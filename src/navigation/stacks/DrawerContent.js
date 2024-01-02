@@ -3,15 +3,8 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } fr
 
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
-import CancelIcon from "../../../assets/icons/cancel.svg";
-import StarLgIcon from "../../../assets/icons/Star-lg.svg";
-import LogoutIcon from "../../../assets/icons/logout.svg";
 import mainRoute from "../routs/mainRouts";
 import profileRouts from "../routs/profileRouts";
-import SettingsIcon from "../../../assets/icons/settings.svg";
-import OrdersIcon from "../../../assets/icons/orders.svg";
-import HelpIcon from "../../../assets/icons/help.svg";
-import EarningsIcon from "../../../assets/icons/earnings.svg";
 
 
 export default function DrawerContent(props) {
@@ -25,25 +18,6 @@ export default function DrawerContent(props) {
                 backgroundColor: colors.primary,
             }}>
                 <View style={styles.content}>
-                    <View style={{
-                        backgroundColor: colors.primary,
-                        width: '100%',
-                        paddingHorizontal: 30,
-                        paddingTop: 50,
-                        paddingBottom: 16,
-                    }}>
-                        <TouchableOpacity
-                            onPress={() => props.navigation.closeDrawer()}
-                            style={{
-                                padding: 10,
-                                borderRadius: 5,
-                                backgroundColor: 'rgba(255, 255, 255, 0.35)',
-                                width: 32,
-                            }}>
-                            <CancelIcon fill={colors.white} height={12} width={12} />
-                        </TouchableOpacity>
-
-                    </View>
                     <ScrollView
                         vertical
                         showsHorizontalScrollIndicator={false}
@@ -59,7 +33,7 @@ export default function DrawerContent(props) {
                             <Image
                                 source={user?.kyc?.selfie
                                     ? { uri: user?.kyc?.selfie }
-                                    : require('../../../assets/images/profile.png')}
+                                    : require('../../../assets/images/logo.png')}
                                 style={{
                                     width: 60,
                                     height: 60,
@@ -68,25 +42,23 @@ export default function DrawerContent(props) {
                                 }}
 
                             />
-                            <Text style={{
+                            {/* <Text style={{
                                 color: colors.white,
                                 fontSize: 20,
                                 fontFamily: 'Poppins-Bold',
                                 marginTop: 8,
                                 marginBottom: 10,
-                            }}>{user?.firstName} {user?.lastName}</Text>
+                            }}>{user?.firstName} {user?.lastName}</Text> */}
 
                         </View>
                         <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
-                                <OrdersIcon />
                                 <Text style={styles.items}>Order History</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ marginTop: 20 }} onPress={() => props.navigation.navigate(profileRouts.profile)}>
                             <View style={styles.itemWrapper}>
-                                <SettingsIcon fill={colors.white} />
                                 <Text style={styles.items}>Profile Settings</Text>
                             </View>
                         </TouchableOpacity>
@@ -94,7 +66,6 @@ export default function DrawerContent(props) {
                             onPress={() => props.navigation.navigate(mainRoute.help)}
                             style={{ marginTop: 20 }} >
                             <View style={styles.itemWrapper}>
-                                <HelpIcon />
                                 <Text style={styles.items}>Help &  Support</Text>
                             </View>
                         </TouchableOpacity>
@@ -102,7 +73,6 @@ export default function DrawerContent(props) {
                             onPress={() => props.navigation.navigate(profileRouts.myEarnings)}
                             style={{ marginTop: 20 }} >
                             <View style={styles.itemWrapper}>
-                                <EarningsIcon />
                                 <Text style={styles.items}>My earnings</Text>
                             </View>
                         </TouchableOpacity>
@@ -128,7 +98,6 @@ export default function DrawerContent(props) {
                             setModalVisible(true)
                         }>
                             <View style={styles.itemWrapper}>
-                                <LogoutIcon />
                                 <Text style={styles.items}>Logout</Text>
                             </View>
                         </TouchableOpacity>

@@ -20,7 +20,9 @@ export default AuthStack = () => {
                 isOnboarded
                     ? <Stack.Screen name={authRouts.signUp} component={SignUp} options={{ headerShown: false }} />
             } */}
-                     <Stack.Screen name={authRouts.intro} component={Intro} options={{ headerShown: false }} />
+
+            <Stack.Screen name={authRouts.intro} component={Intro} options={{ headerShown: false }} />
+            <Stack.Screen name={authRouts.signUp} component={SignUp} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.login} component={Login} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.otpVerification} component={OtpVerification} options={{ headerShown: false }} />
             <Stack.Screen name={authRouts.forgotPassword} component={ForgetPassword} options={{ headerShown: false }} />
