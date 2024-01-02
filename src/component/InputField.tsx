@@ -6,11 +6,12 @@ import colors from "../../assets/colors/colors";
 type Props = {
     // leftComponet?: React.ReactNode,
     containerStyle?: object,
-    theme?: 'dark' | 'light'
+    theme?: 'dark' | 'light',
+    label?: string,
 } & TextInputProps;
 
 
-export default function InputField({ theme = 'dark', containerStyle, ...rest }: Props) {
+export default function InputField({ label, theme = 'dark', containerStyle, ...rest }: Props) {
     const [isFocused, setIsFocused] = useState(false);
     return (
         <View style={[{
@@ -20,6 +21,16 @@ export default function InputField({ theme = 'dark', containerStyle, ...rest }: 
             paddingHorizontal: 10,
             height: 50,
         }, containerStyle]}>
+            <Text style={{
+                position: 'absolute',
+                fontSize: 14,
+                fontFamily: 'Inter-Medium',
+                display: label ? 'flex' : 'none',
+                color: colors[theme].textGray,
+                transform: [{
+                    translateY: -24,
+                }]
+            }}>{label}</Text>
             <TextInput
                 style={{
                     fontSize: 16,
@@ -33,6 +44,5 @@ export default function InputField({ theme = 'dark', containerStyle, ...rest }: 
             />
 
         </View>
-
     );
 }

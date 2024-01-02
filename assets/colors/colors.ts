@@ -4,7 +4,7 @@ const common = {
   white: '#FFFFFF',
   black: '#000000',
   textLight: '#424344',
-  textGray: '#8A817C',
+  textGray: '#868686',
   aliceBlue: '#E9F1F7',
   success: '#AEFFB2',
   error: '#FFAEAE',

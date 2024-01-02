@@ -8,6 +8,8 @@ const endpoints = {
     resetPassword: '/dispatch/reset/password',
     verify: '/dispatch/confirm/email',
     retriveProfile: '/dispatch/profile',
+    updateProfile: '/dispatch/update/profile',
+    updateVehicle: '/dispatch/update/vehicle',
 }
 
 export default endpoints;
