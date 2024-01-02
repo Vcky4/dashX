@@ -27,6 +27,8 @@ const dark = {
   background: '#221662',
   textDark: '#FFFFFF',
   inactive: 'rgba(34, 22, 98, 0.15)',
+  mapBackground: '#242f3e',
+  mapText: '#746855',
   ...common,
 }
 

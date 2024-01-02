@@ -31,7 +31,7 @@ export default Home = ({ navigation }) => {
     const [helpCoordinates, setHelpCoordinate] = useState(null);
     const { width, height } = Dimensions.get('window');
     const GOOGLE_API_KEY = endpoints.gg;
-    const { user, token, saveUser } = useContext(AuthContext);
+    const { user, token, saveUser, colorScheme } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
     const [accepted, setAccepted] = useState(false);
     const [distance, setDistance] = useState(0);
@@ -265,7 +265,26 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
         )
     }
+    const mapCustomStyle = [
+        {
+            //   elementType: 'geometry',
+            stylers: [
+                {
+                    color: colors[colorScheme].mapBackground,
+                },
+            ],
+        },
+        {
+            elementType: 'labels.text.fill',
+            stylers: [
+                {
+                    color: colors[colorScheme].mapText,
+                },
+            ],
+        },
+        // Add more styles here...
 
+    ];
     //check if ready
     // const ready = variableUser?.data?.longitude != 0 && variableUser?.data?.is_online == 1;
     return (
@@ -275,10 +294,12 @@ export default Home = ({ navigation }) => {
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapView}
+                userInterfaceStyle={colorScheme}
                 onPress={onMapPress}
                 ref={c => this.mapView = c}
                 showsMyLocationButton={true}
                 showsUserLocation={true}
+                customMapStyle={mapCustomStyle}
                 showsTraffic={true}
                 showsBuildings={true}
                 followsUserLocation={true}
@@ -344,16 +365,6 @@ export default Home = ({ navigation }) => {
                     />
                 }
 
-
-                {helpCoordinates == null && <Circle
-                    key={(myLocation.latitude + myLocation.longitude).toString()}
-                    center={coordinate}
-                    radius={200}
-                    strokeWidth={1}
-                    strokeColor={colors.aliceBlue}
-                    fillColor={'rgba(205,205,205,0.5)'}
-                // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
-                />}
                 {(helpCoordinates) && (
 
                     <MapViewDirections
@@ -713,7 +724,6 @@ const styles = StyleSheet.create({
     mapView: {
         width: '100%',
         height: '100%',
-
     },
 });
 
