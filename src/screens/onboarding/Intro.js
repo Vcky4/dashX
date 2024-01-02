@@ -10,7 +10,7 @@ import { AuthContext } from "../../../context/AuthContext";
 const { width, height } = Dimensions.get("window");
 export default Intro = ({ navigation }) => {
     const { colorScheme, onboard } = useContext(AuthContext)
-    const appearance = colorScheme
+    const appearance = 'light'
     const [page, setPage] = useState(0);
     return (
         <View style={{
