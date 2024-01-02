@@ -184,7 +184,8 @@ export default Login = ({ navigation }) => {
                         }}
                         style={{
                             color: colors[appearance].primary,
-                            fontFamily: 'Inter-SemiBold',
+                            fontFamily: 'Inter-Bold',
+                            fontSize: 18,
                         }}>  Sign Up</Text></Text>
 
                 <Text style={{
