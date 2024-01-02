@@ -20,55 +20,52 @@ export default ForgetPassword = ({ navigation }) => {
         emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
 
-    // const loginUser = async () => {
-    //     setProcessing(true)
-    //     const response = await fetch(endpoints.baseUrl + endpoints.login, {
-    //         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(
-    //             {
-    //                 "email": email,
-    //                 "password": password,
-    //             }
-    //         ) // body data type must match "Content-Type" header
-    //     });
-    //     response.json()
-    //         .then((data) => {
-    //             console.log(data); // JSON data parsed by `data.json()` call
-    //             setProcessing(false)
-    //             if (response.ok) {
-    //                 Toast.show({
-    //                     type: 'success',
-    //                     text1: 'Login successful',
-    //                     text2: data.message
-    //                 })
-    //                 // saveUser(data.user)
-    //                 // navigation.navigate(authRouts.otpVerification, { token: data.data.accessToken })
-    //             } else {
-    //                 Toast.show({
-    //                     type: 'error',
-    //                     text1: 'Login failed',
-    //                     text2: data.message
-    //                 });
-    //                 navigation.navigate(authRouts.otpVerification, { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE4MDczOWY3NGE2NDdmM2Q5N2YyYmYiLCJyb2xlIjoiUklERVIiLCJnZW5lcmF0b3IiOiIyMDIzMDcwNzEzMzgxN09BQkpNTlBWIiwiaWF0IjoxNjg4NzMzNDk3LCJleHAiOjE2ODg4MTk4OTd9.quJHfi-_YMVGrvc7e40ycvHLuB_wynf1LBxPxaIlvGk' })
-    //                 console.log('response: ', response)
-    //                 console.log('Login error:', data)
-    //             }
+    const getCode = async () => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.forgotPassword, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    "email": email,
+                }
+            ) // body data type must match "Content-Type" header
+        });
+        response.json()
+            .then((data) => {
+                console.log(data); // JSON data parsed by `data.json()` call
+                setProcessing(false)
+                if (response.ok) {
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Successful',
+                        text2: data.message
+                    })
+                    navigation.navigate(authRouts.resetPassword)
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Failed',
+                        text2: data.message
+                    });
+                    console.log('response: ', response)
+                    console.log('Login error:', data)
+                }
 
-    //         })
-    //         .catch((error) => {
-    //             setProcessing(false)
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: 'Login failed',
-    //                 text2: error.message
-    //             });
-    //             console.log('response: ', response)
-    //             console.log('Login error:', error);
-    //         })
-    // }
+            })
+            .catch((error) => {
+                setProcessing(false)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Failed',
+                    text2: error.message
+                });
+                console.log('response: ', response)
+                console.log('Login error:', error);
+            })
+    }
     return (
         <View style={{
             flex: 1,
@@ -143,8 +140,7 @@ export default ForgetPassword = ({ navigation }) => {
                     textColor={colors[appearance].textDark}
                     buttonColor={colors[appearance].primary}
                     onPress={() => {
-                        // loginUser()
-                        navigation.navigate(authRouts.resetPassword)
+                        getCode()
                     }}
                 />
 

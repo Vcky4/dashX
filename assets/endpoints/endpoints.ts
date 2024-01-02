@@ -3,7 +3,9 @@ const endpoints = {
     baseUrl: 'https://dashx-cc5d52b5155a.herokuapp.com',
     socketUrl: 'wss://expressryderv2.adaptable.app',
     login: '/dispatch/login',
-    signUp: '/dispatch/signup'
+    signUp: '/dispatch/signup',
+    forgotPassword: '/dispatch/forgot/password',
+    resetPassword: '/dispatch/reset/password',
 }
 
 export default endpoints;

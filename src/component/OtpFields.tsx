@@ -60,7 +60,7 @@ const OtpFields: React.FC<Props> = ({
                 style={{ color: 'transparent', fontSize: 0, height: 0, width: 0 }}
                 onChangeText={text => {
                     console.log(text);
-                    onChangeText(text.length <= nuberOfFields ? text.replace(/[^0-9]/g, "") : value);
+                    onChangeText(text.length <= nuberOfFields ? text: value);
                 }} />
         </>
     );
