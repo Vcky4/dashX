@@ -1,6 +1,6 @@
 const common = {
   primary: '#A10F7E',
-  secondary: '#19A7FD',
+  secondary: '#E6CEF2',
   white: '#FFFFFF',
   black: '#000000',
   textLight: '#424344',

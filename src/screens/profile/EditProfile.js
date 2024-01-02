@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, BackHandler } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import InputField from "../../component/InputField";
@@ -7,7 +7,7 @@ import Button from "../../component/Button";
 import Toast from "react-native-toast-message";
 import endpoints from "../../../assets/endpoints/endpoints";
 
-export default EditProfile = () => {
+export default EditProfile = ({ navigation }) => {
     const { user, saveUser, colorScheme, token } = useContext(AuthContext)
     const appearance = colorScheme
     const [userData, setUserData] = useState({
@@ -21,18 +21,27 @@ export default EditProfile = () => {
     })
     const [vehicleData, setVehicleData] = useState({
         "dispatchid": user.id,
-        "vehicle_number": "",
-        "vehicle_type": ""
+        "vehicle_number": user.vehicle.vehicle_number,
+        "vehicle_type": user.vehicle.vehicle_type,
     })
-    const [selectVehicleType, setSelectVehicleType] = useState(true)
+    const [image, setImage] = useState(null);
+    const [selectVehicleType, setSelectVehicleType] = useState(false)
     const [processing, setProcessing] = useState(false);
 
     const step1Pass = userData?.name?.length > 0 && userData?.phone?.length > 0 && userData?.kin_name?.length > 0 && userData?.kin_number?.length > 0
     const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0
-
-    const canProceed = step === 1 ? step1Pass : step2Pass
+    const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 1))
 
     const [step, setStep] = useState(1)
+
+    // BackHandler.addEventListener('hardwareBackPress', () => {
+    //     if (step > 1) {
+    //         setStep(step - 1)
+    //         return true
+    //     } else {
+    //         return false
+    //     }
+    // })
 
 
     const updateProfile = async () => {
@@ -82,6 +91,54 @@ export default EditProfile = () => {
                 console.log('Profile update error:', error);
             });
     }
+
+    const updateVehicle = async () => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.updateVehicle, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(
+                vehicleData
+            ) // body data type must match "Content-Type" header
+        });
+        response.json()
+            .then((data) => {
+                console.log(data); // JSON data parsed by `data.json()` call
+                setProcessing(false)
+                if (response.ok) {
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Profile updated',
+                        text2: data.message
+                    })
+                    setStep(3)
+                    saveUser({
+                        ...data?.data,
+                        id: data?.data?._id,
+                    })
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Profile update failed',
+                        text2: data.message
+                    });
+                    console.log('response: ', response)
+                    console.log('Profile update error:', data)
+                }
+            })
+            .catch((error) => {
+                setProcessing(false)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Profile update failed',
+                    text2: error.message
+                });
+                console.log('Profile update error:', error);
+            });
+    }
     return (
         <>
             <View style={{
@@ -95,7 +152,13 @@ export default EditProfile = () => {
                     width: '100%',
                     paddingHorizontal: 20,
                 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        if (step > 1) {
+                            setStep(step - 1)
+                        } else {
+                            navigation.goBack()
+                        }
+                    }}>
                         <Image
                             source={require("../../../assets/images/back.png")}
                             style={{
@@ -222,8 +285,35 @@ export default EditProfile = () => {
                         label="Plate Number"
                     />
                 </View>
+                <View style={{
+                    display: step === 3 ? 'flex' : 'none',
+                    height: '60%',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontFamily: 'Inter-Regular',
+                        fontSize: 16,
+                        color: colors[appearance].textDark,
+                        alignSelf: 'center',
+                        marginVertical: 20,
+                        width: '80%',
+                        textAlign: 'center',
+                    }}>Position your bare face clearly in the camera
+                        No face mask or glasses</Text>
+
+                    <View style={{
+                        width: 300,
+                        height: 300,
+                        borderRadius: 150,
+                        borderWidth: 8,
+                        borderColor: colors[appearance].secondary,
+                        justifyContent: 'center'
+                    }}>
+
+                    </View>
+                </View>
                 <Button
-                    title="Continue"
+                    title={step < 3 ? 'Continue' : 'Finish Setup'}
                     buttonStyle={{
                         marginBottom: 50,
                         marginHorizontal: 20,
@@ -237,6 +327,10 @@ export default EditProfile = () => {
                     onPress={() => {
                         if (step === 1) {
                             updateProfile()
+                        } else if (step === 2) {
+                            updateVehicle()
+                        } else {
+                            // verifyIdentity()
                         }
                         // navigation.navigate(authRouts.otpVerification)
                     }}
