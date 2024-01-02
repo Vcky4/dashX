@@ -291,18 +291,47 @@ export default Home = ({ navigation }) => {
 
         <View style={[styles.container, {}]}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}
-             style={{
-                position: 'absolute',
-                top: 20,
-                left: 20,
-                zIndex: 100,
-                backgroundColor: colors[colorScheme].white,
-                borderRadius: 40,
-                padding: 6,
-                elevation: 10,
-            }} >
+                style={{
+                    position: 'absolute',
+                    top: 20,
+                    left: 20,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].white,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                }} >
                 <Image
                     source={require('../../../assets/images/menu.png')}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        resizeMode: "contain",
+                        borderRadius: 40,
+                    }}
+                />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {
+                this.mapView.animateToRegion({
+                    latitude: coordinate.latitude,
+                    longitude: coordinate.longitude,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121,
+                });
+            }}
+                style={{
+                    position: 'absolute',
+                    bottom: 80,
+                    right: 20,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].white,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                }} >
+                <Image
+                    source={require('../../../assets/images/location.png')}
                     style={{
                         width: 30,
                         height: 30,
@@ -317,7 +346,7 @@ export default Home = ({ navigation }) => {
                 userInterfaceStyle={colorScheme}
                 onPress={onMapPress}
                 ref={c => this.mapView = c}
-                showsMyLocationButton={true}
+                showsMyLocationButton={false}
                 showsUserLocation={true}
                 customMapStyle={mapCustomStyle}
                 showsTraffic={true}
