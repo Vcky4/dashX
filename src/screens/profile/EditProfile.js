@@ -6,6 +6,8 @@ import InputField from "../../component/InputField";
 import Button from "../../component/Button";
 import Toast from "react-native-toast-message";
 import endpoints from "../../../assets/endpoints/endpoints";
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
 
 export default EditProfile = ({ navigation }) => {
     const { user, saveUser, colorScheme, token } = useContext(AuthContext)
@@ -25,14 +27,15 @@ export default EditProfile = ({ navigation }) => {
         "vehicle_type": user.vehicle.vehicle_type,
     })
     const [image, setImage] = useState(null);
+    const [acceptTerms, setAcceptTerms] = useState(false)
     const [selectVehicleType, setSelectVehicleType] = useState(false)
     const [processing, setProcessing] = useState(false);
+    const [step, setStep] = useState(4)
 
     const step1Pass = userData?.name?.length > 0 && userData?.phone?.length > 0 && userData?.kin_name?.length > 0 && userData?.kin_number?.length > 0
     const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0
-    const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 1))
+    const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 1)) && (image || (step < 3)) && (acceptTerms || (step < 4))
 
-    const [step, setStep] = useState(1)
 
     // BackHandler.addEventListener('hardwareBackPress', () => {
     //     if (step > 1) {
@@ -201,6 +204,7 @@ export default EditProfile = ({ navigation }) => {
                     fontFamily: 'Inter-Medium',
                     fontSize: 24,
                     color: colors[appearance].textDark,
+                    display: step === 4 ? 'none' : 'flex',
                     alignSelf: 'center',
                 }}>{
                         step === 1 ? 'Personal Details' :
@@ -301,19 +305,64 @@ export default EditProfile = ({ navigation }) => {
                     }}>Position your bare face clearly in the camera
                         No face mask or glasses</Text>
 
-                    <View style={{
-                        width: 300,
-                        height: 300,
-                        borderRadius: 150,
-                        borderWidth: 8,
-                        borderColor: colors[appearance].secondary,
-                        justifyContent: 'center'
-                    }}>
+                    <TouchableOpacity onPress={() => {
+                        launchCamera({
+                            mediaType: 'photo',
+                            // includeBase64: true,
+                            // maxHeight: 200,
+                            // maxWidth: 200,
+                        }, (res) => {
+                            console.log(res);
+                            if (res.didCancel) {
+                                console.log('User cancelled image picker');
+                                Toast.show({
+                                    type: 'success',
+                                    text1: 'Cancelled',
+                                    text2: 'Process cancelled successfully'
+                                });
+                            }
+                            else if (res.error) {
+                                console.log('ImagePicker Error: ', res.error);
+                                Toast.show({
+                                    type: 'error',
+                                    text1: 'failed to get image',
+                                    text2: res.error
+                                });
+                            }
+                            else if (res.assets) {
+                                setImage(res.assets[0]);
+                            }
+                        })
+                    }}
+                        style={{
+                            width: 300,
+                            height: 300,
+                            borderRadius: 150,
+                            borderWidth: 8,
+                            borderColor: colors[appearance].secondary,
+                            justifyContent: 'center'
+                        }}>
+                        <Image
+                            source={image ? { uri: image.uri } : require('../../../assets/images/camera.png')}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: 150,
+                                resizeMode: 'cover',
+                            }}
+                        />
+                    </TouchableOpacity>
+                </View>
 
-                    </View>
+                <View style={{
+                    display: step === 4 ? 'flex' : 'none',
+                    height: '70%',
+                    alignItems: 'center',
+                }}>
+                
                 </View>
                 <Button
-                    title={step < 3 ? 'Continue' : 'Finish Setup'}
+                    title={step < 3 ? 'Continue' : step === 4 ? 'Submit' : 'Finish Setup'}
                     buttonStyle={{
                         marginBottom: 50,
                         marginHorizontal: 20,
@@ -329,8 +378,10 @@ export default EditProfile = ({ navigation }) => {
                             updateProfile()
                         } else if (step === 2) {
                             updateVehicle()
+                        } else if (step === 3) {
+                            setStep(4)
                         } else {
-                            // verifyIdentity()
+
                         }
                         // navigation.navigate(authRouts.otpVerification)
                     }}
