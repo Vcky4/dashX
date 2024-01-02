@@ -43,7 +43,7 @@ export default ForgetPassword = ({ navigation }) => {
                         text1: 'Successful',
                         text2: data.message
                     })
-                    navigation.navigate(authRouts.resetPassword)
+                    navigation.replace(authRouts.resetPassword, { email: email })
                 } else {
                     Toast.show({
                         type: 'error',
