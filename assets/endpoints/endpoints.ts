@@ -10,6 +10,7 @@ const endpoints = {
     retriveProfile: '/dispatch/profile',
     updateProfile: '/dispatch/update/profile',
     updateVehicle: '/dispatch/update/vehicle',
+    uploadPhoto: '/dispatch/update/photo'
 }
 
 export default endpoints;

@@ -48,6 +48,32 @@ export default EditProfile = ({ navigation }) => {
     // })
 
 
+    const uploadImage = () => {
+        setProcessing(true)
+        const data = new FormData()
+        const uri = image.uri;
+        const type = image.type;
+        const name = image.fileName;
+        data.append('file', {
+            uri,
+            type,
+            name,
+        })
+        data.append('upload_preset', 'yhm2npph')
+        data.append("cloud_name", "drlz1cp2v")
+        fetch("https://api.cloudinary.com/v1_1/drlz1cp2v/upload", {
+            method: "POST",
+            body: data
+        }).then(res => res.json()).
+            then(data => {
+                setProcessing(false)
+                console.log(data.url)
+                finish(data.url)
+            }).catch(err => {
+                setProcessing(false)
+                console.log(err)
+            })
+    }
     const updateProfile = async () => {
         setProcessing(true)
         const response = await fetch(endpoints.baseUrl + endpoints.updateProfile, {
@@ -75,6 +101,56 @@ export default EditProfile = ({ navigation }) => {
                         ...data?.data,
                         id: data?.data?._id,
                     })
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Profile update failed',
+                        text2: data.message
+                    });
+                    console.log('response: ', response)
+                    console.log('Profile update error:', data)
+                }
+            })
+            .catch((error) => {
+                setProcessing(false)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Profile update failed',
+                    text2: error.message
+                });
+                console.log('Profile update error:', error);
+            });
+    }
+
+
+    const finish = async (url) => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.uploadPhoto, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+                "photo": url
+            }) // body data type must match "Content-Type" header
+        });
+        response.json()
+            .then((data) => {
+                console.log(data); // JSON data parsed by `data.json()` call
+                setProcessing(false)
+                if (response.ok) {
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Process Completed',
+                        text2: data.message
+                    })
+                    saveUser({
+                        ...data?.data,
+                        id: data?.data?._id,
+                    })
+                    navigation.goBack()
                 } else {
                     Toast.show({
                         type: 'error',
@@ -443,7 +519,7 @@ export default EditProfile = ({ navigation }) => {
                         } else if (step === 3) {
                             setStep(4)
                         } else {
-
+                            uploadImage()
                         }
                         // navigation.navigate(authRouts.otpVerification)
                     }}
