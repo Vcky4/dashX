@@ -23,7 +23,6 @@ export default Login = ({ navigation }) => {
         password?.length > 0 &&
         emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
-    const [success, setSuccess] = useState(false);
 
     const loginUser = async () => {
         setProcessing(true)
@@ -49,15 +48,14 @@ export default Login = ({ navigation }) => {
                         text1: 'Login successful',
                         text2: data.message
                     })
-                    // saveUser(data.user)
-                    // navigation.navigate(authRouts.otpVerification, { token: data.data.accessToken })
+                    saveUser(data?.data)
+                    saveToken(data?.data?.token)
                 } else {
                     Toast.show({
                         type: 'error',
                         text1: 'Login failed',
                         text2: data.message
                     });
-                    navigation.navigate(authRouts.otpVerification, { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE4MDczOWY3NGE2NDdmM2Q5N2YyYmYiLCJyb2xlIjoiUklERVIiLCJnZW5lcmF0b3IiOiIyMDIzMDcwNzEzMzgxN09BQkpNTlBWIiwiaWF0IjoxNjg4NzMzNDk3LCJleHAiOjE2ODg4MTk4OTd9.quJHfi-_YMVGrvc7e40ycvHLuB_wynf1LBxPxaIlvGk' })
                     console.log('response: ', response)
                     console.log('Login error:', data)
                 }
@@ -142,7 +140,7 @@ export default Login = ({ navigation }) => {
                     containerStyle={styles.input}
                 />
 
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity onPress={() => {
                     navigation.navigate(authRouts.forgotPassword)
                 }}>
                     <Text style={{
