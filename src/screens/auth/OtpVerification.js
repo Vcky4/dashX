@@ -11,8 +11,7 @@ import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 
 
-export default OtpVerification = ({ navigation, route }) => {
-    const { token } = route.params
+export default OtpVerification = ({ navigation }) => {
     const { saveToken, user, colorScheme } = useContext(AuthContext)
     const appearance = colorScheme
     const [otp, setOtp] = useState("")
@@ -85,53 +84,53 @@ export default OtpVerification = ({ navigation, route }) => {
     // };
 
 
-    // const verify = async () => {
-    //     setProcessing(true)
-    //     const response = await fetch(endpoints.baseUrl + endpoints.verify, {
-    //         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + token,
-    //         },
-    //         body: JSON.stringify(
-    //             {
-    //                 "otp": parseInt(otp)
-    //             }
-    //         ) // body data type must match "Content-Type" header
-    //     });
-    //     response.json()
-    //         .then((data) => {
-    //             console.log(data); // JSON data parsed by `data.json()` call
-    //             setProcessing(false)
-    //             if (response.ok) {
-    //                 Toast.show({
-    //                     type: 'success',
-    //                     text1: 'Verification successful',
-    //                     text2: data.message
-    //                 })
-    //                 saveToken(token)
-    //             } else {
-    //                 Toast.show({
-    //                     type: 'error',
-    //                     text1: 'Verification failed',
-    //                     text2: data.message
-    //                 });
-    //                 console.log('response: ', response)
-    //                 console.log('Verification error:', data)
-    //             }
+    const verify = async () => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.verify, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(
+                {
+                    "code": otp
+                }
+            ) // body data type must match "Content-Type" header
+        });
+        response.json()
+            .then((data) => {
+                console.log(data); // JSON data parsed by `data.json()` call
+                setProcessing(false)
+                if (response.ok) {
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Verification successful',
+                        text2: data.message
+                    })
+                    navigation.replace(authRouts.login)
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Verification failed',
+                        text2: data.message
+                    });
+                    console.log('response: ', response)
+                    console.log('Verification error:', data)
+                }
 
-    //         })
-    //         .catch((error) => {
-    //             setProcessing(false)
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: 'Verification failed',
-    //                 text2: error.message
-    //             });
-    //             console.log('response: ', response)
-    //             console.log('Verification error:', error);
-    //         })
-    // }
+            })
+            .catch((error) => {
+                setProcessing(false)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Verification failed',
+                    text2: error.message
+                });
+                console.log('response: ', response)
+                console.log('Verification error:', error);
+            })
+    }
     return (
         <View style={{
             flex: 1,

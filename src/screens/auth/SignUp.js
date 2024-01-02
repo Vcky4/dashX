@@ -55,10 +55,9 @@ export default SignUp = ({ navigation }) => {
                     Toast.show({
                         type: 'success',
                         text1: 'SignUp successful',
-                        text2: data.message
+                        text2: data.data
                     })
-                    // saveUser(data.user)
-                    // navigation.navigate(authRouts.otpVerification, { token: data.data.accessToken })
+                    navigation.navigate(authRouts.otpVerification)
                 } else {
                     Toast.show({
                         type: 'error',
