@@ -12,6 +12,7 @@ import endpoints from "../../../assets/endpoints/endpoints";
 import dings from '../../../assets/sounds/trilla.mp3'
 import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
+import profileRouts from "../../navigation/routs/profileRouts";
 
 var Sound = require('react-native-sound');
 
@@ -32,19 +33,13 @@ export default Home = ({ navigation }) => {
     const GOOGLE_API_KEY = endpoints.gg;
     const { user, token, saveUser } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
-    const [accepting, setAccepting] = useState(false);
     const [accepted, setAccepted] = useState(false);
-    const [arrived, setArrived] = useState(false);
     const [distance, setDistance] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [delivered, setDelivered] = useState(false);
     const [online, setOnline] = useState(false);
     const [rating, setRating] = useState(0);
-    const [comment, setComment] = useState('');
-    const [addComment, setAddComment] = useState(false);
     const panelRef = useRef(null);
     const [variableUser, setVariableUser] = useState({})
-    const [alert, setAlert] = useState(false);
     const [updateCount, setUpdateCount] = useState(0);
     const [forceOnline, setForceOnline] = useState(true);
     const [waypoints, setWaypoints] = useState([]);
@@ -59,17 +54,53 @@ export default Home = ({ navigation }) => {
         latitude: 0,
         longitude: 0,
     }
-     //setup to socket
-  const socket = io(endpoints.socketUrl, {
-    extraHeaders: {
-      authorization: `Bearer ${token}`,
-    },
-  });
+    //setup to socket
+    const socket = io(endpoints.socketUrl, {
+        extraHeaders: {
+            authorization: `Bearer ${token}`,
+        },
+    });
+
+    const retriveProfile = () => {
+        const response = fetch(endpoints.baseUrl + endpoints.retriveProfile, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                console.log('resJson', resJson)
+                if (resJson.status) {
+                    saveUser({
+                        id: resJson.data._id,
+                        ...resJson.data,
+                    });
+                    console.log('json.data.kin.kin_name', user?.kin.kin_name.length)
+                    if (resJson.data?.kin?.kin_name.length < 1) {
+                        navigation.navigate(profileRouts.editProfile)
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    }
+
+    useEffect(() => {
+
+    }, [user])
+    useEffect(() => {
+        retriveProfile();
+    }, [])
 
     //connect to socket
     useEffect(() => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-          socket.on('connect', e => {
+        socket.on('connect', e => {
             console.log('connected', socket.connected);
             // setOnline(true);
             // socket.emit('updateLocation', {
@@ -78,19 +109,19 @@ export default Home = ({ navigation }) => {
             //   // location: callback
             // });
             // console.log(' first sent', [coordinate.longitude, coordinate.latitude]);
-          });
-    
-          socket.on('disconnect', e => {
+        });
+
+        socket.on('disconnect', e => {
             setOnline(false);
             console.log('disconnected', socket.connected);
-          });
+        });
         // }
         return () => {
-          socket.off('connect');
-          socket.off('disconnect');
-          // socket.off('receiveAlerts');
+            socket.off('connect');
+            socket.off('disconnect');
+            // socket.off('receiveAlerts');
         };
-      }, [token]);
+    }, [token]);
     useEffect(() => {
         messageTrigger && setFade(1)
         setTimeout(() => { setFade(0); setMessageTrigger(false) }, 10000)
@@ -240,7 +271,7 @@ export default Home = ({ navigation }) => {
     return (
 
         <View style={[styles.container, {}]}>
-  
+
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapView}
@@ -365,7 +396,7 @@ export default Home = ({ navigation }) => {
                 {/* <Marker coordinate={coordinates[0]} />
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>
-       
+
             <BottomSheet isOpen={helpCoordinates != null}
                 wrapperStyle={{
                     marginHorizontal: 10,

@@ -4,6 +4,8 @@ import 'react-native-gesture-handler';
 
 import mainRouts from '../routs/mainRouts';
 import Home from '../../screens/home/Home';
+import profileRouts from '../routs/profileRouts';
+import EditProfile from '../../screens/profile/EditProfile';
 
 
 
@@ -105,7 +107,7 @@ export default AuthPassed = () => {
                 component={Home}
                 options={{ headerShown: false }}
             />
-            {/* <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} /> */}
+            <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );

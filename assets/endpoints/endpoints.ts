@@ -7,6 +7,7 @@ const endpoints = {
     forgotPassword: '/dispatch/forgot/password',
     resetPassword: '/dispatch/reset/password',
     verify: '/dispatch/confirm/email',
+    retriveProfile: '/dispatch/profile',
 }
 
 export default endpoints;
