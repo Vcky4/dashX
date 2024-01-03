@@ -130,7 +130,7 @@ export default Home = ({ navigation }) => {
         retriveProfile();
     }, [])
 
-    console.log('dispatchItem', dispatchItem)
+    // console.log('dispatchItem', dispatchItem)
     //connect to socket
     useEffect(() => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
