@@ -1,20 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, View } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import PendingOrderItem from "./PendingOrderItem";
+import endpoints from "../../../assets/endpoints/endpoints";
 
 export default PendingOrder = ({ item }) => {
-    const { colorScheme } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
+    const [orders, setOrders] = useState([])
+
+    const getOrders = async () => {
+        try {
+            const response = await fetch(endpoints.baseUrl + endpoints.listOdrders, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    'city': 'ikot ekpene',
+                    "dispatchid": user.id,
+                })
+            })
+            const json = await response.json()
+            console.log(json)
+            //check if array
+            if (Array.isArray(json.data)) {
+                setOrders(json.data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        getOrders()
+    }, [])
     return (
         <FlatList style={{
             backgroundColor: colors[colorScheme].background,
             width: '100%',
             paddingHorizontal: 5,
         }}
-            data={[1, 2, 4, 5, 6, 7, 8, 9, 0]}
+            data={orders}
             renderItem={({ item }) =>
-                <PendingOrderItem />
+                <PendingOrderItem item={item}/>
             }
         />
     )

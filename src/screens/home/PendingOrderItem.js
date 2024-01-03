@@ -26,12 +26,12 @@ export default PendingOrderItem = ({ item }) => {
                     color: colors[colorScheme].primary,
                     fontSize: 16,
                     fontFamily: 'Medium',
-                }}>Dell Latitude Laptop</Text>
+                }}>{item?.productname}</Text>
                 <Text style={{
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Medium',
-                }}>₦4,589.55</Text>
+                }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                 <Button title={'Accept'}
                     onPress={() => {
                     }}
@@ -66,7 +66,7 @@ export default PendingOrderItem = ({ item }) => {
                     marginLeft: 5,
                 }}>Pickup: <Text style={{
                     fontFamily: 'Inter-Medium',
-                }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                }}>{item?.receiveraddress}</Text></Text>
             </View>
             <View style={{
                 width: '100%',
@@ -89,7 +89,7 @@ export default PendingOrderItem = ({ item }) => {
                     marginLeft: 5,
                 }}>Delivery: <Text style={{
                     fontFamily: 'Inter-Medium',
-                }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                }}>{item?.senderaddress}</Text></Text>
             </View>
         </View>
     )
