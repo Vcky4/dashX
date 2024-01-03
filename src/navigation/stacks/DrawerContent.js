@@ -213,7 +213,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Support</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 30 }}
+                        {/* <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
                                 <Image
@@ -229,7 +229,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     color: colors[colorScheme].textGray,
                                 }]}>Settings</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
