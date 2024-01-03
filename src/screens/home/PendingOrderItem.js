@@ -1,22 +1,23 @@
 import React, { useContext } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import Button from "../../component/Button";
 
 
-export default PendingOrderItem = ({ item }) => {
+export default PendingOrderItem = ({ item, onPress, processing }) => {
     const { colorScheme } = useContext(AuthContext)
     return (
-        <View style={{
-            backgroundColor: colors[colorScheme].background,
-            width: '100%',
-            elevation: 10,
-            paddingVertical: 10,
-            borderRadius: 10,
-            marginBottom: 10,
-            paddingHorizontal: 10,
-        }}>
+        <View
+            style={{
+                backgroundColor: colors[colorScheme].background,
+                width: '100%',
+                elevation: 10,
+                paddingVertical: 10,
+                borderRadius: 10,
+                marginBottom: 10,
+                paddingHorizontal: 10,
+            }}>
             <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -33,16 +34,15 @@ export default PendingOrderItem = ({ item }) => {
                     fontFamily: 'Medium',
                 }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                 <Button title={'Accept'}
-                    onPress={() => {
-                    }}
+                    onPress={onPress}
                     buttonStyle={{
                         borderRadius: 20,
                         height: 30,
                         width: 86,
                     }}
                     fontSize={16}
-                    loading={false}
-                    enabled={true}
+                    loading={processing}
+                    enabled={!processing}
                 />
             </View>
             <View style={{

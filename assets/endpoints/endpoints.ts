@@ -12,6 +12,7 @@ const endpoints = {
     updateVehicle: '/dispatch/update/vehicle',
     uploadPhoto: '/dispatch/update/photo',
     listOdrders: '/dispatch/list/order',
+    acceptOrders: '/dispatch/accept/order',
 }
 
 export default endpoints;
