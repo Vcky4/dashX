@@ -130,6 +130,7 @@ export default Home = ({ navigation }) => {
         retriveProfile();
     }, [])
 
+    console.log('dispatchItem', dispatchItem)
     //connect to socket
     useEffect(() => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
@@ -257,7 +258,7 @@ export default Home = ({ navigation }) => {
             setAddress(result[0])
         })
     }
-console.log('dispatch', dispatchItem)
+    // console.log('dispatch', dispatchItem)
     useEffect(() => {
         getAddres(coordinate.latitude, coordinate.longitude)
     }, [coordinate])

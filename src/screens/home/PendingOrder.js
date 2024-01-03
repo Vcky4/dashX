@@ -15,7 +15,7 @@ export default PendingOrder = ({ item }) => {
     const [processing, setProcessing] = useState(false)
     const [selectCity, setSelectCity] = useState(false)
     const [cities, setCities] = useState([])
-    const [city, setCity] = useState('')
+    const [city, setCity] = useState('ajah')
 
     const getCities = async () => {
         try {

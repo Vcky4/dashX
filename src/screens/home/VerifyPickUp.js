@@ -79,7 +79,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
                         text1: 'Order updated',
                         text2: data.message
                     })
-                    
+                    navigation.goBack()
                 } else {
                     Toast.show({
                         type: 'error',
