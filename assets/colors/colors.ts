@@ -10,7 +10,7 @@ const common = {
   error: '#FFAEAE',
   lightBg: 'rgba(230, 206, 242, 0.95)',
   lightBg2: 'rgba(37, 211, 102, 0.7)',
-  halfWhite: 'rgba(255, 255, 255, 0.7)',
+  halfWhite: 'rgba(255, 255, 255, 0.85)',
   inactiveBt: '#D7D7D7',
   inactiveTab: '#DEDEDE',
   textHash: '#455154',

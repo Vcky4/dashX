@@ -48,7 +48,7 @@ export default DrawerStack = () => {
                     left: -20.5,
                 }}
                 lineContainerStyle={{
-                    display: 'none'
+                    // display: 'none'
                 }}
                 sliderMinHeight={0}
                 onOpen={() => {
@@ -60,7 +60,7 @@ export default DrawerStack = () => {
                 ref={ref => panelRef.current = ref}>
                 <View style={{
                     backgroundColor: '#E6CEF2',
-                    top: -40,
+                    top: -95,
                     alignSelf: 'center',
                     borderRadius: 30,
                     position: 'absolute',

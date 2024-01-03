@@ -60,7 +60,7 @@ export default PendingOrderItem = ({ item }) => {
                     }}
                 />
                 <Text style={{
-                    color: colors[colorScheme].black,
+                    color: colors[colorScheme].textDark,
                     fontSize: 14,
                     fontFamily: 'Inter-Bold',
                     marginLeft: 5,
@@ -83,7 +83,7 @@ export default PendingOrderItem = ({ item }) => {
                     }}
                 />
                 <Text style={{
-                    color: colors[colorScheme].black,
+                    color: colors[colorScheme].textDark,
                     fontSize: 14,
                     fontFamily: 'Inter-Bold',
                     marginLeft: 5,
