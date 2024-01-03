@@ -14,6 +14,7 @@ import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
 import profileRouts from "../../navigation/routs/profileRouts";
 import Button from "../../component/Button";
+import getAddress from "../../utils/getAddress";
 
 var Sound = require('react-native-sound');
 
@@ -37,6 +38,7 @@ export default Home = ({ navigation }) => {
     const [accepted, setAccepted] = useState(false);
     const [distance, setDistance] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [address, setAddress] = useState('');
     const [online, setOnline] = useState(false);
     const [rating, setRating] = useState(0);
     const panelRef = useRef(null);
@@ -220,6 +222,16 @@ export default Home = ({ navigation }) => {
         }
     }, [])
 
+    const getAddres = (lat, lng) => {
+        getAddress(lat, lng, (result) => {
+            setAddress(result[0])
+        })
+    }
+
+    useEffect(() => {
+        getAddres(coordinate.latitude, coordinate.longitude)
+    }, [coordinate])
+
     useEffect(() => {
         ding.setVolume(1);
         return () => {
@@ -284,8 +296,8 @@ export default Home = ({ navigation }) => {
             ],
         },
         // Add more styles here...
-
     ];
+
     //check if ready
     // const ready = variableUser?.data?.longitude != 0 && variableUser?.data?.is_online == 1;
     return (
@@ -446,7 +458,7 @@ export default Home = ({ navigation }) => {
                         marginLeft: 5,
                     }}>Rider’s Location: <Text style={{
                         fontFamily: 'Inter-Medium',
-                    }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                    }}>{address?.formatted_address}</Text></Text>
                 </View>
             </View>
             <MapView
