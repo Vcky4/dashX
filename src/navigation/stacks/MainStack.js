@@ -45,7 +45,7 @@ export default DrawerStack = () => {
                 sliderMaxHeight={height * 0.8}
                 outerContentStyle={{
                     width: width,
-                    left: -20,
+                    left: -20.5,
                 }}
                 lineContainerStyle={{
                     display: 'none'

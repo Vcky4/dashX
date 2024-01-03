@@ -6,6 +6,7 @@ import Button from "../../component/Button";
 
 
 export default PendingOrderItem = ({ item }) => {
+    const { colorScheme } = useContext(AuthContext)
     return (
         <View style={{
             backgroundColor: colors[colorScheme].background,
@@ -15,7 +16,6 @@ export default PendingOrderItem = ({ item }) => {
             borderRadius: 10,
             marginBottom: 10,
             paddingHorizontal: 10,
-            marginHorizontal: 4,
         }}>
             <View style={{
                 flexDirection: 'row',

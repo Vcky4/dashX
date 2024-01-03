@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { FlatList, Image, Text, View } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
-import Button from "../../component/Button";
 import PendingOrderItem from "./PendingOrderItem";
 
 export default PendingOrder = ({ item }) => {
@@ -10,7 +9,8 @@ export default PendingOrder = ({ item }) => {
     return (
         <FlatList style={{
             backgroundColor: colors[colorScheme].background,
-            // width: '100%',
+            width: '100%',
+            paddingHorizontal: 5,
         }}
             data={[1, 2, 4, 5, 6, 7, 8, 9, 0]}
             renderItem={({ item }) =>
