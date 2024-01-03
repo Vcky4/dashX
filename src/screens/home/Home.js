@@ -661,10 +661,15 @@ export default Home = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
-                <DispatchSheet />
+                <DispatchSheet onEnd={() => {
+                    setBottomStep(0)
+                    setIsDispatch(false)
+                    panelRef.current.togglePanel()
+                    // setHelpCoordinate(null)
+                }} />
                 <View style={{
-                height: 20
-            }}/>
+                    height: 20
+                }} />
             </BottomSheet>
         </View>
 

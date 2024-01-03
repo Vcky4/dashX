@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
+import { Image, Linking, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
@@ -172,12 +172,15 @@ export default Dispatch = ({ onEnd }) => {
                     alignItems: 'center',
                     alignSelf: 'center',
                 }}>
-                    <Text style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: 24,
-                        paddingHorizontal: 30,
-                        color: colors[colorScheme].textDark
-                    }}>123456</Text>
+                    <TextInput
+                        placeholder="235jVG"
+                        placeholderTextColor={colors[colorScheme].textGray}
+                        style={{
+                            fontFamily: 'Inter-Medium',
+                            fontSize: 24,
+                            paddingHorizontal: 30,
+                            color: colors[colorScheme].textDark
+                        }} />
                 </View>
 
                 <Button title={'Input code to end dispatch'}
