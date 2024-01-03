@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator();
 
 export default DrawerStack = () => {
     return (
-        <Drawer.Navigator drawerContent={DrawerContent}>
+        <Drawer.Navigator drawerContent={(props)=> DrawerContent(props)}>
             <Drawer.Screen name="Main" component={AuthPassed} options={{ headerShown: false }} />
         </Drawer.Navigator>
     );

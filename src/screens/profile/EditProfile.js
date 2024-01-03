@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, BackHandler } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
@@ -28,14 +28,15 @@ export default EditProfile = ({ navigation }) => {
         "vehicle_type": user.vehicle.vehicle_type,
     })
     const [image, setImage] = useState(null);
+    const [driverLicense, setDriverLicense] = useState(null);
     const [acceptTerms, setAcceptTerms] = useState(false)
     const [selectVehicleType, setSelectVehicleType] = useState(false)
     const [processing, setProcessing] = useState(false);
     const [step, setStep] = useState(1)
 
     const step1Pass = userData?.name?.length > 0 && userData?.phone?.length > 0 && userData?.kin_name?.length > 0 && userData?.kin_number?.length > 0
-    const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0
-    const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 1)) && (image || (step < 3)) && (acceptTerms || (step < 4))
+    const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0 && driverLicense !== null
+    const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 2)) && (image || (step < 3)) && (acceptTerms || (step < 4))
 
 
     // BackHandler.addEventListener('hardwareBackPress', () => {
@@ -47,13 +48,26 @@ export default EditProfile = ({ navigation }) => {
     //     }
     // })
 
+    useEffect(() => {
+        if (user.photo.length > 0) {
+            setImage({ uri: user.photo })
+        }
+        if (user.vehicle.driving_license.length > 0) {
+            setDriverLicense({ uri: user.vehicle.driving_license })
+        }
+    }, [])
 
-    const uploadImage = () => {
+
+    const uploadImage = (pic, onComplete) => {
+        if (!pic.type) {
+            onComplete(pic.uri)
+            return
+        }
         setProcessing(true)
         const data = new FormData()
-        const uri = image.uri;
-        const type = image.type;
-        const name = image.fileName;
+        const uri = pic.uri;
+        const type = pic.type;
+        const name = pic.fileName;
         data.append('file', {
             uri,
             type,
@@ -68,7 +82,7 @@ export default EditProfile = ({ navigation }) => {
             then(data => {
                 setProcessing(false)
                 console.log(data.url)
-                finish(data.url)
+                onComplete(data.url)
             }).catch(err => {
                 setProcessing(false)
                 console.log(err)
@@ -172,7 +186,7 @@ export default EditProfile = ({ navigation }) => {
             });
     }
 
-    const updateVehicle = async () => {
+    const updateVehicle = async (url) => {
         setProcessing(true)
         const response = await fetch(endpoints.baseUrl + endpoints.updateVehicle, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -181,7 +195,10 @@ export default EditProfile = ({ navigation }) => {
                 'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify(
-                vehicleData
+                {
+                    ...vehicleData,
+                    "driving_license": url
+                }
             ) // body data type must match "Content-Type" header
         });
         response.json()
@@ -343,7 +360,7 @@ export default EditProfile = ({ navigation }) => {
                 </ScrollView>
                 <View style={{
                     display: step === 2 ? 'flex' : 'none',
-                    height: '60%',
+                    height: '70%',
                 }}>
                     <TouchableOpacity onPress={() => setSelectVehicleType(true)}>
                         <InputField
@@ -365,6 +382,65 @@ export default EditProfile = ({ navigation }) => {
                         containerStyle={styles.input}
                         label="Plate Number"
                     />
+
+                    <Text style={{
+                        fontFamily: 'Inter-Regular',
+                        fontSize: 16,
+                        color: colors[appearance].textDark,
+                        alignSelf: 'center',
+                        marginVertical: 20,
+                        width: '80%',
+                        textAlign: 'center',
+                    }}>Position your ID card in the camera.{'\n'}
+                        NIN preferable for Businesses and Driver's license for personal</Text>
+                    <TouchableOpacity onPress={() => {
+                        launchCamera({
+                            mediaType: 'photo',
+                            // includeBase64: true,
+                            // maxHeight: 200,
+                            // maxWidth: 200,
+                        }, (res) => {
+                            console.log(res);
+                            if (res.didCancel) {
+                                console.log('User cancelled image picker');
+                                Toast.show({
+                                    type: 'success',
+                                    text1: 'Cancelled',
+                                    text2: 'Process cancelled successfully'
+                                });
+                            }
+                            else if (res.error) {
+                                console.log('ImagePicker Error: ', res.error);
+                                Toast.show({
+                                    type: 'error',
+                                    text1: 'failed to get image',
+                                    text2: res.error
+                                });
+                            }
+                            else if (res.assets) {
+                                setDriverLicense(res.assets[0]);
+                            }
+                        })
+                    }}
+                        style={{
+                            width: 300,
+                            height: 200,
+                            borderRadius: 10,
+                            alignSelf: 'center',
+                            borderWidth: 8,
+                            marginTop: 5,
+                            borderColor: colors[appearance].secondary,
+                            justifyContent: 'center'
+                        }}>
+                        <Image
+                            source={driverLicense ? { uri: driverLicense.uri } : require('../../../assets/images/camera.png')}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                resizeMode: 'cover',
+                            }}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={{
                     display: step === 3 ? 'flex' : 'none',
@@ -515,11 +591,11 @@ export default EditProfile = ({ navigation }) => {
                         if (step === 1) {
                             updateProfile()
                         } else if (step === 2) {
-                            updateVehicle()
+                            uploadImage(driverLicense, (url) => updateVehicle(url))
                         } else if (step === 3) {
                             setStep(4)
                         } else {
-                            uploadImage()
+                            uploadImage(image, (url) => finish(url))
                         }
                         // navigation.navigate(authRouts.otpVerification)
                     }}

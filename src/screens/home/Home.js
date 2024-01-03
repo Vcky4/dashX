@@ -80,10 +80,10 @@ export default Home = ({ navigation }) => {
                         id: resJson.data._id,
                         ...resJson.data,
                     });
-                    // console.log('json.data.kin.kin_name', user?.photo.length)
-                    if (resJson.data?.photo?.length < 1) {
+                    console.log('json.data.kin.kin_name', user?.photo.length)
+                    // if (resJson.data?.photo?.length < 1) {
                         navigation.navigate(profileRouts.editProfile)
-                    }
+                    // }
                 }
             })
             .catch(err => {
