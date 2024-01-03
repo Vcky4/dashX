@@ -88,7 +88,9 @@ export default Home = ({ navigation }) => {
 
     }
     useEffect(() => {
+       setTimeout(() => {
         getMyOrder()
+       } , 10000)
     }, [])
 
     const retriveProfile = () => {
