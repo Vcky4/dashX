@@ -3,13 +3,9 @@ import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
-import Swiper from "react-native-swiper";
-import mainRouts from "../../navigation/routs/mainRouts";
 
-export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
+export default Dispatch = ({ onEnd }) => {
     const { colorScheme, user } = useContext(AuthContext)
-    const dispatch = true
-    const items = [1, 2, 3]
     return (
         <>
             <View style={{
@@ -72,7 +68,134 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                     />
                 </TouchableOpacity>
             </View>
+            <View style={{
+                width: '100%',
+                paddingHorizontal: 20,
+            }}>
 
+                <View style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    marginTop: 15,
+                    alignItems: 'center',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/bike.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginEnd: 4,
+                        }}
+                    />
+                    <View>
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                        }}>Enroute Pickup</Text>
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                        }}>Parcel ID: <Text style={{
+                            fontFamily: 'Inter-Medium',
+                        }}>         #A1287845</Text></Text>
+                    </View>
+                </View>
+                <View style={{
+                    width: '100%',
+                    marginTop: 5,
+                    flexDirection: 'row',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginTop: 2,
+                            marginEnd: 4,
+                        }}
+                    />
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Medium',
+                        marginLeft: 5,
+                    }}>25, Ogeretedo Street, Dopemu, Agege</Text>
+                </View>
+
+                <View style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    marginTop: 5
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point2.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginTop: 2,
+                            marginEnd: 4,
+                        }}
+                    />
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Meduim',
+                        marginLeft: 5,
+                    }}>25, Ogeretedo Street, Dopemu, Agege</Text>
+                </View>
+            </View>
+
+            <View style={{
+                marginTop: 20,
+                elevation: 10,
+                backgroundColor: colors[colorScheme].background,
+                borderRadius: 10,
+                shadowColor: '#000000',
+                padding: 14,
+                marginHorizontal: 10,
+            }}>
+                <View style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 10,
+                    borderColor: colors[colorScheme].primary,
+                    borderWidth: 1,
+                    borderRadius: 30,
+                    marginBottom: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <Text style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 24,
+                        paddingHorizontal: 30,
+                        color: colors[colorScheme].textDark
+                    }}>123456</Text>
+                </View>
+
+                <Button title={'Input code to end dispatch'}
+                    onPress={() => {
+                        onEnd()
+                    }}
+                    buttonStyle={{
+                        borderRadius: 30,
+                        height: 60,
+                        width: '90%',
+                        marginTop: 10,
+                        alignSelf: 'center',
+                    }}
+                    fontSize={16}
+                    loading={false}
+                    enabled={true}
+                />
+            </View>
         </>
     )
 }

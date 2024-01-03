@@ -343,7 +343,7 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     paddingHorizontal: 20,
                     paddingVertical: 6,
-                    display: online ? 'flex' : 'none',
+                    display: !isDispatch && online ? 'flex' : 'none',
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -381,6 +381,7 @@ export default Home = ({ navigation }) => {
                     borderRadius: 40,
                     padding: 6,
                     elevation: 10,
+                    display: (bottomStep === 1 && !isDispatch) ? 'flex' : 'none',
                 }} >
                 <Image
                     source={require('../../../assets/images/location.png')}
@@ -488,7 +489,7 @@ export default Home = ({ navigation }) => {
                 zIndex: 100,
                 elevation: 10,
                 width: '100%',
-                display: (bottomStep && !isDispatch) === 1 ? 'flex' : 'none',
+                display: (bottomStep === 1 && !isDispatch) ? 'flex' : 'none',
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
@@ -621,16 +622,49 @@ export default Home = ({ navigation }) => {
                     borderTopRightRadius: 12,
                     elevation: 10,
                     backgroundColor: colors[colorScheme].background,
-                    flex: 1,
+                    // flex: 1,
                 }}
                 outerContentStyle={{
                     width: width,
                     borderRadius: 8,
                     left: -20.5,
                 }}
+                sliderMaxHeight={height - 100}
                 sliderMinHeight={isDispatch ? 50 : 0}
                 ref={ref => panelRef.current = ref}>
+                <TouchableOpacity onPress={() => {
+                    this.mapView.animateToRegion({
+                        latitude: coordinate.latitude,
+                        longitude: coordinate.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                    });
+                }}
+                    style={{
+                        position: 'absolute',
+                        bottom: 420,
+                        right: 20,
+                        zIndex: 100,
+                        backgroundColor: colors[colorScheme].white,
+                        borderRadius: 40,
+                        padding: 6,
+                        elevation: 10,
+                        display: isDispatch ? 'flex' : 'none',
+                    }} >
+                    <Image
+                        source={require('../../../assets/images/location.png')}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            resizeMode: "contain",
+                            borderRadius: 40,
+                        }}
+                    />
+                </TouchableOpacity>
                 <DispatchSheet />
+                <View style={{
+                height: 20
+            }}/>
             </BottomSheet>
         </View>
 
