@@ -19,7 +19,7 @@ export default PendingOrder = ({ item }) => {
                     'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({
-                    'city': 'ikot ekpene',
+                    'city': 'eket',
                     "dispatchid": user.id,
                 })
             })
