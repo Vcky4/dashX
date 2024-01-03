@@ -210,7 +210,7 @@ export default Home = ({ navigation }) => {
     }, [])
     useEffect(() => {
 
-        if (requestLocationPermission() && user?.verified) {
+        if (requestLocationPermission()) {
             setTimeout(() => {
                 setHelpCoordinate({
                     latitude: 5.0789,
@@ -332,7 +332,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310: 170,
+                    bottom: bottomStep > 0 ? 310 : 170,
                     left: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -372,7 +372,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310: 170,
+                    bottom: bottomStep > 0 ? 310 : 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,
@@ -490,7 +490,7 @@ export default Home = ({ navigation }) => {
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
-               <Dispatch onIndexChanged={(item)=>{}}/>
+                <Dispatch onIndexChanged={(item) => { }} />
             </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -556,18 +556,17 @@ export default Home = ({ navigation }) => {
             //     longitudeDelta: 0.0922 * (width / height),
             // }}
             >
-                {(helpCoordinates) &&
+                {(helpCoordinates && bottomStep > 0) &&
                     <Marker
                         coordinate={helpCoordinates}
                         title={"Pickup"}
                         description={"Pickup at this location"}
-                        pinColor={colors.primary}
+                        pinColor={colors[colorScheme].primary}
 
                     />
                 }
 
-                {(helpCoordinates) && (
-
+                {(bottomStep > 0 && helpCoordinates) &&
                     <MapViewDirections
                         origin={{
                             latitude: coordinate.latitude,
@@ -575,11 +574,11 @@ export default Home = ({ navigation }) => {
                         }}
                         destination={helpCoordinates}
                         apikey={GOOGLE_API_KEY}
-                        strokeWidth={4}
-                        strokeColor={colors.primary}
+                        strokeWidth={3}
+                        strokeColor={colors[colorScheme].primary}
                         timePrecision="now"
                         optimizeWaypoints={true}
-                        waypoints={waypoints}
+                        // waypoints={waypoints}
                         onStart={(params) => {
                             // console.log('params :>>', params)
                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
@@ -602,9 +601,9 @@ export default Home = ({ navigation }) => {
                             });
                         }}
                         onError={(errorMessage) => {
-                            // console.log('GOT AN ERROR');
+                            console.log('GOT AN ERROR');
                         }}
-                    />)}
+                    />}
                 {/* <Marker coordinate={coordinates[0]} />
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>

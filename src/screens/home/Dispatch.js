@@ -64,7 +64,7 @@ export default Dispatch = ({ onIndexChanged }) => {
                             width: 22,
                             height: 22,
                             resizeMode: "contain",
-                            tintColor: colors[colorScheme].textDark,
+                            tintColor: colors[colorScheme].white,
                         }}
                     />
                 </TouchableOpacity>
