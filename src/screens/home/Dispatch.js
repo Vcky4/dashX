@@ -7,32 +7,12 @@ import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 
-export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
+export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
-    const [items, setItems] = useState([])
-    const getMyOrder = async () => {
-        const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({
-                "dispatchid": user.id,
-            })
-        })
-        const json = await response.json()
-        console.log(json)
-        //check if array
-        if (Array.isArray(json.data)) {
-            setItems(json.data)
-        }
+    const [index, setIndex] = useState(0)
+    const name = items[index].order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
+    const phone = items[index].order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
 
-    }
-    useEffect(() => {
-        getMyOrder()
-    }, [])
-    const dispatch = true
     return (
         <>
             <View style={{
@@ -61,17 +41,17 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                             color: colors[colorScheme].textDark,
                             fontSize: 16,
                             fontFamily: 'Inter-Bold',
-                        }}>{user?.name}</Text>
+                        }}>{name}</Text>
+                        {/* <Text style={{
+                            color: colors[colorScheme].textGray,
+                            fontSize: 12,
+                            fontFamily: 'Inter-Regular',
+                        }}>{user.email}</Text> */}
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 12,
                             fontFamily: 'Inter-Regular',
-                        }}>{user.email}</Text>
-                        <Text style={{
-                            color: colors[colorScheme].textGray,
-                            fontSize: 12,
-                            fontFamily: 'Inter-Regular',
-                        }}>08096867881</Text>
+                        }}>{phone}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{
@@ -81,7 +61,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                 }}
                     onPress={() => {
                         //call
-                        Linking.openURL(`tel:${user?.phone}`)
+                        Linking.openURL(`tel:${phone}`)
                     }}>
                     <Image
                         source={require('../../../assets/images/phone.png')}
@@ -96,6 +76,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
             </View>
             <Swiper
                 onIndexChanged={(index) => {
+                    setIndex(index)
                     onIndexChanged(items[index])
                 }}
                 style={{
@@ -127,7 +108,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                         color: colors[colorScheme].primary,
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
-                                    }}>Dell Latitude Laptop</Text>
+                                    }}>{item?.productname}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textDark,
                                         fontSize: 12,
@@ -138,6 +119,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                         paddingVertical: 1,
                                         borderColor: colors[colorScheme].primary,
                                         borderWidth: 1,
+                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
                                     }}>Picked</Text>
                                 </View>
 
@@ -145,7 +127,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>₦4,589.55</Text>
+                                }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                             </View>
 
                             <View style={{
@@ -169,7 +151,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                     marginLeft: 5,
                                 }}>Pickup: <Text style={{
                                     fontFamily: 'Inter-Medium',
-                                }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                                }}>{item?.senderaddress}</Text></Text>
                             </View>
                             <View style={{
                                 width: '100%',
@@ -192,7 +174,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                     marginLeft: 5,
                                 }}>Delivery: <Text style={{
                                     fontFamily: 'Inter-Medium',
-                                }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                                }}>{item?.receiveraddress}</Text></Text>
                             </View>
                             <View
                                 style={{
@@ -201,9 +183,9 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
                                     marginTop: 20,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Button title={dispatch ? 'Dispatch' : 'Verify Pickup'}
+                                <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
-                                        if (dispatch) {
+                                        if (item?.order_status === 'pickup') {
                                             onDispatch()
                                         } else {
                                             navigation.navigate(mainRouts.verifyPickup, {

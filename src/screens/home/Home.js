@@ -53,6 +53,7 @@ export default Home = ({ navigation }) => {
     const [fade, setFade] = useState(0);
     const [fadeIn] = useState(new Animated.Value(0));
     const [messageTrigger, setMessageTrigger] = useState(false);
+    const [myOrders, setMyOrders] = useState([])
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -67,6 +68,28 @@ export default Home = ({ navigation }) => {
             authorization: `Bearer ${token}`,
         },
     });
+    const getMyOrder = async () => {
+        const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setMyOrders(json.data)
+        }
+
+    }
+    useEffect(() => {
+        getMyOrder()
+    }, [])
 
     const retriveProfile = () => {
         const response = fetch(endpoints.baseUrl + endpoints.retriveProfile, {
@@ -362,7 +385,7 @@ export default Home = ({ navigation }) => {
                     height: 20,
                     width: 20,
                     textAlign: 'center',
-                }}>3</Text>
+                }}>{myOrders.length}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
@@ -493,7 +516,8 @@ export default Home = ({ navigation }) => {
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
-                <Dispatch navigation={navigation}
+                <Dispatch items={myOrders}
+                navigation={navigation}
                     onDispatch={() => {
                         setIsDispatch(true)
                         panelRef.current.togglePanel()
