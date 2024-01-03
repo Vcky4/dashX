@@ -1,15 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
 import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
+import endpoints from "../../../assets/endpoints/endpoints";
 
 export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
+    const [items, setItems] = useState([])
+    const getMyOrder = async () => {
+        const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setItems(json.data)
+        }
+
+    }
+    useEffect(() => {
+        getMyOrder()
+    }, [])
     const dispatch = true
-    const items = [1, 2, 3]
     return (
         <>
             <View style={{
