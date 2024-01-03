@@ -10,8 +10,8 @@ import endpoints from "../../../assets/endpoints/endpoints";
 export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [index, setIndex] = useState(0)
-    const name = items[index].order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
-    const phone = items[index].order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
+    const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
+    const phone = items[index]?.order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
 
     return (
         <>

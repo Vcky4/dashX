@@ -12,6 +12,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default VerifyPickUp = ({ navigation, route }) => {
     const { item } = route.params
+    // console.log(item)
     const { user, saveUser, colorScheme, token } = useContext(AuthContext)
     const appearance = colorScheme
     const [packageImage, setPackageImage] = useState(null);
@@ -52,9 +53,9 @@ export default VerifyPickUp = ({ navigation, route }) => {
             })
     }
 
-    const updateVehicle = async (url) => {
+    const verify = async (url) => {
         setProcessing(true)
-        const response = await fetch(endpoints.baseUrl + endpoints.updateVehicle, {
+        const response = await fetch(endpoints.baseUrl + endpoints.verifyOrder, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
             body: JSON.stringify(
                 {
                     "dispatchid": user.id,
-                    "orderid": item?.id,
+                    "orderid": item?._id,
                     "upload": [{ "url": url }]
                 }
             ) // body data type must match "Content-Type" header
@@ -75,32 +76,28 @@ export default VerifyPickUp = ({ navigation, route }) => {
                 if (response.ok) {
                     Toast.show({
                         type: 'success',
-                        text1: 'Profile updated',
+                        text1: 'Order updated',
                         text2: data.message
                     })
-                    setStep(3)
-                    saveUser({
-                        ...data?.data,
-                        id: data?.data?._id,
-                    })
+                    
                 } else {
                     Toast.show({
                         type: 'error',
-                        text1: 'Profile update failed',
+                        text1: 'Order update failed',
                         text2: data.message
                     });
                     console.log('response: ', response)
-                    console.log('Profile update error:', data)
+                    console.log('Order update error:', data)
                 }
             })
             .catch((error) => {
                 setProcessing(false)
                 Toast.show({
                     type: 'error',
-                    text1: 'Profile update failed',
+                    text1: 'Order update failed',
                     text2: error.message
                 });
-                console.log('Profile update error:', error);
+                console.log('Order update error:', error);
             });
     }
     return (
@@ -200,7 +197,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
                 textColor={colors[appearance].textDark}
                 buttonColor={colors[appearance].primary}
                 onPress={() => {
-                    uploadImage(packageImage, (url) => updateVehicle(url))
+                    uploadImage(packageImage, (url) => verify(url))
                     // navigation.navigate(authRouts.otpVerification)
                 }}
             />
