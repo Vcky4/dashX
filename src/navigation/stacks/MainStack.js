@@ -13,6 +13,7 @@ import BottomSheet from 'react-native-simple-bottom-sheet';
 import colors from '../../../assets/colors/colors';
 import { AuthContext } from '../../../context/AuthContext';
 import PendingOrder from '../../screens/home/PendingOrder';
+import VerifyPickUp from '../../screens/home/VerifyPickUp';
 
 
 const { width, height } = Dimensions.get('window');
@@ -89,6 +90,7 @@ const AuthPassed = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
+            <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );

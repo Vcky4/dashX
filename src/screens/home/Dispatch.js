@@ -4,8 +4,9 @@ import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
 import Swiper from "react-native-swiper";
+import mainRouts from "../../navigation/routs/mainRouts";
 
-export default Dispatch = ({ onIndexChanged }) => {
+export default Dispatch = ({ navigation, onIndexChanged }) => {
     const { colorScheme, user } = useContext(AuthContext)
     const items = [1, 2, 3]
     return (
@@ -57,7 +58,7 @@ export default Dispatch = ({ onIndexChanged }) => {
                     onPress={() => {
                         //call
                         Linking.openURL(`tel:${user?.phone}`)
-                     }}>
+                    }}>
                     <Image
                         source={require('../../../assets/images/phone.png')}
                         style={{
@@ -178,6 +179,9 @@ export default Dispatch = ({ onIndexChanged }) => {
                                 }}>
                                 <Button title={'Verify Pickup'}
                                     onPress={() => {
+                                        navigation.navigate(mainRouts.verifyPickup, {
+                                            item: item
+                                        })
                                     }}
                                     buttonStyle={{
                                         borderRadius: 20,
@@ -194,7 +198,9 @@ export default Dispatch = ({ onIndexChanged }) => {
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
                                 }}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+
+                                    }}>
                                         <Image
                                             source={require('../../../assets/images/arrow.png')}
                                             style={{

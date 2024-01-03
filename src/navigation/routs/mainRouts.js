@@ -5,6 +5,7 @@ const mainRouts = {
     chat: 'Chat',
     help: 'Help',
     updateVehicle: 'updateVehicle',
+    verifyPickup: 'verifyPickup',
 }
 
 export default mainRouts;

@@ -213,8 +213,8 @@ export default Home = ({ navigation }) => {
         if (requestLocationPermission()) {
             setTimeout(() => {
                 setHelpCoordinate({
-                    latitude: 5.0789,
-                    longitude: 7.7918,
+                    latitude: 6.59,
+                    longitude: 3.78,
                 })
                 panelRef.current.togglePanel()
             }, 5000);
@@ -490,7 +490,7 @@ export default Home = ({ navigation }) => {
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
-                <Dispatch onIndexChanged={(item) => { }} />
+                <Dispatch navigation={navigation} onIndexChanged={(item) => { }} />
             </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -574,7 +574,7 @@ export default Home = ({ navigation }) => {
                         }}
                         destination={helpCoordinates}
                         apikey={GOOGLE_API_KEY}
-                        strokeWidth={3}
+                        strokeWidth={4}
                         strokeColor={colors[colorScheme].primary}
                         timePrecision="now"
                         optimizeWaypoints={true}
