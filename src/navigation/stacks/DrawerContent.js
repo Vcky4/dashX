@@ -304,18 +304,18 @@ export default function DrawerContent(props) {
 
                     <View onPress={() => setModalVisible(true)}
                         style={{
-                            backgroundColor: colors.white,
+                            backgroundColor: colors[colorScheme].background,
                             width: '90%',
                             borderRadius: 10,
                             padding: 20,
                         }}>
                         <Text style={{
-                            color: colors.textHash,
+                            color: colors[colorScheme].textDark,
                             fontSize: 20,
                             fontFamily: 'Inter-Regular',
                         }}>Log Out?</Text>
                         <Text style={{
-                            color: colors.textHash,
+                            color: colors[colorScheme].textDark,
                             fontSize: 16,
                             fontFamily: 'Inter-Regular',
                             marginTop: 10,
@@ -332,16 +332,16 @@ export default function DrawerContent(props) {
                         }}>
                             <TouchableOpacity onPress={() => setModalVisible(false)}
                                 style={{
-                                    backgroundColor: colors.white,
+                                    // backgroundColor: colors.white,
                                     padding: 10,
                                     borderRadius: 5,
                                     marginTop: 20,
                                     width: "45%",
                                     borderWidth: 1,
-                                    borderColor: colors.textHash,
+                                    borderColor: colors[colorScheme].primary,
                                 }}>
                                 <Text style={{
-                                    color: colors.textHash,
+                                    color: colors[colorScheme].primary,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Regular',
                                     textAlign: 'center',
@@ -352,14 +352,14 @@ export default function DrawerContent(props) {
                                 logout()
                             }}
                                 style={{
-                                    backgroundColor: colors.primary,
+                                    backgroundColor: colors[colorScheme].primary,
                                     padding: 10,
                                     borderRadius: 5,
                                     marginTop: 20,
                                     width: "45%",
                                 }}>
                                 <Text style={{
-                                    color: colors.white,
+                                    color: colors[colorScheme].white,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Regular',
                                     textAlign: 'center',
