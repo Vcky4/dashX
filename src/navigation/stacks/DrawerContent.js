@@ -46,12 +46,14 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                             paddingBottom: 20,
                             paddingHorizontal: 20,
                         }}>
-                        <TouchableOpacity style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginTop: 20,
-                            justifyContent: 'space-between',
-                        }}>
+                        <TouchableOpacity
+                            onPress={() => props.navigation.navigate(profileRouts.profile)}
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginTop: 20,
+                                justifyContent: 'space-between',
+                            }}>
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
@@ -95,7 +97,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 />
                             </TouchableOpacity>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{
+                        <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'space-between',
@@ -122,7 +124,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     resizeMode: "contain",
                                 }}
                             />
-                        </TouchableOpacity>
+                        </View>
                         <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => {
                                 props.navigation.toggleDrawer()

@@ -51,6 +51,7 @@ export default PendingOrder = ({ item }) => {
             const json = await response.json()
             setProcessing(false)
             console.log(json)
+            setOrders(orders.filter((item) => item._id !== id))
             //check if array
             if (Array.isArray(json.data)) {
                 // setOrders(json.data)
@@ -69,6 +70,7 @@ export default PendingOrder = ({ item }) => {
             backgroundColor: colors[colorScheme].background,
             width: '100%',
             paddingHorizontal: 5,
+            minHeight: 300,
         }}
             data={orders}
             renderItem={({ item }) =>
@@ -78,6 +80,20 @@ export default PendingOrder = ({ item }) => {
                         acceptOrders(item._id)
                     }}
                     item={item} />
+            }
+
+            ListEmptyComponent={
+                <View style={{
+                    flex: 1,
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 16,
+                        fontFamily: 'Inter-Bold',
+                        alignSelf: 'center',
+                        marginTop: 30,
+                    }}>No pending orders here</Text>
+                </View>
             }
         />
     )
