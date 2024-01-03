@@ -15,6 +15,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import profileRouts from "../../navigation/routs/profileRouts";
 import Button from "../../component/Button";
 import getAddress from "../../utils/getAddress";
+import Dispatch from "./Dispatch";
 
 var Sound = require('react-native-sound');
 
@@ -39,6 +40,7 @@ export default Home = ({ navigation }) => {
     const [distance, setDistance] = useState(0);
     const [duration, setDuration] = useState(0);
     const [address, setAddress] = useState('');
+    const [bottomStep, setBottomStep] = useState(0);
     const [online, setOnline] = useState(false);
     const [rating, setRating] = useState(0);
     const panelRef = useRef(null);
@@ -326,11 +328,11 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
-
+                setBottomStep(1)
             }}
                 style={{
                     position: 'absolute',
-                    bottom: 160,
+                    bottom: bottomStep > 0 ? 310: 170,
                     left: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -346,6 +348,19 @@ export default Home = ({ navigation }) => {
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
                 }}>Dispatch Orders</Text>
+                <Text style={{
+                    color: colors[colorScheme].primary,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                    backgroundColor: colors[colorScheme].white,
+                    position: 'absolute',
+                    right: -1,
+                    top: -7,
+                    borderRadius: 10,
+                    height: 20,
+                    width: 20,
+                    textAlign: 'center',
+                }}>3</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
@@ -357,7 +372,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: 160,
+                    bottom: bottomStep > 0 ? 310: 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,
@@ -382,6 +397,7 @@ export default Home = ({ navigation }) => {
                 zIndex: 100,
                 elevation: 10,
                 width: '100%',
+                display: bottomStep === 0 ? 'flex' : 'none',
             }}>
                 <View style={{
                     backgroundColor: online ? colors[colorScheme].lightBg2 : colors[colorScheme].lightBg,
@@ -405,6 +421,7 @@ export default Home = ({ navigation }) => {
                             marginTop: 2,
                             flexDirection: 'row',
                             alignItems: 'center',
+                            display: online ? 'flex' : 'none',
                         }}>
                             <View style={{
                                 backgroundColor: '#B2FF65',
@@ -460,6 +477,20 @@ export default Home = ({ navigation }) => {
                         fontFamily: 'Inter-Medium',
                     }}>{address?.formatted_address}</Text></Text>
                 </View>
+            </View>
+
+            <View style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                zIndex: 100,
+                elevation: 10,
+                width: '100%',
+                display: bottomStep === 1 ? 'flex' : 'none',
+                backgroundColor: colors[colorScheme].background,
+                borderRadius: 20,
+            }}>
+               <Dispatch onIndexChanged={(item)=>{}}/>
             </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
