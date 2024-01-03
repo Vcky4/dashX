@@ -49,11 +49,11 @@ export default Home = ({ navigation }) => {
     const [variableUser, setVariableUser] = useState({})
     const [updateCount, setUpdateCount] = useState(0);
     const [forceOnline, setForceOnline] = useState(true);
-    const [waypoints, setWaypoints] = useState([]);
     const [fade, setFade] = useState(0);
     const [fadeIn] = useState(new Animated.Value(0));
     const [messageTrigger, setMessageTrigger] = useState(false);
     const [myOrders, setMyOrders] = useState([])
+    const [dispatchItem, setDispatchItem] = useState(null)
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -84,13 +84,14 @@ export default Home = ({ navigation }) => {
         //check if array
         if (Array.isArray(json.data)) {
             setMyOrders(json.data)
+            setDispatchItem(json.data[0])
         }
 
     }
     useEffect(() => {
-       setTimeout(() => {
-        getMyOrder()
-       } , 10000)
+        setTimeout(() => {
+            getMyOrder()
+        }, 10000)
     }, [])
 
     const retriveProfile = () => {
@@ -256,7 +257,7 @@ export default Home = ({ navigation }) => {
             setAddress(result[0])
         })
     }
-
+console.log('dispatch', dispatchItem)
     useEffect(() => {
         getAddres(coordinate.latitude, coordinate.longitude)
     }, [coordinate])
@@ -519,12 +520,14 @@ export default Home = ({ navigation }) => {
                 borderRadius: 20,
             }}>
                 <Dispatch items={myOrders}
-                navigation={navigation}
+                    navigation={navigation}
                     onDispatch={() => {
                         setIsDispatch(true)
                         panelRef.current.togglePanel()
                     }}
-                    onIndexChanged={(item) => { }} />
+                    onIndexChanged={(item) => {
+                        setDispatchItem(item)
+                    }} />
             </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -599,6 +602,19 @@ export default Home = ({ navigation }) => {
 
                     />
                 }
+
+                {/* {(!isDispatch && bottomStep > 0) &&
+                    <Marker
+                        coordinate={{
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude,
+                        }}
+                        title={"Pickup"}
+                        description={"Pickup at this location"}
+                        pinColor={colors[colorScheme].primary}
+
+                    />
+                } */}
 
                 {(bottomStep > 0 && helpCoordinates) &&
                     <MapViewDirections
