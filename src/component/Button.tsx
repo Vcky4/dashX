@@ -11,15 +11,15 @@ type Props = {
     textColor?: string,
     loading?: boolean,
     buttonColor?: string,
-    theme?: 'dark' | 'light'
+    theme?: 'dark' | 'light',
+    fontSize?: number
 };
 
-const Button: React.FC<Props> = ({theme='dark', title, onPress, buttonStyle, enabled, textColor, loading, buttonColor = colors[theme].primary }) => {
+const Button: React.FC<Props> = ({ fontSize = 24, theme = 'dark', title, onPress, buttonStyle, enabled, textColor, loading, buttonColor = colors[theme].primary }) => {
     return (
         <View pointerEvents={(enabled && !loading) ? 'auto' : 'none'}
-            style={[buttonStyle, {
+            style={[{ height: 50 }, buttonStyle, {
                 opacity: (enabled && !loading) ? 1 : 0.5,
-                height: 50,
                 backgroundColor: buttonColor
             }]}>
             <TouchableOpacity onPress={() => enabled && !loading ? onPress() : {}}
@@ -34,7 +34,7 @@ const Button: React.FC<Props> = ({theme='dark', title, onPress, buttonStyle, ena
                     justifyContent: 'flex-end'
                 }}>
                     <Text style={{
-                        fontSize: 24,
+                        fontSize: fontSize,
                         textAlign: 'center',
                         fontFamily: 'Inter-SemiBold',
                         color: colors[theme].white,

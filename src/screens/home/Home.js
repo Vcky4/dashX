@@ -13,6 +13,7 @@ import dings from '../../../assets/sounds/trilla.mp3'
 import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
 import profileRouts from "../../navigation/routs/profileRouts";
+import Button from "../../component/Button";
 
 var Sound = require('react-native-sound');
 
@@ -73,13 +74,13 @@ export default Home = ({ navigation }) => {
             }),
         }).then(res => res.json())
             .then(resJson => {
-                console.log('resJson', resJson)
+                // console.log('resJson', resJson)
                 if (resJson.status) {
                     saveUser({
                         id: resJson.data._id,
                         ...resJson.data,
                     });
-                    console.log('json.data.kin.kin_name', user?.photo.length)
+                    // console.log('json.data.kin.kin_name', user?.photo.length)
                     if (resJson.data?.photo?.length < 1) {
                         navigation.navigate(profileRouts.editProfile)
                     }
@@ -313,6 +314,28 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
+
+            }}
+                style={{
+                    position: 'absolute',
+                    bottom: 160,
+                    left: 20,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].primary,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                    paddingHorizontal: 20,
+                    paddingVertical: 6,
+                    display: online ? 'flex' : 'none',
+                }} >
+                <Text style={{
+                    color: colors[colorScheme].white,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                }}>Dispatch Orders</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
                     latitude: coordinate.latitude,
                     longitude: coordinate.longitude,
@@ -322,7 +345,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: 80,
+                    bottom: 160,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,
@@ -340,6 +363,92 @@ export default Home = ({ navigation }) => {
                     }}
                 />
             </TouchableOpacity>
+            <View style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                zIndex: 100,
+                elevation: 10,
+                width: '100%',
+            }}>
+                <View style={{
+                    backgroundColor: online ? colors[colorScheme].lightBg2 : colors[colorScheme].lightBg,
+                    width: '100%',
+                    paddingHorizontal: 20,
+                    paddingVertical: 25,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}>
+                    <View>
+                        <Text style={{
+                            color: colors[colorScheme].black,
+                            fontSize: 18,
+                            fontFamily: 'Inter-Medium',
+                        }}>You are currently <Text style={{
+                            color: online ? '#B2FF65' : colors[colorScheme].primary,
+                            fontFamily: 'Inter-Bold',
+                        }}>{!online ? 'OFFLINE' : 'ONLINE'}</Text></Text>
+                        <View style={{
+                            marginTop: 2,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                            <View style={{
+                                backgroundColor: '#B2FF65',
+                                borderRadius: 5,
+                                width: 10,
+                                height: 10,
+                            }} />
+
+                            <Text style={{
+                                color: colors[colorScheme].black,
+                                fontSize: 12,
+                                fontFamily: 'Inter-Medium',
+                                marginLeft: 5,
+                            }}>Receiving Dispatch Requests</Text>
+                        </View>
+                    </View>
+                    <Button title={online ? 'GO OFFLINE' : 'GO ONLINE'}
+                        onPress={() => {
+                            setOnline(!online)
+                        }}
+                        buttonStyle={{
+                            borderRadius: 20,
+                            height: 36,
+                            width: 110,
+                        }}
+                        fontSize={16}
+                        loading={false}
+                        enabled={true}
+                    />
+                </View>
+                <View style={{
+                    backgroundColor: colors[colorScheme].halfWhite,
+                    width: '100%',
+                    paddingHorizontal: 20,
+                    paddingVertical: 15,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point.png')}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            resizeMode: "contain",
+                        }}
+                    />
+                    <Text style={{
+                        color: colors[colorScheme].black,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Bold',
+                        marginLeft: 5,
+                    }}>Rider’s Location: <Text style={{
+                        fontFamily: 'Inter-Medium',
+                    }}>25, Ogeretedo Street, Dopemu, Agege</Text></Text>
+                </View>
+            </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapView}
