@@ -8,7 +8,7 @@ import mainRoute from "../routs/mainRouts";
 import profileRouts from "../routs/profileRouts";
 
 
-export default function DrawerContent(props) {
+export default function DrawerContent(props, onPendingOrderPress = () => { }) {
     const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
     // console.log('from drawer', user);
     const [modalVisible, setModalVisible] = useState(false);
@@ -124,7 +124,10 @@ export default function DrawerContent(props) {
                             />
                         </TouchableOpacity>
                         <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                            onPress={() => {
+                                props.navigation.toggleDrawer()
+                                onPendingOrderPress()
+                            }}>
                             <View style={styles.itemWrapper}>
                                 <Image
                                     source={require('../../../assets/images/time.png')}
