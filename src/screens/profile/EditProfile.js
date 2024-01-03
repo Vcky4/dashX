@@ -632,7 +632,7 @@ export default EditProfile = ({ navigation }) => {
                             marginTop: 20,
                         }}>
                             <TouchableOpacity onPress={() => {
-                                setVehicleData({ ...vehicleData, vehicle_type: 'Car' })
+                                setVehicleData({ ...vehicleData, vehicle_type: 'car' })
                                 setSelectVehicleType(false)
                             }}>
                                 <Text style={{
@@ -644,7 +644,7 @@ export default EditProfile = ({ navigation }) => {
                                 }}>Car</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                setVehicleData({ ...vehicleData, vehicle_type: 'Bus' })
+                                setVehicleData({ ...vehicleData, vehicle_type: 'bike' })
                                 setSelectVehicleType(false)
                             }}>
                                 <Text style={{
@@ -653,7 +653,7 @@ export default EditProfile = ({ navigation }) => {
                                     color: colors[appearance].textDark,
                                     alignSelf: 'center',
                                     marginVertical: 10,
-                                }}>Bus</Text>
+                                }}>Bike</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 setVehicleData({ ...vehicleData, vehicle_type: 'Truck' })
@@ -668,7 +668,7 @@ export default EditProfile = ({ navigation }) => {
                                 }}>Truck</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                setVehicleData({ ...vehicleData, vehicle_type: 'Motorcycle' })
+                                setVehicleData({ ...vehicleData, vehicle_type: 'van' })
                                 setSelectVehicleType(false)
                             }}>
                                 <Text style={{
@@ -677,7 +677,7 @@ export default EditProfile = ({ navigation }) => {
                                     color: colors[appearance].textDark,
                                     alignSelf: 'center',
                                     marginVertical: 10,
-                                }}>Motorcycle</Text>
+                                }}>Van</Text>
                             </TouchableOpacity>
                         </ScrollView>
                     </View>

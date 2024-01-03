@@ -80,7 +80,7 @@ export default Home = ({ navigation }) => {
             })
         })
         const json = await response.json()
-        console.log(json)
+        // console.log(json)
         //check if array
         if (Array.isArray(json.data)) {
             setMyOrders(json.data)
