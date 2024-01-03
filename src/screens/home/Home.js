@@ -16,6 +16,7 @@ import profileRouts from "../../navigation/routs/profileRouts";
 import Button from "../../component/Button";
 import getAddress from "../../utils/getAddress";
 import Dispatch from "./Dispatch";
+import DispatchSheet from "./DispatchSheet";
 
 var Sound = require('react-native-sound');
 
@@ -39,6 +40,7 @@ export default Home = ({ navigation }) => {
     const [accepted, setAccepted] = useState(false);
     const [distance, setDistance] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [isDispatch, setIsDispatch] = useState(false);
     const [address, setAddress] = useState('');
     const [bottomStep, setBottomStep] = useState(0);
     const [online, setOnline] = useState(false);
@@ -216,7 +218,7 @@ export default Home = ({ navigation }) => {
                     latitude: 6.59,
                     longitude: 3.78,
                 })
-                panelRef.current.togglePanel()
+                // panelRef.current.togglePanel()
             }, 5000);
             // setTimeout(() => {
             //     setAccepted(true)
@@ -486,11 +488,16 @@ export default Home = ({ navigation }) => {
                 zIndex: 100,
                 elevation: 10,
                 width: '100%',
-                display: bottomStep === 1 ? 'flex' : 'none',
+                display: (bottomStep && !isDispatch) === 1 ? 'flex' : 'none',
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
-                <Dispatch navigation={navigation} onIndexChanged={(item) => { }} />
+                <Dispatch navigation={navigation}
+                    onDispatch={() => {
+                        setIsDispatch(true)
+                        panelRef.current.togglePanel()
+                    }}
+                    onIndexChanged={(item) => { }} />
             </View>
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -610,305 +617,20 @@ export default Home = ({ navigation }) => {
 
             <BottomSheet isOpen={helpCoordinates != null}
                 wrapperStyle={{
-                    marginHorizontal: 10,
                     borderTopLeftRadius: 12,
                     borderTopRightRadius: 12,
                     elevation: 10,
+                    backgroundColor: colors[colorScheme].background,
+                    flex: 1,
                 }}
                 outerContentStyle={{
+                    width: width,
                     borderRadius: 8,
+                    left: -20.5,
                 }}
-                sliderMinHeight={helpCoordinates ? 50 : 0}
+                sliderMinHeight={isDispatch ? 50 : 0}
                 ref={ref => panelRef.current = ref}>
-                {/* <View>
-                    {
-                        (!accepted || arrived && !delivered) &&
-                        <View style={{
-                            marginBottom: 20,
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}>
-                                <View style={{
-                                    borderRadius: 5,
-                                    backgroundColor: colors.inactive,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    width: 31,
-                                    height: 31,
-                                }}>
-                                    <PickupIcon />
-                                </View>
-                                <View style={{
-                                    marginLeft: 20,
-                                }}>
-                                    <Text style={{
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Regular',
-                                        color: colors.textLight,
-                                    }}>Pickup point</Text>
-                                    <Text style={{
-                                        fontSize: 18,
-                                        fontFamily: 'Inter-Medium',
-                                        color: colors.textHash,
-                                        width: width - 100,
-                                    }}>{alert?.start_address}</Text>
-                                </View>
-                            </View>
-                            {
-                                accepted && <View style={{
-                                    height: 20,
-                                    borderStartWidth: 2,
-                                    borderStartColor: colors.primary,
-                                    borderStyle: 'dotted',
-                                    marginStart: 14,
-                                }} />
-                            }
-                            {
-                                accepted && <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
-                                    <View style={{
-                                        borderRadius: 5,
-                                        backgroundColor: colors.inactive,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        width: 31,
-                                        height: 31,
-                                    }}>
-                                        <DropOffIcon />
-                                    </View>
-                                    <View style={{
-                                        marginLeft: 20,
-                                    }}>
-                                        <Text style={{
-                                            fontSize: 12,
-                                            fontFamily: 'Inter-Regular',
-                                            color: colors.textLight,
-                                        }}>Pickout point</Text>
-                                        <Text style={{
-                                            fontSize: 18,
-                                            fontFamily: 'Inter-Medium',
-                                            color: colors.textHash,
-                                            width: width - 100,
-                                        }}>{alert?.end_address}</Text>
-                                    </View>
-                                </View>
-                            }
-                        </View>
-                    }
-                    {(!arrived || delivered) &&
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}>
-                                <Image
-                                    source={alert?.rider_profile_image
-                                        ? { uri: alert?.rider_profile_image }
-                                        : require('../../../assets/images/profile.png')
-                                    }
-                                    style={{
-                                        width: 57,
-                                        height: 57,
-                                        resizeMode: "contain",
-                                        borderRadius: 40,
-                                    }}
-
-                                />
-                                <View style={{
-                                    marginLeft: 10,
-                                }}>
-                                    <Text style={{
-                                        color: colors.textHash,
-                                        fontSize: 18,
-                                        fontFamily: 'Inter-Medium',
-
-                                    }}>{alert?.rider_name}</Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}>
-                                        <StarIcon />
-                                        <Text style={{
-                                            color: colors.textHash,
-                                            fontSize: 14,
-                                            fontFamily: 'Inter-Medium',
-                                            marginLeft: 5,
-                                        }}>4.8</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            {!delivered &&
-                                <View style={{
-                                    alignItems: 'space-between',
-                                }}>
-                                    <Text style={{
-                                        color: colors.textHash,
-                                        fontSize: 18,
-                                        fontFamily: 'Inter-Medium',
-                                    }}>₦{alert?.distance_charge}</Text>
-                                    <Text style={{
-                                        fontFamily: 'Inter-Regular',
-                                        fontSize: 12,
-                                        color: colors.textHash,
-                                    }}>{distance}km</Text>
-                                </View>}
-                        </View>
-                    }
-                    {
-                        delivered &&
-                        <View style={{
-                            paddingTop: 10,
-                            alignItems: 'center',
-                        }}>
-                            {!addComment && <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}>
-                                {ratings}
-                            </View>}
-                            {
-                                (rating > 0 && !addComment) &&
-                                <TouchableOpacity onPress={() => { setAddComment(true) }}>
-                                    <Text style={{
-                                        color: colors.textHash,
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Medium',
-                                        marginTop: 10,
-                                    }}>Add comment</Text>
-                                </TouchableOpacity>
-                            }
-                            {
-                                addComment &&
-                                <View style={{
-                                    backgroundColor: colors.white,
-                                    borderRadius: 8,
-                                    height: 70,
-                                    width: '100%',
-                                    borderColor: colors.inactiveBt,
-                                    borderWidth: 1,
-                                }}>
-                                    <TextInput
-                                        value={comment}
-                                        onChangeText={(text) => setComment(text)}
-                                        placeholder="Add comment"
-                                        placeholderTextColor={colors.textLight}
-                                        multiline
-                                        cursorColor={colors.primary}
-                                        style={{
-                                            flex: 1,
-                                            flexGrow: 1,
-                                            padding: 10,
-                                            fontSize: 14,
-                                            fontFamily: 'Inter-Regular',
-                                            color: colors.textHash,
-                                        }} />
-                                </View>
-                            }
-                        </View>
-                    }
-
-                    {
-                        (accepted && !arrived) &&
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginTop: 10,
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                        }}>
-                            <TouchableOpacity style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}>
-                                <CallIcon />
-                                <Text style={{
-                                    color: colors.textHash,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-SemiBold',
-                                    marginLeft: 5,
-                                }}>Call</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate(mainRouts.chat)}
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
-                                <ChatIcon />
-                                <Text style={{
-                                    color: colors.textHash,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-SemiBold',
-                                    marginLeft: 5,
-                                }}>Chat</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => declineRequest()}
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
-                                <CancelIcon />
-                                <Text style={{
-                                    color: colors.textHash,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-SemiBold',
-                                    marginLeft: 5,
-                                }}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                    }
-                    <View style={{
-                        marginVertical: 20,
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
-                        {
-                            !accepted &&
-                            <Button title={'Decline'}
-                                onPress={() => declineRequest()}
-                                buttonStyle={{
-                                    borderRadius: 8,
-                                    height: 55,
-                                    width: '48%',
-                                    bordercolor: colors.black,
-                                    borderWidth: 1,
-                                }}
-                                textColor={colors.textHash}
-                                buttonColor={'transparent'}
-                                loading={accepting}
-                                enabled={!accepting}
-                            />
-                        }
-                        <Button title={accepted ? arrived ? delivered ? 'Submit' : 'Confirm delivery' : 'Arrived' : 'Accept'}
-                            onPress={() => {
-                                if (!accepted) {
-                                    acceptRequest()
-                                }
-                                accepted && arrivedRequest();
-                                arrived && completeRequest();
-                            }}
-                            buttonStyle={{
-                                borderRadius: 8,
-                                height: 55,
-                                width: accepted ? '100%' : '48%',
-                            }}
-                            loading={accepting}
-                            enabled={!accepting}
-
-                        />
-                    </View>
-                </View> */}
+                <DispatchSheet />
             </BottomSheet>
         </View>
 
