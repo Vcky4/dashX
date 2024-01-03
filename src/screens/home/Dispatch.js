@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
@@ -46,7 +46,7 @@ export default Dispatch = ({ onIndexChanged }) => {
                             color: colors[colorScheme].textGray,
                             fontSize: 12,
                             fontFamily: 'Inter-Regular',
-                        }}>View Profile</Text>
+                        }}>08096867881</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{
@@ -54,7 +54,10 @@ export default Dispatch = ({ onIndexChanged }) => {
                     borderRadius: 20,
                     padding: 6,
                 }}
-                    onPress={() => { }}>
+                    onPress={() => {
+                        //call
+                        Linking.openURL(`tel:${user?.phone}`)
+                     }}>
                     <Image
                         source={require('../../../assets/images/phone.png')}
                         style={{
@@ -91,11 +94,27 @@ export default Dispatch = ({ onIndexChanged }) => {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                             }}>
-                                <Text style={{
-                                    color: colors[colorScheme].primary,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter-Medium',
-                                }}>Dell Latitude Laptop</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{
+                                        color: colors[colorScheme].primary,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Medium',
+                                    }}>Dell Latitude Laptop</Text>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 12,
+                                        fontFamily: 'Inter-Regular',
+                                        marginLeft: 10,
+                                        borderRadius: 10,
+                                        paddingHorizontal: 8,
+                                        paddingVertical: 1,
+                                        borderColor: colors[colorScheme].primary,
+                                        borderWidth: 1,
+                                    }}>Picked</Text>
+                                </View>
 
                                 <Text style={{
                                     color: colors[colorScheme].textDark,
