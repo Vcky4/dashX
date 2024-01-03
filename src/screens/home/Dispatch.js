@@ -6,8 +6,9 @@ import Button from "../../component/Button";
 import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
 
-export default Dispatch = ({ navigation, onIndexChanged }) => {
+export default Dispatch = ({ navigation, onIndexChanged, onDispatch }) => {
     const { colorScheme, user } = useContext(AuthContext)
+    const dispatch = true
     const items = [1, 2, 3]
     return (
         <>
@@ -177,11 +178,15 @@ export default Dispatch = ({ navigation, onIndexChanged }) => {
                                     marginTop: 20,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Button title={'Verify Pickup'}
+                                <Button title={dispatch ? 'Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
-                                        navigation.navigate(mainRouts.verifyPickup, {
-                                            item: item
-                                        })
+                                        if (dispatch) {
+                                            onDispatch()
+                                        } else {
+                                            navigation.navigate(mainRouts.verifyPickup, {
+                                                item: item
+                                            })
+                                        }
                                     }}
                                     buttonStyle={{
                                         borderRadius: 20,
