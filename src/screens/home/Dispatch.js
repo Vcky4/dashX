@@ -56,25 +56,46 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                         }}>{phone}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={{
-                    backgroundColor: colors[colorScheme].primary,
-                    borderRadius: 20,
-                    padding: 6,
-                }}
-                    onPress={() => {
-                        //call
-                        Linking.openURL(`tel:${phone}`)
-                    }}>
-                    <Image
-                        source={require('../../../assets/images/phone.png')}
-                        style={{
-                            width: 22,
-                            height: 22,
-                            resizeMode: "contain",
-                            tintColor: colors[colorScheme].white,
-                        }}
-                    />
-                </TouchableOpacity>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity style={{
+                        marginEnd: 10
+                    }}
+                        onPress={() => {
+                            //navigate to whatsapp
+                            // Linking.openURL
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/whatsapp.png')}
+                            style={{
+                                width: 30,
+                                height: 30,
+                                resizeMode: "contain",
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{
+                        backgroundColor: colors[colorScheme].primary,
+                        borderRadius: 20,
+                        padding: 6,
+                    }}
+                        onPress={() => {
+                            //call
+                            Linking.openURL(`tel:${phone}`)
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/phone.png')}
+                            style={{
+                                width: 22,
+                                height: 22,
+                                resizeMode: "contain",
+                                tintColor: colors[colorScheme].white,
+                            }}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
             <Swiper
                 onIndexChanged={(index) => {
