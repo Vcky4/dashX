@@ -6,6 +6,7 @@ import Button from "../../component/Button";
 import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
+import profileRouts from "../../navigation/routs/profileRouts";
 
 export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -84,17 +85,18 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] 
                 }}>
                 {
                     items.map((item, index) =>
-                        <View key={index} style={{
-                            marginTop: 20,
-                            elevation: 20,
-                            backgroundColor: colors[colorScheme].background,
-                            borderRadius: 10,
-                            shadowColor: '#000000',
-                            padding: 14,
-                            marginHorizontal: 10,
-                            marginBottom: 20,
+                        <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
+                            key={index} style={{
+                                marginTop: 20,
+                                elevation: 20,
+                                backgroundColor: colors[colorScheme].background,
+                                borderRadius: 10,
+                                shadowColor: '#000000',
+                                padding: 14,
+                                marginHorizontal: 10,
+                                marginBottom: 20,
 
-                        }}>
+                            }}>
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
@@ -245,7 +247,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] 
                             </View>
 
 
-                        </View>
+                        </TouchableOpacity>
                     )
                 }
             </Swiper>
