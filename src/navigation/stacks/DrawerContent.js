@@ -163,7 +163,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                            onPress={() => props.navigation.navigate(mainRoute.wallet)}>
                             <View style={styles.itemWrapper}>
                                 <Image
                                     source={require('../../../assets/images/wallet.png')}

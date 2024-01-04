@@ -3,12 +3,45 @@ import { Image, Linking, Text, TextInput, TouchableOpacity, View } from "react-n
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
+import endpoints from "../../../assets/endpoints/endpoints";
 
 export default Dispatch = ({ onEnd, item }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
     const [code, setCode] = useState('')
     const [processing, setProcessing] = useState(false)
     // console.log(item)
+
+    const endDispatch = async () => {
+        setProcessing(true)
+        try {
+            await fetch(endpoints.baseUrl + endpoints.deliverOrder, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    "dispatchid": user.id,
+                    "orderid": item._id,
+                    "ordercode": code
+                })
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    setProcessing(false)
+                    if (json.status === 'success') {
+                        onEnd()
+                        // navigation.navigate(profileRouts.OrderDetails, { order: item })
+                        // navigation.navigate(profileRouts.OrderDetails, { order: item })
+                    }
+                })
+        }
+        catch (error) {
+            console.log(error)
+            setProcessing(false)
+        }
+    }
     return (
         <>
             <View style={{
@@ -189,7 +222,7 @@ export default Dispatch = ({ onEnd, item }) => {
 
                 <Button title={'Input code to end dispatch'}
                     onPress={() => {
-                        onEnd()
+                        endDispatch()
                     }}
                     buttonStyle={{
                         borderRadius: 30,

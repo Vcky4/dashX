@@ -6,6 +6,7 @@ const mainRouts = {
     help: 'Help',
     updateVehicle: 'updateVehicle',
     verifyPickup: 'verifyPickup',
+    wallet: 'Wallet'
 }
 
 export default mainRouts;
