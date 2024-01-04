@@ -14,6 +14,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
     const phone = items[index]?.order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
 
+    // console.log(items[0])
     return (
         <>
             <View style={{

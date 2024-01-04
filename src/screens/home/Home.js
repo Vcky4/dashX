@@ -93,7 +93,7 @@ export default Home = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             getMyOrder()
-        }, 10000)
+        }, 5000)
     }, [])
 
     const retriveProfile = () => {

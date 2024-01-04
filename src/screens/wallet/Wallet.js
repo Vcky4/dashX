@@ -42,19 +42,24 @@ export default Wallet = ({ navigation }) => {
                         color: colors[colorScheme].white,
                         fontSize: 24,
                         fontFamily: 'Inter-Bold',
-                    }}>Dispatch Details</Text>
+                    }}>Wallet</Text>
                 </View>
-                <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 12,
-                    fontFamily: 'Inter-Regular',
-                    alignSelf: 'center',
-                    backgroundColor: colors[colorScheme].white,
-                    padding: 4,
-                    borderRadius: 10,
-                    paddingHorizontal: 10,
-                    marginTop: 6,
-                }}>{user.online_status ? 'Online' : 'Offline'}</Text>
+            </View>
+
+            <View style={{
+                backgroundColor: colors[colorScheme].black,
+                padding: 20,
+                borderRadius: 20,
+                marginTop: 20,
+                marginHorizontal: 20,
+            }}>
+            <Text>Total Balance</Text>
+            <Text>Total Balance</Text>
+            <View>
+                <TouchableOpacity>
+                    <Text>Deposit</Text>
+                </TouchableOpacity>
+            </View>
             </View>
 
         </View>

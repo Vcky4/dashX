@@ -1,11 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
+import endpoints from "../../../assets/endpoints/endpoints";
 
 export default History = ({ navigation }) => {
-    const { colorScheme, user } = useContext(AuthContext)
-    console.log(user)
+    const { colorScheme, user, token } = useContext(AuthContext)
+    const [orders, setOrders] = React.useState([])
+    const getOrders = async () => {
+        const response = await fetch(endpoints.baseUrl + endpoints.history, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        // console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setOrders(json.data)
+        }
+    }
+    useEffect(() => {
+        getOrders()
+    }, [])
     return (
         <View style={{
             flex: 1,
@@ -60,7 +82,7 @@ export default History = ({ navigation }) => {
 
 
             <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                data={orders}
                 style={{
                     marginTop: 20,
                 }}
@@ -78,7 +100,7 @@ export default History = ({ navigation }) => {
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
                             fontFamily: 'Inter-SemiBold',
-                        }}>#a1287845</Text>
+                        }}>#{item._id}</Text>
                         <View style={{
                             alignItems: 'center',
                             flexDirection: 'row',
@@ -130,7 +152,7 @@ export default History = ({ navigation }) => {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 16,
                                         fontFamily: 'Inter-SemiBold',
-                                    }}>iPhone 14 Pro Max</Text>
+                                    }}>{item?.productname}</Text>
 
                                     <View style={{
                                         backgroundColor: colors[colorScheme].primary,
@@ -156,20 +178,19 @@ export default History = ({ navigation }) => {
                                         fontSize: 14,
                                         fontFamily: 'Inter-Regular',
                                         width: '70%'
-                                    }}>KM 55, Lekki-Epe Expressway,
-                                        Sangotedo, Ibeju-Lekki</Text>
+                                    }}>{item?.receiveraddress}</Text>
 
                                     <View style={{
                                         backgroundColor: colors[colorScheme].textGray,
                                         paddingVertical: 4,
                                         borderRadius: 10,
-                                        paddingHorizontal: 5
+                                        paddingHorizontal: 10
                                     }}>
                                         <Text style={{
                                             color: colors[colorScheme].white,
                                             fontSize: 12,
                                             fontFamily: 'Inter-Regular',
-                                        }}>completed</Text>
+                                        }}>{item?.order_status}</Text>
                                     </View>
                                 </View>
                             </View>
