@@ -9,7 +9,7 @@ import profileRouts from "../../navigation/routs/profileRouts";
 const { width, height } = Dimensions.get('window');
 
 
-export default PendingOrder = ({ navigation, onClose, onNewOrderChange=()=>{} }) => {
+export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => { } }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const appearance = colorScheme
     const [orders, setOrders] = useState([])
@@ -35,6 +35,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange=()=>{} })
             //check if array
             if (Array.isArray(json.data)) {
                 setCities(json.data)
+                setCity[json.data[0]]
             }
         } catch (error) {
             console.error(error)
@@ -98,7 +99,9 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange=()=>{} })
     }
 
     useEffect(() => {
-        getOrders()
+        setTimeout(() => {
+            getOrders()
+        }, 5000)
     }, [city])
     return (
         <>
@@ -192,13 +195,13 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange=()=>{} })
                     setSelectCity(!selectCity);
                 }}
             >
-                <TouchableOpacity onPress={()=> setSelectCity(!selectCity)}
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                }}>
+                <TouchableOpacity onPress={() => setSelectCity(!selectCity)}
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                    }}>
                     <View style={{
                         backgroundColor: colors[appearance].background,
                         width: '60%',

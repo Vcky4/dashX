@@ -470,7 +470,7 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
-                setBottomStep(1)
+                dispatchItem && setBottomStep(1)
             }}
                 style={{
                     position: 'absolute',
@@ -521,7 +521,7 @@ export default Home = ({ navigation }) => {
                     borderRadius: 40,
                     padding: 6,
                     elevation: 10,
-                    display: (bottomStep === 1 && !isDispatch) ? 'flex' : 'none',
+                    display: (!isDispatch && !isOpen) ? 'flex' : 'none',
                 }} >
                 <Image
                     source={require('../../../assets/images/location.png')}
@@ -707,7 +707,7 @@ export default Home = ({ navigation }) => {
             //     longitudeDelta: 0.0922 * (width / height),
             // }}
             >
-                {(helpCoordinates && bottomStep > 0) &&
+                {(isDispatch && bottomStep > 0) &&
                     <Marker
                         coordinate={helpCoordinates}
                         title={"Pickup"}
@@ -717,20 +717,73 @@ export default Home = ({ navigation }) => {
                     />
                 }
 
-                {/* {(!isDispatch && bottomStep > 0) &&
-                    <Marker
-                        coordinate={{
-                            latitude: coordinate.latitude,
-                            longitude: coordinate.longitude,
+                {(!isDispatch && bottomStep > 0 && dispatchItem) &&
+                    <>
+                        <Marker
+                            coordinate={{
+                                latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                                longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                            }}
+                            title={"Pickup"}
+                            description={dispatchItem?.senderaddress}
+                            pinColor={colors[colorScheme].primary}
+                        />
+
+                        <Marker
+                            coordinate={{
+                                latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                                longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                            }}
+                            title={"Delivery"}
+                            description={dispatchItem?.receiveraddress}
+                            pinColor={colors[colorScheme].primary}
+                        />
+                    </>
+                }
+
+                {(!isDispatch && bottomStep > 0 && dispatchItem) &&
+                    <MapViewDirections
+                        origin={{
+                            latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                            longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
                         }}
-                        title={"Pickup"}
-                        description={"Pickup at this location"}
-                        pinColor={colors[colorScheme].primary}
+                        destination={{
+                            latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                            longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                        }}
+                        apikey={GOOGLE_API_KEY}
+                        strokeWidth={4}
+                        strokeColor={colors[colorScheme].primary}
+                        timePrecision="now"
+                        optimizeWaypoints={true}
+                        // waypoints={waypoints}
+                        onStart={(params) => {
+                            // console.log('params :>>', params)
+                            console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                        }}
+                        onReady={result => {
+                            console.log('result :>>', result?.end_location)
+                            console.log(`Distance: ${result.distance} km`)
+                            console.log(`Duration: ${result.duration} min.`)
+                            setDistance(result.distance);
+                            setDuration(result.duration);
+                            // setWaypoints(result.coordinates);
 
-                    />
-                } */}
+                            this.mapView.fitToCoordinates(result.coordinates, {
+                                edgePadding: {
+                                    right: (width / 20),
+                                    bottom: (height / 20),
+                                    left: (width / 20),
+                                    top: (height / 20),
+                                }
+                            });
+                        }}
+                        onError={(errorMessage) => {
+                            console.log('GOT AN ERROR');
+                        }}
+                    />}
 
-                {(bottomStep > 0 && helpCoordinates) &&
+                {(isDispatch && helpCoordinates) &&
                     <MapViewDirections
                         origin={{
                             latitude: coordinate.latitude,

@@ -14,7 +14,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
     const phone = items[index]?.order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
 
-    // console.log(items[0])
+    console.log(items[0])
     return (
         <>
             <View style={{
@@ -65,7 +65,9 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                     }}
                         onPress={() => {
                             //navigate to whatsapp
-                            Linking.openURL(`https://wa.me/${phone}`)
+                            //regex to replace first 0 with +234
+                            const number = phone.replace(/^0/, '+234')
+                            Linking.openURL(`https://wa.me/${number}`)
                         }}>
                         <Image
                             source={require('../../../assets/images/whatsapp.png')}
