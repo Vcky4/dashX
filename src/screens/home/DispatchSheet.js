@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Image, Linking, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, KeyboardAvoidingView, Linking, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
@@ -10,6 +10,7 @@ export default Dispatch = ({ onEnd, item }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [code, setCode] = useState('')
     const [processing, setProcessing] = useState(false)
+    const [inputCode, setInputCode] = useState(false)
     // console.log(item)
 
     const endDispatch = async () => {
@@ -36,6 +37,7 @@ export default Dispatch = ({ onEnd, item }) => {
                     text1: 'Success',
                     text2: 'Order Delivered'
                 })
+                setInputCode(false)
                 onEnd()
             }
             else {
@@ -206,37 +208,10 @@ export default Dispatch = ({ onEnd, item }) => {
                 padding: 14,
                 marginHorizontal: 10,
             }}>
-                <View style={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    borderColor: colors[colorScheme].primary,
-                    borderWidth: 1,
-                    borderRadius: 30,
-                    marginBottom: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                }}>
-                    <TextInput
-                        placeholder="235jVG"
-                        value={code}
-                        onChangeText={(text) => {
-                            setCode(text)
-                        }}
-                        maxLength={6}
-                        cursorColor={colors[colorScheme].primary}
-                        placeholderTextColor={colors[colorScheme].textGray}
-                        style={{
-                            fontFamily: 'Inter-Medium',
-                            fontSize: 24,
-                            paddingHorizontal: 30,
-                            color: colors[colorScheme].textDark
-                        }} />
-                </View>
 
                 <Button title={'Input code to end dispatch'}
                     onPress={() => {
-                        endDispatch()
+                        setInputCode(true)
                     }}
                     buttonStyle={{
                         borderRadius: 30,
@@ -246,10 +221,89 @@ export default Dispatch = ({ onEnd, item }) => {
                         alignSelf: 'center',
                     }}
                     fontSize={16}
-                    loading={processing}
-                    enabled={code.length > 4 && !processing}
+                    loading={false}
+                    enabled={true}
                 />
             </View>
+
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={inputCode}
+                onRequestClose={() => {
+                    setInputCode(!inputCode);
+                }}
+            >
+                <TouchableOpacity onPress={() => setInputCode(!inputCode)}
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                    }}>
+                    <View style={{
+                        backgroundColor: colors[colorScheme].background,
+                        width: '80%',
+                        borderRadius: 20,
+                        padding: 20,
+                    }}>
+                        <Text style={{
+                            fontFamily: 'Inter-SemiBold',
+                            fontSize: 20,
+                            color: colors[colorScheme].textDark,
+                            alignSelf: 'center',
+                        }}>Input Code</Text>
+                        <View style={{
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            borderColor: colors[colorScheme].primary,
+                            borderWidth: 1,
+                            borderRadius: 30,
+                            marginBottom: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'center',
+                            marginTop: 20
+                        }}>
+                            <KeyboardAvoidingView>
+                                <TextInput
+                                    placeholder="235jVG"
+                                    value={code}
+                                    onChangeText={(text) => {
+                                        setCode(text)
+                                    }}
+                                    maxLength={6}
+                                    cursorColor={colors[colorScheme].primary}
+                                    placeholderTextColor={colors[colorScheme].textGray}
+                                    style={{
+                                        fontFamily: 'Inter-Medium',
+                                        fontSize: 24,
+                                        paddingHorizontal: 30,
+                                        color: colors[colorScheme].textDark
+                                    }} />
+                            </KeyboardAvoidingView>
+                        </View>
+
+                        <Button title={'End Dispatch'}
+                            onPress={() => {
+                                endDispatch()
+                            }}
+                            buttonStyle={{
+                                borderRadius: 30,
+                                height: 60,
+                                width: '90%',
+                                marginTop: 10,
+                                alignSelf: 'center',
+                            }}
+                            fontSize={16}
+                            loading={processing}
+                            enabled={code.length > 4 && !processing}
+                        />
+
+                    </View>
+                </TouchableOpacity>
+            </Modal>
         </>
     )
 }

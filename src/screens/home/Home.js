@@ -4,7 +4,6 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from 'react-native-simple-bottom-sheet';
-import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
 import endpoints from "../../../assets/endpoints/endpoints";
@@ -38,9 +37,8 @@ export default Home = ({ navigation }) => {
     const GOOGLE_API_KEY = endpoints.gg;
     const { user, token, saveUser, colorScheme } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
-    const [accepted, setAccepted] = useState(false);
-    const [distance, setDistance] = useState(0);
-    const [duration, setDuration] = useState(0);
+    // const [distance, setDistance] = useState(0);
+    // const [duration, setDuration] = useState(0);
     const [isDispatch, setIsDispatch] = useState(false);
     const [address, setAddress] = useState('');
     const [bottomStep, setBottomStep] = useState(0);
@@ -57,16 +55,13 @@ export default Home = ({ navigation }) => {
         latitude: 0,
         longitude: 0,
     });
-    let myLocation = {
-        latitude: 0,
-        longitude: 0,
-    }
-    //setup to socket
-    const socket = io(endpoints.socketUrl, {
-        extraHeaders: {
-            authorization: `Bearer ${token}`,
-        },
-    });
+
+    // //setup to socket
+    // const socket = io(endpoints.socketUrl, {
+    //     extraHeaders: {
+    //         authorization: `Bearer ${token}`,
+    //     },
+    // });
 
     const getMyOrder = async () => {
         const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
@@ -90,7 +85,7 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         setInterval(() => {
-            if(!isDispatch){
+            if (!isDispatch) {
                 getMyOrder()
             }
         }, 5000)
@@ -244,16 +239,16 @@ export default Home = ({ navigation }) => {
             latitude: e.nativeEvent.coordinate.latitude,
             longitude: e.nativeEvent.coordinate.longitude,
         });
-        if (autoPosition && !helpCoordinates || autoPosition && accepted) {
+        if (autoPosition && !helpCoordinates || autoPosition && isDispatch) {
             this.mapView.setCamera({
                 center: {
                     latitude: e.nativeEvent.coordinate.latitude,
                     longitude: e.nativeEvent.coordinate.longitude,
                 },
-                pitch: accepted ? 50 : 0,
+                pitch: isDispatch ? 50 : 0,
                 heading: e.nativeEvent.coordinate?.heading,
                 altitude: e.nativeEvent.coordinate?.altitude,
-                zoom: accepted ? 60 : 17,
+                zoom: isDispatch ? 60 : 17,
             }, { duration: 10000 })
         }
     }
@@ -718,7 +713,7 @@ export default Home = ({ navigation }) => {
                     </>
                 }
 
-                {(!isDispatch && bottomStep > 0 && dispatchItem) &&
+                {/* {(!isDispatch && bottomStep > 0 && dispatchItem) &&
                     <MapViewDirections
                         origin={{
                             latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
@@ -733,6 +728,7 @@ export default Home = ({ navigation }) => {
                         strokeColor={colors[colorScheme].primary}
                         timePrecision="now"
                         optimizeWaypoints={true}
+                        mode='DRIVING'
                         // waypoints={waypoints}
                         onStart={(params) => {
                             // console.log('params :>>', params)
@@ -742,8 +738,8 @@ export default Home = ({ navigation }) => {
                             console.log('result :>>', result?.end_location)
                             console.log(`Distance: ${result.distance} km`)
                             console.log(`Duration: ${result.duration} min.`)
-                            setDistance(result.distance);
-                            setDuration(result.duration);
+                            // setDistance(result.distance);
+                            // setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
                             this.mapView.fitToCoordinates(result.coordinates, {
@@ -758,7 +754,7 @@ export default Home = ({ navigation }) => {
                         onError={(errorMessage) => {
                             console.log('GOT AN ERROR');
                         }}
-                    />}
+                    />} */}
 
                 {(isDispatch) &&
                     <MapViewDirections
@@ -773,7 +769,9 @@ export default Home = ({ navigation }) => {
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={4}
                         strokeColor={colors[colorScheme].primary}
-                        timePrecision="now"
+                        // timePrecision="now"
+                        resetOnChange={false}
+                        mode='DRIVING'
                         optimizeWaypoints={true}
                         // waypoints={waypoints}
                         onStart={(params) => {
@@ -784,8 +782,8 @@ export default Home = ({ navigation }) => {
                             console.log('result :>>', result?.end_location)
                             console.log(`Distance: ${result.distance} km`)
                             console.log(`Duration: ${result.duration} min.`)
-                            setDistance(result.distance);
-                            setDuration(result.duration);
+                            // setDistance(result.distance);
+                            // setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
                             this.mapView.fitToCoordinates(result.coordinates, {

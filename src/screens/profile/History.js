@@ -3,11 +3,14 @@ import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default History = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [orders, setOrders] = React.useState([])
+    const [processing, setProcessing] = React.useState(false)
     const getOrders = async () => {
+        setProcessing(true)
         const response = await fetch(endpoints.baseUrl + endpoints.history, {
             method: 'POST',
             headers: {
@@ -19,6 +22,7 @@ export default History = ({ navigation }) => {
             })
         })
         const json = await response.json()
+        setProcessing(false)
         // console.log(json)
         //check if array
         if (Array.isArray(json.data)) {
@@ -86,6 +90,11 @@ export default History = ({ navigation }) => {
                 style={{
                     marginTop: 20,
                 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={processing}
+                        onRefresh={getOrders}
+                    />}
                 renderItem={({ item }) =>
                     <View style={{
                         paddingHorizontal: 20,
