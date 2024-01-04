@@ -42,7 +42,7 @@ export default Withdraw = ({ navigation }) => {
                         color: colors[colorScheme].white,
                         fontSize: 24,
                         fontFamily: 'Inter-Bold',
-                    }}>Wallet</Text>
+                    }}>Withdraw</Text>
                 </View>
             </View>
 
@@ -108,70 +108,7 @@ export default Withdraw = ({ navigation }) => {
                 </View>
             </View>
 
-            <Text style={{
-                color: colors[colorScheme].textDark,
-                fontSize: 16,
-                fontFamily: 'Inter-SemiBold',
-                marginHorizontal: 20,
-                marginTop: 16,
-            }}>Recent Transactions</Text>
-
-
-            <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                contentContainerStyle={{
-                    paddingBottom: 20,
-                }}
-                renderItem={({ item }) =>
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginHorizontal: 20,
-                        marginTop: 10,
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}>
-                            <View style={{
-                                backgroundColor: colors[colorScheme].primary,
-                                padding: 10,
-                                borderRadius: 10,
-                            }}>
-                                <Image
-                                    source={require('../../../assets/images/down.png')}
-                                    style={{
-                                        width: 12,
-                                        height: 12,
-                                        resizeMode: "contain",
-                                    }}
-                                />
-                            </View>
-                            <View style={{
-                                marginLeft: 10,
-                            }}>
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter-SemiBold',
-                                }}>Withdraw</Text>
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Regular',
-                                }}>To Bank Account</Text>
-                            </View>
-                        </View>
-                        <Text style={{
-                            color: colors[colorScheme].textDark,
-                            fontSize: 16,
-                            fontFamily: 'Inter-SemiBold',
-                        }}>₦ 4,589.55</Text>
-                    </View>
-                }
-            />
-
+            
         </View>
     )
 }

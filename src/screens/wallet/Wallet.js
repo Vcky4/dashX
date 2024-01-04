@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
+import mainRouts from "../../navigation/routs/mainRouts";
 
 export default Wallet = ({ navigation }) => {
     const { colorScheme, user } = useContext(AuthContext)
@@ -69,12 +70,13 @@ export default Wallet = ({ navigation }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                 }}>
-                    <TouchableOpacity style={{
-                        backgroundColor: colors[colorScheme].primary,
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        borderRadius: 20,
-                    }}>
+                    <TouchableOpacity onPress={() => navigation.navigate(mainRouts.deposit)}
+                        style={{
+                            backgroundColor: colors[colorScheme].primary,
+                            paddingHorizontal: 16,
+                            paddingVertical: 8,
+                            borderRadius: 20,
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].white,
                             fontSize: 16,
@@ -82,14 +84,15 @@ export default Wallet = ({ navigation }) => {
                         }}>+ Deposit</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{
-                        backgroundColor: colors[colorScheme].primary,
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        borderRadius: 20,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                    <TouchableOpacity onPress={() => navigation.navigate(mainRouts.withdraw)}
+                        style={{
+                            backgroundColor: colors[colorScheme].primary,
+                            paddingHorizontal: 16,
+                            paddingVertical: 8,
+                            borderRadius: 20,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Image
                             source={require('../../../assets/images/down.png')}
                             style={{

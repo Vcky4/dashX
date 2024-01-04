@@ -19,6 +19,8 @@ import History from '../../screens/profile/History';
 import OrderDetails from '../../screens/profile/OrderDetails';
 import { useNavigation } from '@react-navigation/native';
 import Wallet from '../../screens/wallet/Wallet';
+import Withdraw from '../../screens/wallet/Withdraw';
+import Deposit from '../../screens/wallet/Deposit';
 
 
 const { width, height } = Dimensions.get('window');
@@ -104,6 +106,8 @@ const AuthPassed = () => {
             <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.wallet} component={Wallet} options={{ headerShown: false }} />
+            <Stack.Screen name={mainRouts.withdraw} component={Withdraw} options={{ headerShown: false }} />
+            <Stack.Screen name={mainRouts.deposit} component={Deposit} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );

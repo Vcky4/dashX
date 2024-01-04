@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
+import mainRouts from "../../navigation/routs/mainRouts";
 
 export default Deposit = ({ navigation }) => {
     const { colorScheme, user } = useContext(AuthContext)
@@ -42,136 +43,66 @@ export default Deposit = ({ navigation }) => {
                         color: colors[colorScheme].white,
                         fontSize: 24,
                         fontFamily: 'Inter-Bold',
-                    }}>Wallet</Text>
+                    }}>Deposit</Text>
                 </View>
             </View>
+
 
             <View style={{
-                backgroundColor: colors[colorScheme].black,
-                padding: 20,
-                borderRadius: 20,
-                marginTop: 20,
-                marginHorizontal: 20,
+                flex: 1,
+                justifyContent: 'space-between'
             }}>
-                <Text style={{
-                    color: colors[colorScheme].white,
-                    fontSize: 16,
-                    fontFamily: 'Inter-SemiBold',
-                }}>Total Balance</Text>
-                <Text style={{
-                    color: colors[colorScheme].white,
-                    fontSize: 24,
-                    fontFamily: 'Inter-Bold',
-                    marginVertical: 15,
-                }}>₦ 4,589.55</Text>
-                <View style={{
-                    marginTop: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}>
-                    <TouchableOpacity style={{
-                        backgroundColor: colors[colorScheme].primary,
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        borderRadius: 20,
-                    }}>
-                        <Text style={{
-                            color: colors[colorScheme].white,
-                            fontSize: 16,
-                            fontFamily: 'Inter-SemiBold',
-                        }}>+ Deposit</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{
-                        backgroundColor: colors[colorScheme].primary,
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        borderRadius: 20,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
-                        <Image
-                            source={require('../../../assets/images/down.png')}
-                            style={{
-                                width: 12,
-                                height: 12,
-                                resizeMode: "contain",
-                            }}
-                        />
-                        <Text style={{
-                            color: colors[colorScheme].white,
-                            fontSize: 16,
-                            fontFamily: 'Inter-SemiBold',
-                            marginLeft: 5,
-                        }}>Withdraw</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <Text style={{
-                color: colors[colorScheme].textDark,
-                fontSize: 16,
-                fontFamily: 'Inter-SemiBold',
-                marginHorizontal: 20,
-                marginTop: 16,
-            }}>Recent Transactions</Text>
-
-
-            <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                contentContainerStyle={{
-                    paddingBottom: 20,
-                }}
-                renderItem={({ item }) =>
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                <View>
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 18,
+                        fontFamily: 'Inter-Bold',
                         marginHorizontal: 20,
-                        marginTop: 10,
+                        marginTop: 50,
+                    }}>Deposit To</Text>
+                    <View style={{
+                        backgroundColor: '#D8C7FF',
+                        padding: 20,
+                        borderRadius: 20,
+                        marginTop: 20,
+                        marginHorizontal: 20,
                     }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}>
-                            <View style={{
-                                backgroundColor: colors[colorScheme].primary,
-                                padding: 10,
-                                borderRadius: 10,
-                            }}>
-                                <Image
-                                    source={require('../../../assets/images/down.png')}
-                                    style={{
-                                        width: 12,
-                                        height: 12,
-                                        resizeMode: "contain",
-                                    }}
-                                />
-                            </View>
-                            <View style={{
-                                marginLeft: 10,
-                            }}>
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter-SemiBold',
-                                }}>Withdraw</Text>
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Regular',
-                                }}>To Bank Account</Text>
-                            </View>
-                        </View>
                         <Text style={{
-                            color: colors[colorScheme].textDark,
+                            color: colors[colorScheme].black,
                             fontSize: 16,
                             fontFamily: 'Inter-SemiBold',
-                        }}>₦ 4,589.55</Text>
+                        }}>Emmanuel Jonah</Text>
+                        <Text style={{
+                            color: colors[colorScheme].black,
+                            fontSize: 24,
+                            fontFamily: 'Inter-Bold',
+                            marginVertical: 15,
+                        }}>Wema Bank</Text>
+                        <Text style={{
+                            color: colors[colorScheme].black,
+                            fontSize: 24,
+                            fontFamily: 'Inter-Bold',
+                        }}>4567809844567</Text>
                     </View>
-                }
-            />
+                </View>
+                <TouchableOpacity style={{
+                    backgroundColor: colors[colorScheme].primary,
+                    padding: 20,
+                    borderRadius: 30,
+                    marginTop: 20,
+                    marginHorizontal: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 40
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].white,
+                        fontSize: 16,
+                        fontFamily: 'Inter-SemiBold',
+                    }}>I've paid</Text>
+                </TouchableOpacity>
 
+            </View>
         </View>
     )
 }
