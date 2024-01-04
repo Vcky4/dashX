@@ -5,10 +5,11 @@ import colors from "../../../assets/colors/colors";
 import Button from "../../component/Button";
 
 
-export default PendingOrderItem = ({ item, onPress, processing }) => {
+export default PendingOrderItem = ({ item, onPress,onAccept, processing }) => {
     const { colorScheme } = useContext(AuthContext)
     return (
-        <View
+        <TouchableOpacity
+         onPress={onPress}
             style={{
                 backgroundColor: colors[colorScheme].background,
                 width: '100%',
@@ -34,7 +35,7 @@ export default PendingOrderItem = ({ item, onPress, processing }) => {
                     fontFamily: 'Medium',
                 }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                 <Button title={'Accept'}
-                    onPress={onPress}
+                    onPress={onAccept}
                     buttonStyle={{
                         borderRadius: 20,
                         height: 30,
@@ -91,6 +92,6 @@ export default PendingOrderItem = ({ item, onPress, processing }) => {
                     fontFamily: 'Inter-Medium',
                 }}>{item?.senderaddress}</Text></Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }

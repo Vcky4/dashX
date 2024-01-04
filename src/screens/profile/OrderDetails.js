@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 
-export default History = ({ navigation }) => {
+export default OrderDetails = ({ navigation, route }) => {
     const { colorScheme, user } = useContext(AuthContext)
     console.log(user)
     return (
@@ -43,7 +43,7 @@ export default History = ({ navigation }) => {
                         color: colors[colorScheme].white,
                         fontSize: 24,
                         fontFamily: 'Inter-Bold',
-                    }}>History</Text>
+                    }}>Dispatch Details</Text>
                 </View>
                 <Text style={{
                     color: colors[colorScheme].primary,

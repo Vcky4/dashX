@@ -16,6 +16,8 @@ import PendingOrder from '../../screens/home/PendingOrder';
 import VerifyPickUp from '../../screens/home/VerifyPickUp';
 import Profile from '../../screens/profile/Profile';
 import History from '../../screens/profile/History';
+import OrderDetails from '../../screens/profile/OrderDetails';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width, height } = Dimensions.get('window');
@@ -28,7 +30,7 @@ export default DrawerStack = () => {
     const panelRef = useRef(null);
     const { colorScheme } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState(false)
-
+    const navigation = useNavigation();
     const openPanel = () => {
         panelRef.current?.togglePanel()
     }
@@ -77,7 +79,11 @@ export default DrawerStack = () => {
                         fontFamily: 'Inter-SemiBold',
                     }}>Pending  Orders</Text>
                 </View>
-                <PendingOrder />
+                <PendingOrder
+                    onClose={() => {
+                        panelRef.current?.togglePanel()
+                    }}
+                    navigation={navigation} />
             </BottomSheet>
         </>
     );
@@ -95,6 +101,7 @@ const AuthPassed = () => {
             <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
+            <Stack.Screen name={profileRouts.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );

@@ -4,11 +4,12 @@ import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import PendingOrderItem from "./PendingOrderItem";
 import endpoints from "../../../assets/endpoints/endpoints";
+import profileRouts from "../../navigation/routs/profileRouts";
 
 const { width, height } = Dimensions.get('window');
 
 
-export default PendingOrder = ({ item }) => {
+export default PendingOrder = ({ navigation, onClose }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const appearance = colorScheme
     const [orders, setOrders] = useState([])
@@ -110,8 +111,12 @@ export default PendingOrder = ({ item }) => {
                 renderItem={({ item }) =>
                     <PendingOrderItem
                         processing={processing}
-                        onPress={() => {
+                        onAccept={() => {
                             acceptOrders(item._id)
+                        }}
+                        onPress={() => {
+                            onClose()
+                            navigation.navigate(profileRouts.orderDetails, { order: item })
                         }}
                         item={item} />
                 }
@@ -210,14 +215,14 @@ export default PendingOrder = ({ item }) => {
                             {
                                 cities.map((item, index) =>
                                     <TouchableOpacity
-                                    style={{
-                                        borderTopWidth: 1,
-                                        borderTopColor: colors[appearance].primary,
-                                    }}
-                                     key={index} onPress={() => {
-                                        setCity(item)
-                                        setSelectCity(false)
-                                    }}>
+                                        style={{
+                                            borderTopWidth: 1,
+                                            borderTopColor: colors[appearance].primary,
+                                        }}
+                                        key={index} onPress={() => {
+                                            setCity(item)
+                                            setSelectCity(false)
+                                        }}>
                                         <Text style={{
                                             fontFamily: 'Inter-Medium',
                                             fontSize: 16,
