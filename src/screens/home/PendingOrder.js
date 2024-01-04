@@ -86,7 +86,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             })
             const json = await response.json()
             setProcessing(false)
-            console.log(json)
+            // console.log(json)
             setOrders(orders.filter((item) => item._id !== id))
             //check if array
             if (Array.isArray(json.data)) {
@@ -99,7 +99,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     }
 
     useEffect(() => {
-        setTimeout(() => {
+        setInterval(() => {
             getOrders()
         }, 5000)
     }, [city])

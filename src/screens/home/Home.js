@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, TextInput, Animated } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps';
+import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from 'react-native-simple-bottom-sheet';
-import NetInfo from "@react-native-community/netinfo";
 import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
@@ -46,15 +45,9 @@ export default Home = ({ navigation }) => {
     const [address, setAddress] = useState('');
     const [bottomStep, setBottomStep] = useState(0);
     const [online, setOnline] = useState(false);
-    const [rating, setRating] = useState(0);
     const panelRef = useRef(null);
     const panelRef2 = useRef(null);
-    const [variableUser, setVariableUser] = useState({})
     const [updateCount, setUpdateCount] = useState(0);
-    const [forceOnline, setForceOnline] = useState(true);
-    const [fade, setFade] = useState(0);
-    const [fadeIn] = useState(new Animated.Value(0));
-    const [messageTrigger, setMessageTrigger] = useState(false);
     const [myOrders, setMyOrders] = useState([])
     const [dispatchItem, setDispatchItem] = useState(null)
     const [processing, setProcessing] = useState(false)
@@ -96,13 +89,15 @@ export default Home = ({ navigation }) => {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            getMyOrder()
+        setInterval(() => {
+            if(!isDispatch){
+                getMyOrder()
+            }
         }, 5000)
     }, [])
 
     const retriveProfile = () => {
-        const response = fetch(endpoints.baseUrl + endpoints.retriveProfile, {
+        fetch(endpoints.baseUrl + endpoints.retriveProfile, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +127,7 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         //find for oder_status == shipping
-        if (myOrders.find(item => item.order_status == 'shipping')) {
+        if (myOrders.find(item => item.order_status == 'shipping') && !isDispatch) {
             bottomStep == 0 && setBottomStep(1)
             setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
             setIsDispatch(true)
@@ -174,52 +169,48 @@ export default Home = ({ navigation }) => {
                 })
             })
     }
-
-    useEffect(() => {
-
-    }, [user])
     useEffect(() => {
         retriveProfile();
     }, [])
 
-    // console.log('dispatchItem', dispatchItem)
-    //connect to socket
-    useEffect(() => {
-        // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-        socket.on('connect', e => {
-            console.log('connected', socket.connected);
-            // setOnline(true);
-            // socket.emit('updateLocation', {
-            //   latitude: parseFloat(coordinate.latitude),
-            //   longitude: parseFloat(coordinate.longitude),
-            //   // location: callback
-            // });
-            // console.log(' first sent', [coordinate.longitude, coordinate.latitude]);
-        });
+    // // console.log('dispatchItem', dispatchItem)
+    // //connect to socket
+    // useEffect(() => {
+    //     // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+    //     socket.on('connect', e => {
+    //         console.log('connected', socket.connected);
+    //         // setOnline(true);
+    //         // socket.emit('updateLocation', {
+    //         //   latitude: parseFloat(coordinate.latitude),
+    //         //   longitude: parseFloat(coordinate.longitude),
+    //         //   // location: callback
+    //         // });
+    //         // console.log(' first sent', [coordinate.longitude, coordinate.latitude]);
+    //     });
 
-        socket.on('disconnect', e => {
-            setOnline(false);
-            console.log('disconnected', socket.connected);
-        });
-        // }
-        return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-            // socket.off('receiveAlerts');
-        };
-    }, [token]);
-    useEffect(() => {
-        messageTrigger && setFade(1)
-        setTimeout(() => { setFade(0); setMessageTrigger(false) }, 10000)
-    }, [messageTrigger]);
+    //     socket.on('disconnect', e => {
+    //         setOnline(false);
+    //         console.log('disconnected', socket.connected);
+    //     });
+    //     // }
+    //     return () => {
+    //         socket.off('connect');
+    //         socket.off('disconnect');
+    //         // socket.off('receiveAlerts');
+    //     };
+    // }, [token]);
+    // useEffect(() => {
+    //     messageTrigger && setFade(1)
+    //     setTimeout(() => { setFade(0); setMessageTrigger(false) }, 10000)
+    // }, [messageTrigger]);
 
-    useEffect(() => {
-        Animated.timing(fadeIn, {
-            toValue: fade,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start();
-    }, [fade]);
+    // useEffect(() => {
+    //     Animated.timing(fadeIn, {
+    //         toValue: fade,
+    //         duration: 1000,
+    //         useNativeDriver: true,
+    //     }).start();
+    // }, [fade]);
 
     const playPause = () => {
         ding.play(success => {
@@ -323,44 +314,27 @@ export default Home = ({ navigation }) => {
     }, []);
 
     // Subscribe to network state updates
-    useEffect(() => {
-        NetInfo.addEventListener(state => {
-            console.log("Connection type", state.type);
-            // updateUserStatus(state.isConnected && forceOnline);
-        });
-    }, [forceOnline])
+    // useEffect(() => {
+    //     NetInfo.addEventListener(state => {
+    //         console.log("Connection type", state.type);
+    //         // updateUserStatus(state.isConnected && forceOnline);
+    //     });
+    // }, [forceOnline])
 
     //update user location every 30 seconds
-    useEffect(() => {
-        if (variableUser?.data?.is_online == 1
-            && (coordinate.latitude - variableUser?.data?.latitude > 0.0001
-                || coordinate.longitude - variableUser?.data?.longitude > 0.0001)
-        ) {
-            setInterval(() => {
-                // updateUserInfo();
-            }, 30000);
-        }
-    }, [online])
 
-    useEffect(() => {
-        if (variableUser != {}) {
-            // console.log('variableUser', variableUser)
-            setOnline(variableUser?.data?.is_online == 1 && variableUser?.data?.latitude != 0);
-        }
-    }, [variableUser])
-
-    let ratings = []
-    for (let i = 0; i < 5; i++) {
-        ratings.push(
-            <TouchableOpacity key={i}
-                onPress={() => { setRating(i + 1) }}
-                style={{
-                    marginHorizontal: 4,
-                }}>
-                {/* <StarLgIcon fill={rating > i ? colors.primary : colors.inactiveBt} /> */}
-            </TouchableOpacity>
-        )
-    }
+    // let ratings = []
+    // for (let i = 0; i < 5; i++) {
+    //     ratings.push(
+    //         <TouchableOpacity key={i}
+    //             onPress={() => { setRating(i + 1) }}
+    //             style={{
+    //                 marginHorizontal: 4,
+    //             }}>
+    //             {/* <StarLgIcon fill={rating > i ? colors.primary : colors.inactiveBt} /> */}
+    //         </TouchableOpacity>
+    //     )
+    // }
     const mapCustomStyle = [
         {
             //   elementType: 'geometry',
@@ -709,9 +683,12 @@ export default Home = ({ navigation }) => {
             >
                 {(isDispatch && bottomStep > 0) &&
                     <Marker
-                        coordinate={helpCoordinates}
-                        title={"Pickup"}
-                        description={"Pickup at this location"}
+                        coordinate={{
+                            latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                            longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                        }}
+                        title={"Delivery"}
+                        description={dispatchItem?.receiveraddress}
                         pinColor={colors[colorScheme].primary}
 
                     />
@@ -783,13 +760,16 @@ export default Home = ({ navigation }) => {
                         }}
                     />}
 
-                {(isDispatch && helpCoordinates) &&
+                {(isDispatch) &&
                     <MapViewDirections
                         origin={{
                             latitude: coordinate.latitude,
                             longitude: coordinate.longitude,
                         }}
-                        destination={helpCoordinates}
+                        destination={{
+                            latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                            longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                        }}
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={4}
                         strokeColor={colors[colorScheme].primary}
@@ -825,7 +805,7 @@ export default Home = ({ navigation }) => {
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>
 
-            <BottomSheet isOpen={helpCoordinates != null}
+            <BottomSheet isOpen={false}
                 wrapperStyle={{
                     borderTopLeftRadius: 22,
                     borderTopRightRadius: 22,
