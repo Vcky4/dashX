@@ -51,7 +51,7 @@ export default Intro = ({ navigation }) => {
                     <Image
                         style={{
                             width: '100%',
-                            height: width * 0.9,
+                            height: width * 0.8,
                             resizeMode: 'contain',
                             alignSelf: 'center',
                             marginTop: height * 0.1,
@@ -74,14 +74,14 @@ export default Intro = ({ navigation }) => {
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75,
-                        marginBottom: 20,
+                        marginBottom: 60,
                     }}>Experience the thrill of swift deliveries with DashX. Your goods, our priority – because time matters</Text>
                 </View>
                 <View style={styles.page}>
                     <Image
                         style={{
                             width: '100%',
-                            height: width * 0.9,
+                            height: width * 0.8,
                             resizeMode: 'contain',
                             alignSelf: 'center',
                             marginTop: height * 0.1,
@@ -104,14 +104,14 @@ export default Intro = ({ navigation }) => {
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75,
-                        marginBottom: 20,
+                        marginBottom: 60,
                     }}>Enjoy the luxury of low-cost delivery without compromising on service. DashX brings you quality at a price that fits your budget.</Text>
                 </View>
                 <View style={styles.page}>
                     <Image
                         style={{
                             width: '100%',
-                            height: width * 0.9,
+                            height: width * 0.8,
                             resizeMode: 'contain',
                             alignSelf: 'center',
                             marginTop: height * 0.1,
@@ -134,7 +134,7 @@ export default Intro = ({ navigation }) => {
                         marginStart: 20,
                         marginEnd: 20,
                         width: width * 0.75,
-                        marginBottom: 20,
+                        marginBottom: 60,
                     }}>No matter the size, we've got the wheels. From small parcels to bulky items, DashX delivers convenience at every dimension</Text>
                 </View>
             </Swiper>

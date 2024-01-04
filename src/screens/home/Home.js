@@ -713,7 +713,7 @@ export default Home = ({ navigation }) => {
                     </>
                 }
 
-                {/* {(!isDispatch && bottomStep > 0 && dispatchItem) &&
+                {(!isDispatch && bottomStep > 0 && dispatchItem) &&
                     <MapViewDirections
                         origin={{
                             latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
@@ -754,7 +754,7 @@ export default Home = ({ navigation }) => {
                         onError={(errorMessage) => {
                             console.log('GOT AN ERROR');
                         }}
-                    />} */}
+                    />}
 
                 {(isDispatch) &&
                     <MapViewDirections
