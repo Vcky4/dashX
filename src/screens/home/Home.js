@@ -18,6 +18,7 @@ import getAddress from "../../utils/getAddress";
 import Dispatch from "./Dispatch";
 import DispatchSheet from "./DispatchSheet";
 import Toast from "react-native-toast-message";
+import PendingOrder from "./PendingOrder";
 
 var Sound = require('react-native-sound');
 
@@ -58,6 +59,7 @@ export default Home = ({ navigation }) => {
     const [dispatchItem, setDispatchItem] = useState(null)
     const [processing, setProcessing] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [newOrders, setNewOrders] = useState(0)
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -441,7 +443,30 @@ export default Home = ({ navigation }) => {
                     height: 20,
                     width: 20,
                     textAlign: 'center',
-                }}>{myOrders.length}</Text>
+                }}>{newOrders}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setBottomStep(0)}
+                style={{
+                    backgroundColor: colors[colorScheme].primary,
+                    padding: 14,
+                    borderRadius: 10,
+                    position: 'absolute',
+                    bottom: bottomStep > 0 ? 310 : 170,
+                    left: 20,
+                    zIndex: 100,
+                    elevation: 10,
+                    display: bottomStep === 1 && !isDispatch && !isOpen ? 'flex' : 'none',
+                }}>
+                <Image
+                    source={require('../../../assets/images/down.png')}
+                    style={{
+                        width: 12,
+                        height: 12,
+                        resizeMode: "contain",
+                        transform: [{ rotate: '90deg' }]
+                    }}
+                />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
@@ -458,7 +483,7 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     paddingHorizontal: 20,
                     paddingVertical: 6,
-                    display: !isDispatch && !isOpen ? 'flex' : 'none',
+                    display: bottomStep === 0 && !isDispatch && !isOpen ? 'flex' : 'none',
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -850,6 +875,9 @@ export default Home = ({ navigation }) => {
                 <PendingOrder
                     onClose={() => {
                         panelRef2.current?.togglePanel()
+                    }}
+                    onNewOrderChange={(it) => {
+                        setNewOrders(it)
                     }}
                     navigation={navigation} />
             </BottomSheet>

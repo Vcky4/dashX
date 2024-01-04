@@ -9,7 +9,7 @@ import profileRouts from "../../navigation/routs/profileRouts";
 const { width, height } = Dimensions.get('window');
 
 
-export default PendingOrder = ({ navigation, onClose }) => {
+export default PendingOrder = ({ navigation, onClose, onNewOrderChange=()=>{} }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const appearance = colorScheme
     const [orders, setOrders] = useState([])
@@ -62,6 +62,7 @@ export default PendingOrder = ({ navigation, onClose }) => {
             //check if array
             if (Array.isArray(json.data)) {
                 setOrders(json.data)
+                onNewOrderChange(json.data.length)
             }
         } catch (error) {
             console.error(error)
@@ -191,7 +192,8 @@ export default PendingOrder = ({ navigation, onClose }) => {
                     setSelectCity(!selectCity);
                 }}
             >
-                <View style={{
+                <TouchableOpacity onPress={()=> setSelectCity(!selectCity)}
+                style={{
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -235,7 +237,7 @@ export default PendingOrder = ({ navigation, onClose }) => {
                             }
                         </ScrollView>
                     </View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         </>
     )
