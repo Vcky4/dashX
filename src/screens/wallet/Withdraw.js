@@ -21,6 +21,7 @@ export default Withdraw = ({ navigation }) => {
                 backgroundColor: colors[colorScheme].primary,
                 padding: 20,
                 paddingBottom: 30,
+                marginBottom: 20,
                 borderBottomLeftRadius: 30,
                 borderBottomRightRadius: 30,
             }}>
@@ -57,36 +58,27 @@ export default Withdraw = ({ navigation }) => {
                 theme={colorScheme}
                 value={vehicleData.vehicle_number}
                 onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="LAG -234-JK"
+                placeholder="GT Bank"
                 containerStyle={styles.input}
-                label="Plate Number"
+                label="Bank"
             />
 
             <InputField
                 theme={colorScheme}
                 value={vehicleData.vehicle_number}
                 onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="LAG -234-JK"
+                placeholder="23456789023"
                 containerStyle={styles.input}
-                label="Plate Number"
+                label="Account number"
             />
 
             <InputField
                 theme={colorScheme}
                 value={vehicleData.vehicle_number}
                 onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="LAG -234-JK"
+                placeholder="Adeola Adeyemi"
                 containerStyle={styles.input}
-                label="Plate Number"
-            />
-
-            <InputField
-                theme={colorScheme}
-                value={vehicleData.vehicle_number}
-                onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="LAG -234-JK"
-                containerStyle={styles.input}
-                label="Plate Number"
+                label="Account name"
             />
 
         </View>
