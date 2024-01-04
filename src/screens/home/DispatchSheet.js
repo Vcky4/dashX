@@ -4,6 +4,7 @@ import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
 import endpoints from "../../../assets/endpoints/endpoints";
+import Toast from "react-native-toast-message";
 
 export default Dispatch = ({ onEnd, item }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -14,7 +15,7 @@ export default Dispatch = ({ onEnd, item }) => {
     const endDispatch = async () => {
         setProcessing(true)
         try {
-            await fetch(endpoints.baseUrl + endpoints.deliverOrder, {
+            const response = await fetch(endpoints.baseUrl + endpoints.deliverOrder, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,19 +27,32 @@ export default Dispatch = ({ onEnd, item }) => {
                     "ordercode": code
                 })
             })
-                .then((response) => response.json())
-                .then((json) => {
-                    console.log(json)
-                    setProcessing(false)
-                    if (json.status === 'success') {
-                        onEnd()
-                        // navigation.navigate(profileRouts.OrderDetails, { order: item })
-                        // navigation.navigate(profileRouts.OrderDetails, { order: item })
-                    }
+            const json = await response.json()
+            console.log(json)
+            setProcessing(false)
+            if (response.ok) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Success',
+                    text2: 'Order Delivered'
                 })
+                onEnd()
+            }
+            else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: json.message
+                })
+            }
         }
         catch (error) {
             console.log(error)
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Something went wrong'
+            })
             setProcessing(false)
         }
     }
