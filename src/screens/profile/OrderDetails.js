@@ -4,8 +4,9 @@ import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 
 export default OrderDetails = ({ navigation, route }) => {
+    const { order } = route.params
     const { colorScheme, user } = useContext(AuthContext)
-    console.log(user)
+    console.log(order)
     return (
         <View style={{
             flex: 1,
@@ -58,125 +59,129 @@ export default OrderDetails = ({ navigation, route }) => {
                 }}>{user.online_status ? 'Online' : 'Offline'}</Text>
             </View>
 
+            <Text style={{
+                color: colors[colorScheme].textDark,
+                fontSize: 16,
+                fontFamily: 'Inter-SemiBold',
+                marginHorizontal: 20,
+                marginTop: 20,
+                marginBottom: 10,
+            }}>Customer Details</Text>
 
-            <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                style={{
-                    marginTop: 20,
-                }}
-                renderItem={({ item }) =>
-                    <View style={{
-                        paddingHorizontal: 20,
-                        paddingVertical: 10,
-                        elevation: 5,
-                        marginBottom: 10,
-                        marginHorizontal: 10,
-                        borderRadius: 10,
-                        backgroundColor: colors[colorScheme].background
-                    }}>
-                        <Text style={{
-                            color: colors[colorScheme].textDark,
-                            fontSize: 14,
-                            fontFamily: 'Inter-SemiBold',
-                        }}>#a1287845</Text>
-                        <View style={{
-                            alignItems: 'center',
+            {
+                [1, 2].map((item, index) =>
+                    <View key={index}
+                        style={{
                             flexDirection: 'row',
-                            marginTop: 6,
+                            alignItems: 'center',
+                            marginHorizontal: 20,
+                            marginTop: 10,
+                            justifyContent: 'space-between',
                         }}>
-                            <View style={{
-                                alignItems: 'center',
-                                paddingVertical: 4
-                            }}>
-                                <View style={{
-                                    width: 8,
-                                    height: 8,
-                                    borderRadius: 4,
-                                    backgroundColor: colors[colorScheme].primary,
-                                }} />
-                                <View style={{
-                                    width: 1,
-                                    height: 40,
-                                    backgroundColor: colors[colorScheme].textGray,
-                                }} />
-                                <View style={{
-                                    width: 0,
-                                    height: 0,
-                                    borderStyle: 'solid',
-                                    overflow: 'hidden',
-                                    borderTopWidth: 6,
-                                    borderRightWidth: 4,
-                                    borderBottomWidth: 0,
-                                    borderLeftWidth: 4,
-                                    borderTopColor: colors[colorScheme].primary,
-                                    borderRightColor: 'transparent',
-                                    borderBottomColor: 'transparent',
-                                    borderLeftColor: 'transparent',
-                                }} />
-                            </View>
-
-                            <View style={{
-                                height: 70,
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Image
+                                source={
+                                    index == 0 ? require('../../../assets/images/user.png') : require('../../../assets/images/pin.png')
+                                }
+                                style={{
+                                    width: 29,
+                                    height: 29,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textGray,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
                                 marginLeft: 10,
-                                justifyContent: 'space-between',
-                            }}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    width: '100%',
-                                }}>
-                                    <Text style={{
-                                        color: colors[colorScheme].textDark,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter-SemiBold',
-                                    }}>iPhone 14 Pro Max</Text>
-
-                                    <View style={{
-                                        backgroundColor: colors[colorScheme].primary,
-                                        paddingHorizontal: 20,
-                                        paddingVertical: 4,
-                                        borderRadius: 10
-                                    }}>
-                                        <Text style={{
-                                            color: colors[colorScheme].white,
-                                            fontSize: 12,
-                                            fontFamily: 'Inter-Regular',
-                                        }}>Paid</Text>
-                                    </View>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    width: '100%',
-                                }}>
-                                    <Text style={{
-                                        color: colors[colorScheme].textDark,
-                                        fontSize: 14,
-                                        fontFamily: 'Inter-Regular',
-                                        width: '70%'
-                                    }}>KM 55, Lekki-Epe Expressway,
-                                        Sangotedo, Ibeju-Lekki</Text>
-
-                                    <View style={{
-                                        backgroundColor: colors[colorScheme].textGray,
-                                        paddingVertical: 4,
-                                        borderRadius: 10,
-                                        paddingHorizontal: 5
-                                    }}>
-                                        <Text style={{
-                                            color: colors[colorScheme].white,
-                                            fontSize: 12,
-                                            fontFamily: 'Inter-Regular',
-                                        }}>completed</Text>
-                                    </View>
-                                </View>
-                            </View>
+                            }}>{
+                                    index == 0 ? 'Naime:' : 'Address'
+                                }</Text>
                         </View>
-                    </View>
-                }
-            />
+                        <Text style={{
+                            color: colors[colorScheme].textGray,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Regular',
+                            marginLeft: 10,
+                            width: '50%',
+                        }}>{
+                                index == 0 ? order?.sendername : order?.senderaddress
+                            }</Text>
+                    </View>)
+            }
+            <View style={{
+                width: '84%',
+                height: 0.4,
+                backgroundColor: colors[colorScheme].border,
+                alignSelf: 'center',
+                marginTop: 25,
+            }} />
+
+            <Text style={{
+                color: colors[colorScheme].textDark,
+                fontSize: 16,
+                fontFamily: 'Inter-SemiBold',
+                marginHorizontal: 20,
+                marginTop: 20,
+                marginBottom: 10,
+            }}>Order Details</Text>
+
+            {
+                [1, 2, 3, 4].map((item, index) =>
+                    <View key={index}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginHorizontal: 20,
+                            marginTop: 10,
+                            justifyContent: 'space-between',
+                        }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Image
+                                source={
+                                    index == 0 ? require('../../../assets/images/pen.png')
+                                        : index == 1 ? require('../../../assets/images/recent.png')
+                                            : index == 2 ? require('../../../assets/images/money.png')
+                                                : require('../../../assets/images/cart.png')
+                                }
+                                style={{
+                                    width: 29,
+                                    height: 29,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textGray,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                                marginLeft: 10,
+                            }}>{
+                                    index == 0 ? 'Order ID:'
+                                        : index == 1 ? 'Pick Up Time:'
+                                            : index == 2 ? 'Payment Method: '
+                                                : 'Item(s) Ordered:'
+                                }</Text>
+                        </View>
+                        <Text style={{
+                            color: colors[colorScheme].textGray,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Regular',
+                            marginLeft: 10,
+                            width: '50%',
+                        }}>{
+                                index == 0 ? order._id
+                                    : index == 1 ? '12:00PM'
+                                        : index == 2 ? 'Cash'
+                                            : order.productname
+                            }</Text>
+                    </View>)
+            }
         </View>
     )
 }
