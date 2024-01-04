@@ -754,6 +754,7 @@ export default Home = ({ navigation }) => {
                 <DispatchSheet
                     item={dispatchItem}
                     onEnd={() => {
+                        getMyOrder()
                         setBottomStep(0)
                         setIsDispatch(false)
                         panelRef.current.togglePanel()
