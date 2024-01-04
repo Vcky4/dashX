@@ -37,6 +37,7 @@ export default function InputField({ label, theme = 'dark', containerStyle, ...r
                     fontFamily: 'Inter-Medium',
                     color: colors[theme].textDark,
                 }}
+                placeholderTextColor={colors[theme].textGray}
                 cursorColor={colors[theme].primary}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
