@@ -65,7 +65,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                     }}
                         onPress={() => {
                             //navigate to whatsapp
-                            // Linking.openURL
+                            Linking.openURL(`https://wa.me/${phone}`)
                         }}>
                         <Image
                             source={require('../../../assets/images/whatsapp.png')}
