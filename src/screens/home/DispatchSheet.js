@@ -8,7 +8,6 @@ export default Dispatch = ({ onEnd, item }) => {
     const { colorScheme, user } = useContext(AuthContext)
     const [code, setCode] = useState('')
     const [processing, setProcessing] = useState(false)
-
     return (
         <>
             <View style={{
@@ -38,12 +37,12 @@ export default Dispatch = ({ onEnd, item }) => {
                             color: colors[colorScheme].textDark,
                             fontSize: 16,
                             fontFamily: 'Inter-Bold',
-                        }}>{item?.sendername}</Text>
+                        }}>{item?.receivername}</Text>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 12,
                             fontFamily: 'Inter-Regular',
-                        }}>{item?.senderphone}</Text>
+                        }}>{item?.receiverphone}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{
@@ -53,7 +52,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 }}
                     onPress={() => {
                         //call
-                        Linking.openURL(`tel:${item?.senderphone}`)
+                        Linking.openURL(`tel:${item?.recieverphone}`)
                     }}>
                     <Image
                         source={require('../../../assets/images/phone.png')}
@@ -177,6 +176,7 @@ export default Dispatch = ({ onEnd, item }) => {
                             setCode(text)
                         }}
                         maxLength={6}
+                        cursorColor={colors[colorScheme].primary}
                         placeholderTextColor={colors[colorScheme].textGray}
                         style={{
                             fontFamily: 'Inter-Medium',

@@ -125,6 +125,16 @@ export default Home = ({ navigation }) => {
             })
     }
 
+    useEffect(() => {
+        //find for oder_status == shipping
+        if (myOrders.find(item => item.order_status == 'shipping') && online) {
+            bottomStep == 0 && setBottomStep(1)
+            setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
+            setIsDispatch(true)
+            panelRef.current.togglePanel()
+        }
+    }, [myOrders, online])
+
     const startDispatch = (id) => {
         fetch(endpoints.baseUrl + endpoints.startDispatch, {
             method: 'POST',
@@ -478,7 +488,7 @@ export default Home = ({ navigation }) => {
                     <View>
                         <Text style={{
                             color: colors[colorScheme].black,
-                            fontSize: 18,
+                            fontSize: 16,
                             fontFamily: 'Inter-Medium',
                         }}>You are currently <Text style={{
                             color: online ? '#B2FF65' : colors[colorScheme].primary,
@@ -698,8 +708,8 @@ export default Home = ({ navigation }) => {
 
             <BottomSheet isOpen={helpCoordinates != null}
                 wrapperStyle={{
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
+                    borderTopLeftRadius: 22,
+                    borderTopRightRadius: 22,
                     elevation: 10,
                     backgroundColor: colors[colorScheme].background,
                     // flex: 1,
@@ -722,7 +732,7 @@ export default Home = ({ navigation }) => {
                 }}
                     style={{
                         position: 'absolute',
-                        bottom: 420,
+                        bottom: 435,
                         right: 20,
                         zIndex: 100,
                         backgroundColor: colors[colorScheme].white,
