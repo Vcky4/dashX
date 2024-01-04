@@ -47,6 +47,7 @@ export default Home = ({ navigation }) => {
     const [online, setOnline] = useState(false);
     const [rating, setRating] = useState(0);
     const panelRef = useRef(null);
+    const panelRef2 = useRef(null);
     const [variableUser, setVariableUser] = useState({})
     const [updateCount, setUpdateCount] = useState(0);
     const [forceOnline, setForceOnline] = useState(true);
@@ -56,6 +57,7 @@ export default Home = ({ navigation }) => {
     const [myOrders, setMyOrders] = useState([])
     const [dispatchItem, setDispatchItem] = useState(null)
     const [processing, setProcessing] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -70,6 +72,7 @@ export default Home = ({ navigation }) => {
             authorization: `Bearer ${token}`,
         },
     });
+
     const getMyOrder = async () => {
         const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
             method: 'POST',
@@ -88,8 +91,8 @@ export default Home = ({ navigation }) => {
             setMyOrders(json.data)
             setDispatchItem(json.data[0])
         }
-
     }
+
     useEffect(() => {
         setTimeout(() => {
             getMyOrder()
@@ -127,13 +130,13 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         //find for oder_status == shipping
-        if (myOrders.find(item => item.order_status == 'shipping') && online) {
+        if (myOrders.find(item => item.order_status == 'shipping')) {
             bottomStep == 0 && setBottomStep(1)
             setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
             setIsDispatch(true)
             panelRef.current.togglePanel()
         }
-    }, [myOrders, online])
+    }, [myOrders])
 
     const startDispatch = (id) => {
         fetch(endpoints.baseUrl + endpoints.startDispatch, {
@@ -403,6 +406,44 @@ export default Home = ({ navigation }) => {
                 />
             </TouchableOpacity>
 
+
+            <TouchableOpacity onPress={() => {
+                // setBottomStep(1)
+                panelRef2.current.togglePanel()
+            }}
+                style={{
+                    position: 'absolute',
+                    top: 20,
+                    right: 20,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].primary,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                    paddingHorizontal: 20,
+                    paddingVertical: 6,
+                    display: online ? 'flex' : 'none',
+                }} >
+                <Text style={{
+                    color: colors[colorScheme].white,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                }}>New Orders</Text>
+                <Text style={{
+                    color: colors[colorScheme].primary,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                    backgroundColor: colors[colorScheme].white,
+                    position: 'absolute',
+                    right: -1,
+                    top: -7,
+                    borderRadius: 10,
+                    height: 20,
+                    width: 20,
+                    textAlign: 'center',
+                }}>{myOrders.length}</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => {
                 setBottomStep(1)
             }}
@@ -417,7 +458,7 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     paddingHorizontal: 20,
                     paddingVertical: 6,
-                    display: !isDispatch && online ? 'flex' : 'none',
+                    display: !isDispatch && !isOpen ? 'flex' : 'none',
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -474,7 +515,7 @@ export default Home = ({ navigation }) => {
                 zIndex: 100,
                 elevation: 10,
                 width: '100%',
-                display: bottomStep === 0 ? 'flex' : 'none',
+                display: bottomStep === 0 && !isOpen ? 'flex' : 'none',
             }}>
                 <View style={{
                     backgroundColor: online ? colors[colorScheme].lightBg2 : colors[colorScheme].lightBg,
@@ -763,6 +804,54 @@ export default Home = ({ navigation }) => {
                 <View style={{
                     height: 20
                 }} />
+            </BottomSheet>
+
+
+            <BottomSheet isOpen={false}
+                wrapperStyle={{
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    elevation: 10,
+                    backgroundColor: colors[colorScheme].background,
+                    flex: 1,
+                }}
+                sliderMaxHeight={height * 0.8}
+                outerContentStyle={{
+                    width: width,
+                    left: -20.5,
+                }}
+                lineContainerStyle={{
+                    // display: 'none'
+                }}
+                sliderMinHeight={0}
+                onOpen={() => {
+                    setIsOpen(true)
+                }}
+                onClose={() => {
+                    setIsOpen(false)
+                }}
+                ref={ref => panelRef2.current = ref}>
+                <View style={{
+                    backgroundColor: '#E6CEF2',
+                    top: -95,
+                    alignSelf: 'center',
+                    borderRadius: 30,
+                    position: 'absolute',
+                    paddingHorizontal: 20,
+                    paddingVertical: 6,
+                    display: isOpen ? 'flex' : 'none'
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].black,
+                        fontSize: 16,
+                        fontFamily: 'Inter-SemiBold',
+                    }}>Pending  Orders</Text>
+                </View>
+                <PendingOrder
+                    onClose={() => {
+                        panelRef2.current?.togglePanel()
+                    }}
+                    navigation={navigation} />
             </BottomSheet>
         </View>
 
