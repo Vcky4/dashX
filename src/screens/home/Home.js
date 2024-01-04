@@ -17,6 +17,7 @@ import Button from "../../component/Button";
 import getAddress from "../../utils/getAddress";
 import Dispatch from "./Dispatch";
 import DispatchSheet from "./DispatchSheet";
+import Toast from "react-native-toast-message";
 
 var Sound = require('react-native-sound');
 
@@ -54,6 +55,7 @@ export default Home = ({ navigation }) => {
     const [messageTrigger, setMessageTrigger] = useState(false);
     const [myOrders, setMyOrders] = useState([])
     const [dispatchItem, setDispatchItem] = useState(null)
+    const [processing, setProcessing] = useState(false)
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -120,6 +122,41 @@ export default Home = ({ navigation }) => {
             })
             .catch(err => {
                 console.log('err', err)
+            })
+    }
+
+    const startDispatch = (id) => {
+        fetch(endpoints.baseUrl + endpoints.startDispatch, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                "orderid": id
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                // console.log('resJson', resJson)
+                if (resJson.status) {
+                    setIsDispatch(true)
+                    panelRef.current.togglePanel()
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error',
+                        text2: resJson.message,
+                    })
+                }
+            })
+            .catch(err => {
+                console.log('err', err)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: err,
+                })
             })
     }
 
@@ -522,10 +559,10 @@ export default Home = ({ navigation }) => {
             }}>
                 <Dispatch items={myOrders}
                     navigation={navigation}
-                    onDispatch={() => {
-                        setIsDispatch(true)
-                        panelRef.current.togglePanel()
+                    onDispatch={(item) => {
+                        startDispatch(item._id)
                     }}
+                    processing={processing}
                     onIndexChanged={(item) => {
                         setDispatchItem(item)
                     }} />
@@ -704,12 +741,14 @@ export default Home = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
-                <DispatchSheet onEnd={() => {
-                    setBottomStep(0)
-                    setIsDispatch(false)
-                    panelRef.current.togglePanel()
-                    // setHelpCoordinate(null)
-                }} />
+                <DispatchSheet
+                    item={dispatchItem}
+                    onEnd={() => {
+                        setBottomStep(0)
+                        setIsDispatch(false)
+                        panelRef.current.togglePanel()
+                        // setHelpCoordinate(null)
+                    }} />
                 <View style={{
                     height: 20
                 }} />

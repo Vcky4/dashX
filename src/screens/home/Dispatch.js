@@ -8,7 +8,7 @@ import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
 
-export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] }) => {
+export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [], processing = false }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [index, setIndex] = useState(0)
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
@@ -188,7 +188,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] 
                                 <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
                                         if (item?.order_status === 'pickup') {
-                                            onDispatch()
+                                            onDispatch(item)
                                         } else {
                                             navigation.navigate(mainRouts.verifyPickup, {
                                                 item: item
@@ -201,8 +201,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [] 
                                         width: 137,
                                     }}
                                     fontSize={16}
-                                    loading={false}
-                                    enabled={true}
+                                    loading={processing}
+                                    enabled={!processing}
                                 />
 
                                 <View style={{

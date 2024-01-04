@@ -15,7 +15,8 @@ const endpoints = {
     acceptOrders: '/dispatch/accept/order',
     myOrders: '/dispatch/myorder',
     verifyOrder: '/dispatch/pickup/order',
-    city: '/dispatch/order/city'
+    city: '/dispatch/order/city',
+    startDispatch: '/dispatch/start/dispatch',
 }
 
 export default endpoints;

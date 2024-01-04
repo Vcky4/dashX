@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Image, Linking, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
 
-export default Dispatch = ({ onEnd }) => {
+export default Dispatch = ({ onEnd, item }) => {
     const { colorScheme, user } = useContext(AuthContext)
+    const [code, setCode] = useState('')
+    const [processing, setProcessing] = useState(false)
+
     return (
         <>
             <View style={{
@@ -35,17 +38,12 @@ export default Dispatch = ({ onEnd }) => {
                             color: colors[colorScheme].textDark,
                             fontSize: 16,
                             fontFamily: 'Inter-Bold',
-                        }}>{user?.name}</Text>
+                        }}>{item?.sendername}</Text>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 12,
                             fontFamily: 'Inter-Regular',
-                        }}>{user.email}</Text>
-                        <Text style={{
-                            color: colors[colorScheme].textGray,
-                            fontSize: 12,
-                            fontFamily: 'Inter-Regular',
-                        }}>08096867881</Text>
+                        }}>{item?.senderphone}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{
@@ -55,7 +53,7 @@ export default Dispatch = ({ onEnd }) => {
                 }}
                     onPress={() => {
                         //call
-                        Linking.openURL(`tel:${user?.phone}`)
+                        Linking.openURL(`tel:${item?.senderphone}`)
                     }}>
                     <Image
                         source={require('../../../assets/images/phone.png')}
@@ -102,7 +100,7 @@ export default Dispatch = ({ onEnd }) => {
                             marginLeft: 5,
                         }}>Parcel ID: <Text style={{
                             fontFamily: 'Inter-Medium',
-                        }}>         #A1287845</Text></Text>
+                        }}> {item?._id}</Text></Text>
                     </View>
                 </View>
                 <View style={{
@@ -125,7 +123,7 @@ export default Dispatch = ({ onEnd }) => {
                         fontSize: 14,
                         fontFamily: 'Inter-Medium',
                         marginLeft: 5,
-                    }}>25, Ogeretedo Street, Dopemu, Agege</Text>
+                    }}>{item?.senderaddress}</Text>
                 </View>
 
                 <View style={{
@@ -148,7 +146,7 @@ export default Dispatch = ({ onEnd }) => {
                         fontSize: 14,
                         fontFamily: 'Inter-Meduim',
                         marginLeft: 5,
-                    }}>25, Ogeretedo Street, Dopemu, Agege</Text>
+                    }}>{item?.receiveraddress}</Text>
                 </View>
             </View>
 
@@ -174,6 +172,11 @@ export default Dispatch = ({ onEnd }) => {
                 }}>
                     <TextInput
                         placeholder="235jVG"
+                        value={code}
+                        onChangeText={(text) => {
+                            setCode(text)
+                        }}
+                        maxLength={6}
                         placeholderTextColor={colors[colorScheme].textGray}
                         style={{
                             fontFamily: 'Inter-Medium',
@@ -195,8 +198,8 @@ export default Dispatch = ({ onEnd }) => {
                         alignSelf: 'center',
                     }}
                     fontSize={16}
-                    loading={false}
-                    enabled={true}
+                    loading={processing}
+                    enabled={code.length > 4 && !processing}
                 />
             </View>
         </>
