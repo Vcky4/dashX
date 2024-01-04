@@ -8,6 +8,7 @@ export default Dispatch = ({ onEnd, item }) => {
     const { colorScheme, user } = useContext(AuthContext)
     const [code, setCode] = useState('')
     const [processing, setProcessing] = useState(false)
+    // console.log(item)
     return (
         <>
             <View style={{
