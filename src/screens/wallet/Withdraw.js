@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from "react
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import InputField from "../../component/InputField";
+import Button from "../../component/Button";
 
 export default Withdraw = ({ navigation }) => {
     const { colorScheme, user } = useContext(AuthContext)
@@ -54,32 +55,57 @@ export default Withdraw = ({ navigation }) => {
                 </View>
             </View>
 
-            <InputField
-                theme={colorScheme}
-                value={vehicleData.vehicle_number}
-                onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="GT Bank"
-                containerStyle={styles.input}
-                label="Bank"
-            />
+            <View style={{
+                justifyContent: 'space-between',
+                flex: 1,
+                marginBottom: 60,
+            }}>
+                <View>
+                    <InputField
+                        theme={colorScheme}
+                        value={vehicleData.vehicle_number}
+                        onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
+                        placeholder="GT Bank"
+                        containerStyle={styles.input}
+                        label="Bank"
+                    />
 
-            <InputField
-                theme={colorScheme}
-                value={vehicleData.vehicle_number}
-                onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="23456789023"
-                containerStyle={styles.input}
-                label="Account number"
-            />
+                    <InputField
+                        theme={colorScheme}
+                        value={vehicleData.vehicle_number}
+                        onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
+                        placeholder="23456789023"
+                        containerStyle={styles.input}
+                        label="Account number"
+                    />
 
-            <InputField
-                theme={colorScheme}
-                value={vehicleData.vehicle_number}
-                onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
-                placeholder="Adeola Adeyemi"
-                containerStyle={styles.input}
-                label="Account name"
-            />
+                    <InputField
+                        theme={colorScheme}
+                        value={vehicleData.vehicle_number}
+                        onChangeText={(text) => setVehicleData({ ...vehicleData, vehicle_number: text })}
+                        placeholder="Adeola Adeyemi"
+                        containerStyle={styles.input}
+                        label="Account name"
+                    />
+                </View>
+
+                <Button
+                    title="Withdraw"
+                    buttonStyle={{
+                        marginTop: 30,
+                        marginHorizontal: 20,
+                        borderRadius: 30,
+                    }}
+                    loading={false}
+                    enabled={true}
+                    textColor={colors[colorScheme].textDark}
+                    buttonColor={colors[colorScheme].primary}
+                    onPress={() => {
+                        // loginUser()
+                        // navigation.navigate(authRouts.otpVerification)
+                    }}
+                />
+            </View>
 
         </View>
     )
