@@ -34,12 +34,12 @@ export default Profile = ({ navigation }) => {
                                 width: 24,
                                 height: 24,
                                 resizeMode: "contain",
-                                tintColor: colors[colorScheme].textDark,
+                                tintColor: colors[colorScheme].white,
                             }}
                         />
                     </TouchableOpacity>
                     <Text style={{
-                        color: colors[colorScheme].textDark,
+                        color: colors[colorScheme].white,
                         fontSize: 24,
                         fontFamily: 'Inter-Bold',
                     }}>Profile</Text>

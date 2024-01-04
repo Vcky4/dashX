@@ -15,6 +15,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import PendingOrder from '../../screens/home/PendingOrder';
 import VerifyPickUp from '../../screens/home/VerifyPickUp';
 import Profile from '../../screens/profile/Profile';
+import History from '../../screens/profile/History';
 
 
 const { width, height } = Dimensions.get('window');
@@ -93,6 +94,7 @@ const AuthPassed = () => {
             <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
+            <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );
