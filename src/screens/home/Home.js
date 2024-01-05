@@ -436,6 +436,7 @@ export default Home = ({ navigation }) => {
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
                 }}>New Orders</Text>
+                
                 <Text style={{
                     color: colors[colorScheme].primary,
                     fontSize: 16,

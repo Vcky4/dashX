@@ -7,6 +7,7 @@ const businessRoutes = {
     activeOrders: 'ActiveOrders',
     activeRider: 'ActiveRider',
     monitorRider: 'MonitorRider',
+    addRider: 'addRider',
 }
 
 export default businessRoutes;
