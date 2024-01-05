@@ -3,7 +3,8 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 
-export default DeliveryDetails = ({ navigation }) => {
+export default DeliveryDetails = ({ navigation, route }) => {
+    const { item } = route.params
     const { colorScheme, user, token } = useContext(AuthContext)
 
 

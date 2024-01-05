@@ -24,6 +24,7 @@ import Deposit from '../../screens/wallet/Deposit';
 import businessRoutes from '../routs/businessRouts';
 import Dashboard from '../../screens/business/Dashboard';
 import DeliveryHistory from '../../screens/business/delivery/DeliveryHistory';
+import DeliveryDetails from '../../screens/business/delivery/DeliveryDetails';
 
 
 const { width, height } = Dimensions.get('window');
@@ -104,6 +105,7 @@ const AuthPassed = () => {
                     ? <>
                         <Stack.Screen name={businessRoutes.dashboard} component={Dashboard} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.deliveryHistory} component={DeliveryHistory} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.deliveryDetails} component={DeliveryDetails} options={{ headerShown: false }} />
                     </>
                     : <>
                         <Stack.Screen

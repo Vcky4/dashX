@@ -120,7 +120,7 @@ export default Dashboard = ({ navigation }) => {
             <FlatList
                 data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
                 renderItem={({ item, index }) =>
-                    <TouchableOpacity
+                    <TouchableOpacity onPress={() => navigation.navigate('DeliveryDetails', { item: item })}
                         style={{
                             backgroundColor: colors[colorScheme].background,
                             paddingVertical: 10,
