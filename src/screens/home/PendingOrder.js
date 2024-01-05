@@ -44,7 +44,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     }
     useEffect(() => {
         setInterval(() => {
-        getCities()
+            getCities()
         }, 5000);
     }, [])
 
@@ -62,18 +62,26 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 })
             })
             const json = await response.json()
-            // console.log(json)
+            // console.log(city, json)
             //check if array
             if (Array.isArray(json.data)) {
-                // if (orders.length !== json.data.length) {
+                if (orders.length !== json.data.length) {
                     setOrders(json.data)
                     onNewOrderChange(json.data.length)
-                // }
+                }
             }
         } catch (error) {
             console.error(error)
         }
     }
+
+    useEffect(() => {
+        clearInterval(interval)
+        let interval = setInterval(() => {
+            getOrders()
+        }, 5000)
+        return () => clearInterval(interval)
+    }, [city])
 
     const acceptOrders = async (id) => {
         setProcessing(true)
@@ -104,9 +112,6 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
         }
     }
 
-    useEffect(() => {
-        getOrders()
-    }, [city])
     return (
         <>
             <FlatList style={{

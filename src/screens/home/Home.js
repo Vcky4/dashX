@@ -81,7 +81,10 @@ export default Home = ({ navigation }) => {
         //check if array
         if (Array.isArray(json.data)) {
             setMyOrders(json.data)
-            setDispatchItem(json.data[0])
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
         }
     }
 
@@ -610,9 +613,9 @@ export default Home = ({ navigation }) => {
                         startDispatch(item._id)
                     }}
                     processing={processing}
-                    onIndexChanged={(item) => {
-                        console.log('item', item)
+                    onIndexChanged={(index, item) => {
                         setDispatchItem(item)
+                        console.log('item', item)
                     }} />
             </View>
             <MapView
@@ -626,9 +629,6 @@ export default Home = ({ navigation }) => {
                 customMapStyle={mapCustomStyle}
                 // showsTraffic={true}
                 showsBuildings={true}
-                // compassOffset={{
-
-                // }}
                 showsCompass={true}
                 followsUserLocation={true}
                 zoomControlEnabled={false}
