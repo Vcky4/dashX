@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { AuthContext } from "../../../context/AuthContext";
-import colors from "../../../assets/colors/colors";
+import { AuthContext } from "../../../../../context/AuthContext";
+import colors from "../../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
 
 export default DeliveryHistory = ({ navigation }) => {
@@ -68,7 +68,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                 })
                         }</Text>
                         <Image
-                            source={require('../../../assets/images/back.png')}
+                            source={require('../../../../assets/images/back.png')}
                             style={{
                                 width: 24,
                                 height: 24,

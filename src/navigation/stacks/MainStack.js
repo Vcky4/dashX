@@ -23,7 +23,7 @@ import Withdraw from '../../screens/wallet/Withdraw';
 import Deposit from '../../screens/wallet/Deposit';
 import businessRoutes from '../routs/businessRouts';
 import Dashboard from '../../screens/business/Dashboard';
-import DeliveryHistory from '../../screens/business/DeliveryHistory';
+import DeliveryHistory from '../../screens/business/delivery/DeliveryHistory';
 
 
 const { width, height } = Dimensions.get('window');
