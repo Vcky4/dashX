@@ -9,7 +9,7 @@ export default Splash = () => {
         <View style={styles.container}>
             <Image
                 style={styles.image}
-                source={require("../../../assets/images/splash.png")}
+            source={require("../../../assets/images/splash.png")}
             />
         </View>
     );
@@ -23,9 +23,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#A10F7E'
     },
     image: {
-        resizeMode: "cover",
+        resizeMode: "contain",
         width: width,
         height: height,
-        marginBottom: 80
+        marginBottom: 80,
+    
     }
 });

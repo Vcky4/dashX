@@ -8,6 +8,7 @@ const businessRoutes = {
     activeRider: 'ActiveRider',
     monitorRider: 'MonitorRider',
     addRider: 'addRider',
+    totalFleet:'totalFleet'
 }
 
 export default businessRoutes;

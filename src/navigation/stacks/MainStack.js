@@ -32,6 +32,12 @@ import ActiveRider from '../../screens/business/Rider/ActiveRider';
 import Monitor from '../../screens/business/monitor/Monitor';
 
 import Rider from '../../screens/business/Rider'
+
+
+import TotalFleet from '../../screens/business/TotalFleet';
+
+
+
 const { width, height } = Dimensions.get('window');
 
 
@@ -133,6 +139,8 @@ const AuthPassed = () => {
                         <Stack.Screen name={businessRoutes.activeOrders} component={ActiveOrders} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.activeRider} component={ActiveRider} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.monitorRider} component={Monitor} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.addRider} component={Rider} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.totalFleet} component={TotalFleet} options={{ headerShown: false }} />
                     </>
                     : <>
                         <Stack.Screen

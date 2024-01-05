@@ -66,7 +66,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontFamily: 'Inter-Bold',
               marginStart: 20,
             }}>
-            Delivery History
+            Add Rider
           </Text>
         </View>
         <View style={{marginHorizontal: 20, marginTop: 42, height: '100%'}}>
@@ -110,10 +110,11 @@ export default DeliveryHistory = ({navigation}) => {
             onChangeText={text =>
               setRequestData(preState => ({
                 ...preState,
-                riderPhone: text,
+                password: text,
               }))
             }
             placeholder="Password"
+            placeholderTextColor={'#AEAEAE'}
             containerStyle={styles.input}
           />
           <TouchableOpacity
@@ -133,7 +134,7 @@ export default DeliveryHistory = ({navigation}) => {
                 fontFamily: 'Inter-Regular',
                 fontSize: 16,
                 paddingStart: 10,
-                color: colors[appearance].subText,
+                color: '#AEAEAE',
               }}>
               {requestData.upLoadImage.length > 0
                 ? requestData.upLoadImage
@@ -161,7 +162,7 @@ export default DeliveryHistory = ({navigation}) => {
                 fontFamily: 'Inter-Regular',
                 fontSize: 16,
                 paddingStart: 10,
-                color: colors[appearance].subText,
+                color: '#AEAEAE',
               }}>
               {requestData.VechicleType.length > 0
                 ? requestData.VechicleType
