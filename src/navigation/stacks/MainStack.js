@@ -108,6 +108,7 @@ const AuthPassed = () => {
                         <Stack.Screen name={businessRoutes.deliveryHistory} component={DeliveryHistory} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.deliveryDetails} component={DeliveryDetails} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.totalOrder} component={TotalOrder} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
                     </>
                     : <>
                         <Stack.Screen

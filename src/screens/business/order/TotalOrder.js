@@ -3,6 +3,7 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
+import businessRoutes from "../../../navigation/routs/businessRouts";
 
 export default TotalOrder = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -119,7 +120,7 @@ export default TotalOrder = ({ navigation }) => {
                 <FlatList
                     data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
                     renderItem={({ item, index }) =>
-                        <TouchableOpacity onPress={() => navigation.navigate('DeliveryDetails', { item: item })}
+                        <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.orderDetails, { item: item })}
                             style={{
                                 backgroundColor: colors[colorScheme].background,
                                 paddingVertical: 10,
