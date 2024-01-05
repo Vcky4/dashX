@@ -61,7 +61,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 alignItems: 'center',
                             }}>
                                 <Image
-                                    source={user.photo.length > 0 ? { uri: user.photo } : require('../../../assets/images/user.png')}
+                                    source={user.photo.length}
                                     style={{
                                         width: 46,
                                         height: 46,

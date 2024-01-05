@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Pl
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
+import BottomSheet from 'react-native-simple-bottom-sheet';
 
 import colors from "../../../../assets/colors/colors";
 import endpoints from "../../../../assets/endpoints/endpoints";
@@ -18,9 +19,10 @@ export default Monitor = ({ navigation }) => {
     // const [distance, setDistance] = useState(0);
     // const [duration, setDuration] = useState(0);
     const [isDispatch, setIsDispatch] = useState(false);
-    const [online, setOnline] = useState(false);
+    const [open, setOpen] = useState(false);
+    const panelRef = useRef(null);
     const [updateCount, setUpdateCount] = useState(0);
-    const [dispatchItem, setDispatchItem] = useState(null)
+    const [positioned, setPositioned] = useState(false);
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -180,14 +182,7 @@ export default Monitor = ({ navigation }) => {
                 //     altitude: myLocation?.altitude ? myLocation?.altitude : 0,
                 //     zoom: 15,
                 // }}
-                onTouchEnd={() => {
-                    // console.log('onTouchEnd')
-                    updateControl(true);
-                }}
-                onTouchStart={() => {
-                    // console.log('onTouchStart')
-                    updateControl(false);
-                }}
+
                 userLocationUpdateInterval={10000}
                 accessible={true}
                 showsScale={true}
@@ -222,39 +217,220 @@ export default Monitor = ({ navigation }) => {
             // }}
             >
 
-                {(false) &&
-                    <>
+
+
+                {
+                    open && <>
                         <Marker
                             coordinate={{
-                                latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                                longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                                latitude: coordinate.latitude - 0.0005,
+                                longitude: coordinate.longitude + 0.0055,
                             }}
                             title={"Pickup"}
-                            description={dispatchItem?.senderaddress}
-                            pinColor={colors[colorScheme].primary}
-                        />
+                            description={''}
+                        // pinColor={colors[colorScheme].primary}
+                        >
+                            <View style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Image
+                                    source={require('../../../../assets/images/lcActive.png')}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: 'contain',
+                                        zIndex: 10,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                            </View>
+                        </Marker>
 
                         <Marker
                             coordinate={{
-                                latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
-                                longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                                latitude: coordinate.latitude - 0.0005,
+                                longitude: coordinate.longitude,
                             }}
-                            title={"Delivery"}
-                            description={dispatchItem?.receiveraddress}
-                            pinColor={colors[colorScheme].primary}
-                        />
+                            title={"Pickup"}
+                            description={''}
+                        // pinColor={colors[colorScheme].primary}
+                        >
+                            <View style={{
+                                // width: 40,
+                                // height: 40,
+                                // borderRadius: 20,
+                                // backgroundColor: colors[colorScheme].primary,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Image
+                                    source={{ uri: user.photo }}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                        resizeMode: 'cover',
+                                        borderRadius: 14,
+                                        position: 'absolute',
+                                        zIndex: 10,
+                                        top: 5,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                                <Image
+                                    source={require('../../../../assets/images/lcBlack.png')}
+                                    style={{
+                                        width: 32,
+                                        height: 40,
+                                        resizeMode: 'contain',
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+
+                                <Image
+                                    source={require('../../../../assets/images/lcActive.png')}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: 'contain',
+                                        position: 'absolute',
+                                        bottom: -6,
+                                        zIndex: 10,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                            </View>
+                        </Marker>
                     </>
                 }
 
-                {(false) &&
+                {
+                    !open && <>
+                        <Marker
+                            coordinate={{
+                                latitude: coordinate.latitude,
+                                longitude: coordinate.longitude - 0.0005,
+                            }}
+                            title={"Pickup"}
+                            description={''}
+                            onPress={() => panelRef.current.togglePanel()}
+                        // pinColor={colors[colorScheme].primary}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    // width: 40,
+                                    // height: 40,
+                                    // borderRadius: 20,
+                                    // backgroundColor: colors[colorScheme].primary,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                <Image
+                                    source={{ uri: user.photo }}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                        resizeMode: 'cover',
+                                        borderRadius: 14,
+                                        position: 'absolute',
+                                        zIndex: 10,
+                                        top: 5,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                                <Image
+                                    source={require('../../../../assets/images/lcBlack.png')}
+                                    style={{
+                                        width: 32,
+                                        height: 40,
+                                        resizeMode: 'contain',
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+
+                                <Image
+                                    source={require('../../../../assets/images/lcRed.png')}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: 'contain',
+                                        position: 'absolute',
+                                        bottom: -6,
+                                        zIndex: 10,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </Marker>
+
+
+
+                        <Marker
+                            coordinate={{
+                                latitude: coordinate.latitude - 0.0005,
+                                longitude: coordinate.longitude,
+                            }}
+                            title={"Pickup"}
+                            description={''}
+                        // pinColor={colors[colorScheme].primary}
+                        >
+                            <View style={{
+                                // width: 40,
+                                // height: 40,
+                                // borderRadius: 20,
+                                // backgroundColor: colors[colorScheme].primary,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Image
+                                    source={{ uri: user.photo }}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                        resizeMode: 'cover',
+                                        borderRadius: 14,
+                                        position: 'absolute',
+                                        zIndex: 10,
+                                        top: 5,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                                <Image
+                                    source={require('../../../../assets/images/lcBlack.png')}
+                                    style={{
+                                        width: 32,
+                                        height: 40,
+                                        resizeMode: 'contain',
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+
+                                <Image
+                                    source={require('../../../../assets/images/lcActive.png')}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: 'contain',
+                                        position: 'absolute',
+                                        bottom: -6,
+                                        zIndex: 10,
+                                        // tintColor: colors[colorScheme].white,
+                                    }}
+                                />
+                            </View>
+                        </Marker>
+                    </>
+                }
+
+                {(open) &&
                     <MapViewDirections
                         origin={{
-                            latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                            longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                            latitude: coordinate.latitude - 0.0005,
+                            longitude: coordinate.longitude + 0.0055,
                         }}
                         destination={{
-                            latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
-                            longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                            latitude: coordinate.latitude - 0.0005,
+                            longitude: coordinate.longitude,
                         }}
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={4}
@@ -276,14 +452,17 @@ export default Monitor = ({ navigation }) => {
                             // setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
-                            this.mapView.fitToCoordinates(result.coordinates, {
-                                edgePadding: {
-                                    right: (width / 20),
-                                    bottom: (height / 20),
-                                    left: (width / 20),
-                                    top: (height / 20),
-                                }
-                            });
+                            if (!positioned) {
+                                this.mapView.fitToCoordinates(result.coordinates, {
+                                    edgePadding: {
+                                        right: (width / 20),
+                                        bottom: (height / 20),
+                                        left: (width / 20),
+                                        top: (height / 20),
+                                    }
+                                });
+                                setPositioned(true)
+                            }
                         }}
                         onError={(errorMessage) => {
                             console.log('GOT AN ERROR', errorMessage);
@@ -291,6 +470,91 @@ export default Monitor = ({ navigation }) => {
                     />}
 
             </MapView>
+
+            <BottomSheet isOpen={open}
+                wrapperStyle={{
+                    borderTopLeftRadius: 22,
+                    borderTopRightRadius: 22,
+                    elevation: 10,
+                    backgroundColor: colors[colorScheme].background,
+                    // flex: 1,
+                }}
+                outerContentStyle={{
+                    width: width,
+                    borderRadius: 8,
+                    left: -20.5,
+                }}
+                onOpen={() => setOpen(true)}
+                onClose={() => {
+                    setOpen(false)
+                    setPositioned(false)
+                }}
+                sliderMaxHeight={height - 100}
+                sliderMinHeight={isDispatch ? 50 : 0}
+                ref={ref => panelRef.current = ref}>
+
+                <View style={{
+                    paddingHorizontal: 20,
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 16,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>Order Details</Text>
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 16,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>Samue Tom</Text>
+                    </View>
+
+                    <View style={{
+                        borderRadius: 10,
+                        backgroundColor: '#EFE9E7',
+                        padding: 10,
+                        marginTop: 10
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}>
+                            <View>
+                                <Text style={{
+                                    color: colors[colorScheme].black,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter-Regular',
+                                }}>Current order price</Text>
+                                <Text style={{
+                                    color: colors[colorScheme].black,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter-SemiBold',
+                                }}>₦300</Text>
+                            </View>
+
+                            <View style={{
+                                alignItems: 'flex-end',
+                            }}>
+                                <Text style={{
+                                    color: colors[colorScheme].black,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter-Regular',
+                                }}>Orders completed</Text>
+                                <Text style={{
+                                    color: colors[colorScheme].black,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter-SemiBold',
+                                }}>10</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </BottomSheet>
         </View>
 
 
