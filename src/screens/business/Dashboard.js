@@ -49,7 +49,19 @@ export default Dashboard = ({ navigation }) => {
                 justifyContent: 'space-between',
             }}>
                 {[1, 2, 3, 4].map((item, index) =>
-                    <TouchableOpacity key={index}
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (index == 0) {
+                                navigation.navigate(businessRoutes.totalOrder)
+                            } else if (index == 1) {
+                                navigation.navigate(businessRoutes.totalFleet)
+                            } else if (index == 2) {
+                                navigation.navigate(businessRoutes.activeOrder)
+                            } else if (index == 3) {
+                                navigation.navigate(businessRoutes.activeRider)
+                            }
+                        }}
+                        key={index}
                         style={{
                             backgroundColor: index > 1 ? '#FFD9D9' : '#D9FFDA',
                             padding: 10,
