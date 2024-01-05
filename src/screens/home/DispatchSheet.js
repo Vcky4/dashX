@@ -38,6 +38,7 @@ export default Dispatch = ({ onEnd, item }) => {
                     text2: 'Order Delivered'
                 })
                 setInputCode(false)
+                setCode('')
                 onEnd()
             }
             else {

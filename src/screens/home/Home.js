@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, Linking } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
@@ -58,6 +58,19 @@ export default Home = ({ navigation }) => {
     });
 
     const [positioned, setPositioned] = useState(false)
+
+
+    //open direction on maps
+    const openDirection = (lat, lng) => {
+        const scheme = Platform.select({
+            ios: 'maps:0,0?q=',
+            android: 'geo:0,0?q=',
+        });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+        const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+        Linking.openURL(url);
+    }
 
     // //setup to socket
     // const socket = io(endpoints.socketUrl, {
@@ -153,6 +166,10 @@ export default Home = ({ navigation }) => {
                 if (resJson.status) {
                     setIsDispatch(true)
                     panelRef.current.togglePanel()
+                    openDirection(
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                    )
                 } else {
                     Toast.show({
                         type: 'error',
