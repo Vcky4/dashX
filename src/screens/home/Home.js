@@ -654,6 +654,7 @@ export default Home = ({ navigation }) => {
                 accessible={true}
                 showsScale={true}
                 rotateEnabled={true}
+                compassOffset={{ x: -10, y: 300 }}
                 onUserLocationChange={updateMyLocation}
                 // showsIndoors={true}
                 // showsIndoorLevelPicker={true}
