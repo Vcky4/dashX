@@ -495,6 +495,7 @@ export default Monitor = ({ navigation }) => {
 
                 <View style={{
                     paddingHorizontal: 20,
+                    marginBottom: 30
                 }}>
                     <View style={{
                         flexDirection: 'row',
@@ -551,6 +552,73 @@ export default Monitor = ({ navigation }) => {
                                     fontFamily: 'Inter-SemiBold',
                                 }}>10</Text>
                             </View>
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 10,
+                            paddingHorizontal: 10,
+                        }}>
+                            <Image
+                                source={require('../../../../assets/images/mark.png')}
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: 'contain',
+                                }}
+                            />
+                            <View style={{
+                                backgroundColor: colors[colorScheme].primary,
+                                width: '40%',
+                                height: 6
+                            }} />
+                            <Image
+                                source={require('../../../../assets/images/mark.png')}
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: 'contain',
+                                    // tintColor: colors[colorScheme].white,
+                                }}
+                            />
+                            <View style={{
+                                backgroundColor: colors[colorScheme].inactive,
+                                width: '40%',
+                                height: 6
+                            }} />
+                            <Image
+                                source={require('../../../../assets/images/mark.png')}
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: 'contain',
+                                    tintColor: colors[colorScheme].white,
+                                }}
+                            />
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        }}>
+                            <Text style={{
+                                color: colors[colorScheme].primary,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                            }}>Pickup</Text>
+                            <Text style={{
+                                color: colors[colorScheme].primary,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                                left: 10
+                            }}>In Progress</Text>
+                            <Text style={{
+                                color: colors[colorScheme].primary,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                            }}>Delivered</Text>
                         </View>
                     </View>
                 </View>
