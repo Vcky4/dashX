@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
+import businessRoutes from "../../navigation/routs/businessRouts";
 
 export default Dashboard = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -107,7 +108,7 @@ export default Dashboard = ({ navigation }) => {
                     fontSize: 14,
                     fontFamily: 'Inter-SemiBold',
                 }}>Delivery History</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryHistory)}>
                     <Text style={{
                         color: colors[colorScheme].white,
                         fontSize: 14,

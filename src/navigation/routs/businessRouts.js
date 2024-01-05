@@ -1,5 +1,6 @@
 const businessRoutes = {
-  dashboard: 'Dashboard',
+    dashboard: 'Dashboard',
+    deliveryHistory: 'DeliveryHistory',
 }
 
 export default businessRoutes;
