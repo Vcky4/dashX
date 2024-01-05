@@ -36,6 +36,7 @@ import Rider from '../../screens/business/Rider'
 
 import TotalFleet from '../../screens/business/TotalFleet';
 import FleetDetails from '../../screens/business/FleetDetails';
+import Chat from '../../screens/support/Chat';
 
 
 
@@ -158,6 +159,7 @@ const AuthPassed = () => {
                     </>
             }
 
+            <Stack.Screen name={mainRouts.chat} component={Chat} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.wallet} component={Wallet} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.withdraw} component={Withdraw} options={{ headerShown: false }} />

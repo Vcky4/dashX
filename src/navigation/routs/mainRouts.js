@@ -9,6 +9,7 @@ const mainRouts = {
     wallet: 'Wallet',
     withdraw: 'Withdraw',
     deposit: 'Deposit',
+    chat: 'Chat',
 }
 
 export default mainRouts;

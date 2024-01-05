@@ -240,23 +240,6 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Message</Text>
                             </View>
                         </TouchableOpacity> */}
-                                    <TouchableOpacity style={{ marginTop: 30 }}
-                                        onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
-                                        <View style={styles.itemWrapper}>
-                                            <Image
-                                                source={require('../../../assets/images/support.png')}
-                                                style={{
-                                                    width: 22,
-                                                    height: 22,
-                                                    resizeMode: "contain",
-                                                    tintColor: colors[colorScheme].textGray,
-                                                }}
-                                            />
-                                            <Text style={[styles.items, {
-                                                color: colors[colorScheme].textGray,
-                                            }]}>Support</Text>
-                                        </View>
-                                    </TouchableOpacity>
                                     {/* <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
@@ -274,25 +257,43 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Settings</Text>
                             </View>
                         </TouchableOpacity> */}
-                                    <TouchableOpacity style={{ marginTop: 30 }}
-                                        onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
-                                        <View style={styles.itemWrapper}>
-                                            <Image
-                                                source={require('../../../assets/images/help.png')}
-                                                style={{
-                                                    width: 22,
-                                                    height: 22,
-                                                    resizeMode: "contain",
-                                                    tintColor: colors[colorScheme].textGray,
-                                                }}
-                                            />
-                                            <Text style={[styles.items, {
-                                                color: colors[colorScheme].textGray,
-                                            }]}>About</Text>
-                                        </View>
-                                    </TouchableOpacity>
                                 </>
                         }
+
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(mainRoute.chat)}>
+                            <View style={styles.itemWrapper}>
+                                <Image
+                                    source={require('../../../assets/images/support.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>Support</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginTop: 30 }}
+                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                            <View style={styles.itemWrapper}>
+                                <Image
+                                    source={require('../../../assets/images/help.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        resizeMode: "contain",
+                                        tintColor: colors[colorScheme].textGray,
+                                    }}
+                                />
+                                <Text style={[styles.items, {
+                                    color: colors[colorScheme].textGray,
+                                }]}>About</Text>
+                            </View>
+                        </TouchableOpacity>
                     </ScrollView>
 
                     <View style={{
