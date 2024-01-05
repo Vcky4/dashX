@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Linking, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
@@ -7,6 +7,8 @@ import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
+
+const { width, height } = Dimensions.get('window');
 
 export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [], processing = false }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -99,181 +101,191 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                     </TouchableOpacity>
                 </View>
             </View>
-            <Swiper
-                onIndexChanged={(index) => {
-                    setIndex(index)
-                    onIndexChanged(items[index])
+
+           <View style={{
+            marginHorizontal: 5
+           }}>
+           <FlatList
+                data={items}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+                onMomentumScrollEnd={(e) => {
+                    const contentOffset = e.nativeEvent.contentOffset;
+                    const viewSize = e.nativeEvent.layoutMeasurement;
+                    const pageNum = Math.floor(contentOffset.x / viewSize.width);
+                    setIndex(pageNum)
+                    onIndexChanged(items[pageNum])
                 }}
-                style={{
-                    height: 220,
-                }}>
-                {
-                    items.map((item, index) =>
-                        <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
-                            key={index} style={{
-                                marginTop: 20,
-                                elevation: 20,
-                                backgroundColor: colors[colorScheme].background,
-                                borderRadius: 10,
-                                shadowColor: '#000000',
-                                padding: 14,
-                                marginHorizontal: 10,
-                                marginBottom: 20,
+                renderItem={({ item }) =>
+                    <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
+                        style={{
+                            marginTop: 20,
+                            elevation: 20,
+                            backgroundColor: colors[colorScheme].background,
+                            borderRadius: 10,
+                            shadowColor: '#000000',
+                            padding: 14,
+                            // marginHorizontal: 10,
+                            marginBottom: 20,
+                            width: width -10,
+                        }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        }}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
                             }}>
+                                <Text style={{
+                                    color: colors[colorScheme].primary,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter-Medium',
+                                }}>{item?.productname}</Text>
+                                <Text style={{
+                                    color: colors[colorScheme].textDark,
+                                    fontSize: 12,
+                                    fontFamily: 'Inter-Regular',
+                                    marginLeft: 10,
+                                    borderRadius: 10,
+                                    paddingHorizontal: 8,
+                                    paddingVertical: 1,
+                                    borderColor: colors[colorScheme].primary,
+                                    borderWidth: 1,
+                                    display: item?.order_status === 'pickup' ? 'flex' : 'none'
+                                }}>Picked</Text>
+                            </View>
+
+                            <Text style={{
+                                color: colors[colorScheme].textDark,
+                                fontSize: 16,
+                                fontFamily: 'Inter-Medium',
+                            }}>₦{item?.delivery_fee.toLocaleString()}</Text>
+                        </View>
+
+                        <View style={{
+                            width: '100%',
+                            marginTop: 15,
+                            flexDirection: 'row',
+                        }}>
+                            <Image
+                                source={require('../../../assets/images/point.png')}
+                                style={{
+                                    width: 14,
+                                    height: 14,
+                                    resizeMode: "contain",
+                                    marginTop: 2,
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textDark,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Bold',
+                                marginLeft: 5,
+                            }}>Pickup: <Text style={{
+                                fontFamily: 'Inter-Medium',
+                            }}>{item?.senderaddress}</Text></Text>
+                        </View>
+                        <View style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            marginTop: 5
+                        }}>
+                            <Image
+                                source={require('../../../assets/images/point2.png')}
+                                style={{
+                                    width: 14,
+                                    height: 14,
+                                    resizeMode: "contain",
+                                    marginTop: 2,
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textDark,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Bold',
+                                marginLeft: 5,
+                            }}>Delivery: <Text style={{
+                                fontFamily: 'Inter-Medium',
+                            }}>{item?.receiveraddress}</Text></Text>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginTop: 20,
+                                justifyContent: 'space-between',
+                            }}>
+                            <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
+                                onPress={() => {
+                                    if (item?.order_status === 'pickup') {
+                                        onDispatch(item)
+                                    } else {
+                                        navigation.navigate(mainRouts.verifyPickup, {
+                                            item: item
+                                        })
+                                    }
+                                }}
+                                buttonStyle={{
+                                    borderRadius: 20,
+                                    height: 30,
+                                    width: 137,
+                                }}
+                                fontSize={16}
+                                loading={processing}
+                                enabled={!processing}
+                            />
+
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                             }}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
+                                <TouchableOpacity onPress={() => {
+
                                 }}>
-                                    <Text style={{
-                                        color: colors[colorScheme].primary,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter-Medium',
-                                    }}>{item?.productname}</Text>
-                                    <Text style={{
-                                        color: colors[colorScheme].textDark,
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Regular',
-                                        marginLeft: 10,
-                                        borderRadius: 10,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 1,
-                                        borderColor: colors[colorScheme].primary,
-                                        borderWidth: 1,
-                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
-                                    }}>Picked</Text>
-                                </View>
+                                    <Image
+                                        source={require('../../../assets/images/arrow.png')}
+                                        style={{
+                                            width: 28,
+                                            height: 22,
+                                            resizeMode: "contain",
+                                            tintColor: colors[colorScheme].primary,
+                                        }}
+                                    />
+                                </TouchableOpacity>
 
                                 <Text style={{
-                                    color: colors[colorScheme].textDark,
+                                    color: colors[colorScheme].primary,
                                     fontSize: 16,
-                                    fontFamily: 'Inter-Medium',
-                                }}>₦{item?.delivery_fee.toLocaleString()}</Text>
+                                    fontFamily: 'Inter-Regular',
+                                    marginHorizontal: 10,
+                                }}>Swipe</Text>
+
+                                <TouchableOpacity>
+                                    <Image
+                                        source={require('../../../assets/images/arrow.png')}
+                                        style={{
+                                            width: 28,
+                                            height: 22,
+                                            resizeMode: "contain",
+                                            tintColor: colors[colorScheme].primary,
+                                            transform: [{ rotate: '180deg' }]
+                                        }}
+                                    />
+                                </TouchableOpacity>
                             </View>
-
-                            <View style={{
-                                width: '100%',
-                                marginTop: 15,
-                                flexDirection: 'row',
-                            }}>
-                                <Image
-                                    source={require('../../../assets/images/point.png')}
-                                    style={{
-                                        width: 14,
-                                        height: 14,
-                                        resizeMode: "contain",
-                                        marginTop: 2,
-                                    }}
-                                />
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Bold',
-                                    marginLeft: 5,
-                                }}>Pickup: <Text style={{
-                                    fontFamily: 'Inter-Medium',
-                                }}>{item?.senderaddress}</Text></Text>
-                            </View>
-                            <View style={{
-                                width: '100%',
-                                flexDirection: 'row',
-                                marginTop: 5
-                            }}>
-                                <Image
-                                    source={require('../../../assets/images/point2.png')}
-                                    style={{
-                                        width: 14,
-                                        height: 14,
-                                        resizeMode: "contain",
-                                        marginTop: 2,
-                                    }}
-                                />
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Bold',
-                                    marginLeft: 5,
-                                }}>Delivery: <Text style={{
-                                    fontFamily: 'Inter-Medium',
-                                }}>{item?.receiveraddress}</Text></Text>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    marginTop: 20,
-                                    justifyContent: 'space-between',
-                                }}>
-                                <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
-                                    onPress={() => {
-                                        if (item?.order_status === 'pickup') {
-                                            onDispatch(item)
-                                        } else {
-                                            navigation.navigate(mainRouts.verifyPickup, {
-                                                item: item
-                                            })
-                                        }
-                                    }}
-                                    buttonStyle={{
-                                        borderRadius: 20,
-                                        height: 30,
-                                        width: 137,
-                                    }}
-                                    fontSize={16}
-                                    loading={processing}
-                                    enabled={!processing}
-                                />
-
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                }}>
-                                    <TouchableOpacity onPress={() => {
-
-                                    }}>
-                                        <Image
-                                            source={require('../../../assets/images/arrow.png')}
-                                            style={{
-                                                width: 28,
-                                                height: 22,
-                                                resizeMode: "contain",
-                                                tintColor: colors[colorScheme].primary,
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-
-                                    <Text style={{
-                                        color: colors[colorScheme].primary,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter-Regular',
-                                        marginHorizontal: 10,
-                                    }}>Swipe</Text>
-
-                                    <TouchableOpacity>
-                                        <Image
-                                            source={require('../../../assets/images/arrow.png')}
-                                            style={{
-                                                width: 28,
-                                                height: 22,
-                                                resizeMode: "contain",
-                                                tintColor: colors[colorScheme].primary,
-                                                transform: [{ rotate: '180deg' }]
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                        </View>
 
 
-                        </TouchableOpacity>
-                    )
+                    </TouchableOpacity>
                 }
-            </Swiper>
+            />
+           </View>
         </>
     )
 }
+

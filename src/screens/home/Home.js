@@ -611,6 +611,7 @@ export default Home = ({ navigation }) => {
                     }}
                     processing={processing}
                     onIndexChanged={(item) => {
+                        console.log('item', item)
                         setDispatchItem(item)
                     }} />
             </View>
