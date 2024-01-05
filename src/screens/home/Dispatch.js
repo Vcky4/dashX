@@ -16,7 +16,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
     const phone = items[index]?.order_status !== 'pickup' ? items[index]?.senderphone : items[index]?.receiverphone
 
-    // console.log(items[0])
+    // console.log('items', items)
     return (
         <>
             <View style={{
@@ -103,7 +103,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
             </View>
 
            <View style={{
-            marginHorizontal: 5
+            paddingHorizontal: 10,
+            width: width
            }}>
            <FlatList
                 data={items}
@@ -129,7 +130,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                             padding: 14,
                             // marginHorizontal: 10,
                             marginBottom: 20,
-                            width: width -10,
+                            width: width -20,
                         }}>
                         <View style={{
                             flexDirection: 'row',

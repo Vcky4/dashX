@@ -95,25 +95,48 @@ export default Dispatch = ({ onEnd, item }) => {
                         }}>{item?.receiverphone}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={{
-                    backgroundColor: colors[colorScheme].primary,
-                    borderRadius: 20,
-                    padding: 6,
-                }}
-                    onPress={() => {
-                        //call
-                        Linking.openURL(`tel:${item?.recieverphone}`)
-                    }}>
-                    <Image
-                        source={require('../../../assets/images/phone.png')}
-                        style={{
-                            width: 22,
-                            height: 22,
-                            resizeMode: "contain",
-                            tintColor: colors[colorScheme].white,
-                        }}
-                    />
-                </TouchableOpacity>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity style={{
+                        marginEnd: 10
+                    }}
+                        onPress={() => {
+                            //navigate to whatsapp
+                            //regex to replace first 0 with +234
+                            const number = item?.recieverphone?.replace(/^0/, '+234')
+                            Linking.openURL(`https://wa.me/${number}`)
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/whatsapp.png')}
+                            style={{
+                                width: 30,
+                                height: 30,
+                                resizeMode: "contain",
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{
+                        backgroundColor: colors[colorScheme].primary,
+                        borderRadius: 20,
+                        padding: 6,
+                    }}
+                        onPress={() => {
+                            //call
+                            Linking.openURL(`tel:${item?.recieverphone}`)
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/phone.png')}
+                            style={{
+                                width: 22,
+                                height: 22,
+                                resizeMode: "contain",
+                                tintColor: colors[colorScheme].white,
+                            }}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
             <View style={{
                 width: '100%',
