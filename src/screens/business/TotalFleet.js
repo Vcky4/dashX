@@ -13,6 +13,7 @@ import DatePicker from 'react-native-date-picker';
 import InputField from '../../component/InputField';
 import PasswordInput from '../../component/PasswordInput';
 import Button from '../../component/Button';
+import businessRoutes from '../../navigation/routs/businessRouts';
 
 export default DeliveryHistory = ({navigation}) => {
   const {colorScheme, user, token} = useContext(AuthContext);
@@ -93,9 +94,7 @@ export default DeliveryHistory = ({navigation}) => {
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(businessRoutes.deliveryDetails, {
-                    item: item,
-                  })
+                  navigation.navigate(businessRoutes.fleetDetails)
                 }
                 style={{
                   backgroundColor: colors[colorScheme].background,
@@ -139,24 +138,32 @@ export default DeliveryHistory = ({navigation}) => {
                 <View
                   style={{
                     marginStart: 10,
-                    alignItems: 'flex-end',
+                    alignSelf: 'flex-end',
+                    alignItems: 'center',
+                    flexDirection: 'row',
                   }}>
-                  <Image
-                    source={require('../../../assets/images/trash.png')}
-                    style={{
-                      width: 24,
-                      height: 24,
-                      resizeMode: 'contain',
-                    }}
-                  />
-                  <Image
-                    source={require('../../../assets/images/edits.png')}
-                    style={{
-                      width: 24,
-                      height: 24,
-                      resizeMode: 'contain',
-                    }}
-                  />
+                  <TouchableOpacity>
+                    <Image
+                      tintColor={colors[appearance].textDark}
+                      source={require('../../../assets/images/edits.png')}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{marginStart:20}}>
+                    <Image
+                      tintColor={colors[appearance].textDark}
+                      source={require('../../../assets/images/trash.png')}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </TouchableOpacity>
             )}

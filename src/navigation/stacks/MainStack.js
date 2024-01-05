@@ -35,6 +35,7 @@ import Rider from '../../screens/business/Rider'
 
 
 import TotalFleet from '../../screens/business/TotalFleet';
+import FleetDetails from '../../screens/business/FleetDetails';
 
 
 
@@ -141,6 +142,7 @@ const AuthPassed = () => {
                         <Stack.Screen name={businessRoutes.monitorRider} component={Monitor} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.addRider} component={Rider} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.totalFleet} component={TotalFleet} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.fleetDetails} component={FleetDetails} options={{ headerShown: false }} />
                     </>
                     : <>
                         <Stack.Screen
