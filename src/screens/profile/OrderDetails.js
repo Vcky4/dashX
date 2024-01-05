@@ -175,7 +175,7 @@ export default OrderDetails = ({ navigation, route }) => {
                             marginLeft: 10,
                             width: '50%',
                         }}>{
-                                index == 0 ? order._id
+                                index == 0 ? order?._id
                                     : index == 1 ? '12:00PM'
                                         : index == 2 ? 'Cash'
                                             : order.productname

@@ -3,7 +3,7 @@ const businessRoutes = {
     deliveryHistory: 'DeliveryHistory',
     deliveryDetails: 'DeliveryDetails',
     totalOrder: 'TotalOrder',
-    orderDetails: 'OrderDetails',
+    orderDetails: 'Order',
 }
 
 export default businessRoutes;
