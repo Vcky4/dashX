@@ -120,7 +120,7 @@ export default Monitor = ({ navigation }) => {
                 paddingEnd: 10,
             }}>
                 <Image
-                    source={user.photo.length > 0 ? { uri: user.photo } : require('../../../../assets/images/user.png')}
+                    source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../../assets/images/user.png')}
                     style={{
                         width: 40,
                         height: 40,
