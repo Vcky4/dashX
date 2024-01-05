@@ -62,7 +62,7 @@ async function getCurrentPosition(callback) {
         errorCode: error.code,
       });
     },
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000},
+    Platform.OS === 'android' ? {} : { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000  },
   );
 }
 
