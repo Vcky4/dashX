@@ -124,6 +124,7 @@ export default Home = ({ navigation }) => {
             .then(resJson => {
                 // console.log('resJson', resJson)
                 if (resJson.status) {
+                    setOnline(resJson.data.online_status)
                     saveUser({
                         id: resJson.data._id,
                         ...resJson.data,
@@ -135,6 +136,37 @@ export default Home = ({ navigation }) => {
                 }
             })
             .catch(err => {
+                console.log('err', err)
+            })
+    }
+
+
+    const updateStatus = () => {
+        setProcessing(true)
+        fetch(endpoints.baseUrl + endpoints.updateStatus, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                status: !online
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setProcessing(false)
+                console.log('resJson', resJson)
+                if (resJson.status) {
+                    saveUser({
+                        id: resJson.data._id,
+                        ...resJson.data,
+                    });
+                    setOnline(resJson.data.online_status)
+                }
+            })
+            .catch(err => {
+                setProcessing(false)
                 console.log('err', err)
             })
     }
@@ -556,7 +588,7 @@ export default Home = ({ navigation }) => {
                     </View>
                     <Button title={online ? 'GO OFFLINE' : 'GO ONLINE'}
                         onPress={() => {
-                            setOnline(!online)
+                            updateStatus()
                         }}
                         buttonStyle={{
                             borderRadius: 20,
@@ -564,8 +596,8 @@ export default Home = ({ navigation }) => {
                             width: 110,
                         }}
                         fontSize={16}
-                        loading={false}
-                        enabled={true}
+                        loading={processing}
+                        enabled={!processing}
                     />
                 </View>
                 <View style={{

@@ -95,7 +95,7 @@ export default DrawerStack = () => {
 };
 
 const AuthPassed = () => {
-    const isBusiness = true
+    const isBusiness = false
     return (
         <Stack.Navigator>
             {

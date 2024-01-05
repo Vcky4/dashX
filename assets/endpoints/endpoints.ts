@@ -11,6 +11,7 @@ const endpoints = {
     updateProfile: '/dispatch/update/profile',
     updateVehicle: '/dispatch/update/vehicle',
     uploadPhoto: '/dispatch/update/photo',
+    updateStatus: '/dispatch/update/status',
     listOdrders: '/dispatch/list/order',
     acceptOrders: '/dispatch/accept/order',
     myOrders: '/dispatch/myorder',
