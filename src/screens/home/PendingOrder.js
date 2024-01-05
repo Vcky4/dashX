@@ -31,18 +31,21 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 })
             })
             const json = await response.json()
-            // console.log('cities', json)
+            // console.log('cities', json.data)
             //check if array
             if (Array.isArray(json.data)) {
+                if (cities.length === json.data.length) return
                 setCities(json.data)
-                setCity[json.data[0]]
+                setCity(json.data[0])
             }
         } catch (error) {
             console.error(error)
         }
     }
     useEffect(() => {
+        setInterval(() => {
         getCities()
+        }, 5000);
     }, [])
 
     const getOrders = async () => {
@@ -62,8 +65,10 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             // console.log(json)
             //check if array
             if (Array.isArray(json.data)) {
-                setOrders(json.data)
-                onNewOrderChange(json.data.length)
+                // if (orders.length !== json.data.length) {
+                    setOrders(json.data)
+                    onNewOrderChange(json.data.length)
+                // }
             }
         } catch (error) {
             console.error(error)
@@ -87,6 +92,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             const json = await response.json()
             setProcessing(false)
             // console.log(json)
+            onNewOrderChange(orders.length - 1)
             setOrders(orders.filter((item) => item._id !== id))
             //check if array
             if (Array.isArray(json.data)) {
@@ -99,9 +105,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     }
 
     useEffect(() => {
-        setInterval(() => {
-            getOrders()
-        }, 5000)
+        getOrders()
     }, [city])
     return (
         <>

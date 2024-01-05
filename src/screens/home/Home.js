@@ -56,6 +56,8 @@ export default Home = ({ navigation }) => {
         longitude: 0,
     });
 
+    const [positioned, setPositioned] = useState(false)
+
     // //setup to socket
     // const socket = io(endpoints.socketUrl, {
     //     extraHeaders: {
@@ -598,7 +600,7 @@ export default Home = ({ navigation }) => {
                 zIndex: 100,
                 elevation: 10,
                 width: '100%',
-                display: (bottomStep === 1 && !isDispatch) ? 'flex' : 'none',
+                display: (bottomStep === 1 && !isDispatch && !isOpen) ? 'flex' : 'none',
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 20,
             }}>
@@ -621,8 +623,12 @@ export default Home = ({ navigation }) => {
                 showsMyLocationButton={false}
                 showsUserLocation={true}
                 customMapStyle={mapCustomStyle}
-                showsTraffic={true}
+                // showsTraffic={true}
                 showsBuildings={true}
+                // compassOffset={{
+
+                // }}
+                showsCompass={true}
                 followsUserLocation={true}
                 zoomControlEnabled={false}
                 // camera={{
@@ -648,7 +654,6 @@ export default Home = ({ navigation }) => {
                 showsScale={true}
                 rotateEnabled={true}
                 onUserLocationChange={updateMyLocation}
-                showsCompass={false}
                 // showsIndoors={true}
                 // showsIndoorLevelPicker={true}
                 showsPointsOfInterest={true}
@@ -727,6 +732,7 @@ export default Home = ({ navigation }) => {
                         strokeWidth={4}
                         strokeColor={colors[colorScheme].primary}
                         timePrecision="now"
+                        precision="high"
                         optimizeWaypoints={true}
                         mode='DRIVING'
                         // waypoints={waypoints}
@@ -752,7 +758,7 @@ export default Home = ({ navigation }) => {
                             });
                         }}
                         onError={(errorMessage) => {
-                            console.log('GOT AN ERROR');
+                            console.log('GOT AN ERROR', errorMessage);
                         }}
                     />}
 
@@ -769,9 +775,9 @@ export default Home = ({ navigation }) => {
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={4}
                         strokeColor={colors[colorScheme].primary}
-                        // timePrecision="now"
-                        resetOnChange={false}
+                        timePrecision="now"
                         mode='DRIVING'
+                        precision="high"
                         optimizeWaypoints={true}
                         // waypoints={waypoints}
                         onStart={(params) => {
@@ -779,21 +785,24 @@ export default Home = ({ navigation }) => {
                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                         }}
                         onReady={result => {
-                            console.log('result :>>', result?.end_location)
-                            console.log(`Distance: ${result.distance} km`)
-                            console.log(`Duration: ${result.duration} min.`)
+                            // console.log('result :>>', result?.end_location)
+                            // console.log(`Distance: ${result.distance} km`)
+                            // console.log(`Duration: ${result.duration} min.`)
                             // setDistance(result.distance);
                             // setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
-                            this.mapView.fitToCoordinates(result.coordinates, {
-                                edgePadding: {
-                                    right: (width / 20),
-                                    bottom: (height / 20),
-                                    left: (width / 20),
-                                    top: (height / 20),
-                                }
-                            });
+                            if (!positioned) {
+                                this.mapView.fitToCoordinates(result.coordinates, {
+                                    edgePadding: {
+                                        right: (width / 20),
+                                        bottom: (height / 20),
+                                        left: (width / 20),
+                                        top: (height / 20),
+                                    }
+                                });
+                                setPositioned(true)
+                            }
                         }}
                         onError={(errorMessage) => {
                             console.log('GOT AN ERROR');
@@ -854,6 +863,7 @@ export default Home = ({ navigation }) => {
                         getMyOrder()
                         setBottomStep(0)
                         setIsDispatch(false)
+                        setPositioned(false)
                         panelRef.current.togglePanel()
                         // setHelpCoordinate(null)
                     }} />

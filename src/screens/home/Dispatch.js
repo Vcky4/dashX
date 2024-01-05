@@ -119,7 +119,6 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                                 padding: 14,
                                 marginHorizontal: 10,
                                 marginBottom: 20,
-
                             }}>
                             <View style={{
                                 flexDirection: 'row',
