@@ -150,23 +150,6 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                         </View>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity style={{ marginTop: 30 }}
-                                        onPress={() => props.navigation.navigate(mainRoute.wallet)}>
-                                        <View style={styles.itemWrapper}>
-                                            <Image
-                                                source={require('../../../assets/images/wallet.png')}
-                                                style={{
-                                                    width: 22,
-                                                    height: 22,
-                                                    resizeMode: "contain",
-                                                    tintColor: colors[colorScheme].textGray,
-                                                }}
-                                            />
-                                            <Text style={[styles.items, {
-                                                color: colors[colorScheme].textGray,
-                                            }]}>Wallet</Text>
-                                        </View>
-                                    </TouchableOpacity>
                                 </>
                                 : <>
                                     <TouchableOpacity style={{ marginTop: 30 }}

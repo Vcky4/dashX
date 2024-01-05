@@ -38,8 +38,8 @@ export default Home = ({ navigation }) => {
     const GOOGLE_API_KEY = endpoints.gg;
     const { user, token, saveUser, colorScheme } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
-    // const [distance, setDistance] = useState(0);
-    // const [duration, setDuration] = useState(0);
+    const [distance, setDistance] = useState(0);
+    const [duration, setDuration] = useState(0);
     const [isDispatch, setIsDispatch] = useState(false);
     const [address, setAddress] = useState('');
     const [bottomStep, setBottomStep] = useState(0);
@@ -69,6 +69,19 @@ export default Home = ({ navigation }) => {
         const latLng = `${lat},${lng}`;
         const label = 'Custom Label';
         const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+        Linking.openURL(url);
+    }
+
+    //open direction between two point
+    const openDirection2 = (lat, lng, lat2, lng2) => {
+        const scheme = Platform.select({
+            ios:'maps:0,0?q=',
+            android: 'geo:0,0?q=',
+        });
+        const latLng = `${lat},${lng}`;
+        const latLng2 = `${lat2},${lng2}`;
+        const label = 'Custom Label';
+        const url = Platform.OS === 'ios'? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
         Linking.openURL(url);
     }
 
@@ -436,7 +449,7 @@ export default Home = ({ navigation }) => {
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
                 }}>New Orders</Text>
-                
+
                 <Text style={{
                     color: colors[colorScheme].primary,
                     fontSize: 16,
@@ -458,7 +471,7 @@ export default Home = ({ navigation }) => {
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep > 0 ? 320 : 170,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
@@ -480,7 +493,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep > 0 ? 320 : 170,
                     left: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -510,6 +523,29 @@ export default Home = ({ navigation }) => {
                     textAlign: 'center',
                 }}>{myOrders.length}</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {
+
+            }}
+                style={{
+                    position: 'absolute',
+                    bottom: bottomStep > 0 ? 320 : 170,
+                    right: 80,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].primary,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                    paddingHorizontal: 20,
+                    paddingVertical: 6,
+                    display: bottomStep === 1 && !isDispatch && !isOpen ? 'flex' : 'none',
+                }} >
+                <Text style={{
+                    color: colors[colorScheme].white,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                }}>Directions</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
                     latitude: coordinate.latitude,
@@ -520,7 +556,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep > 0 ? 320 : 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,
@@ -644,6 +680,8 @@ export default Home = ({ navigation }) => {
                     onDispatch={(item) => {
                         startDispatch(item._id)
                     }}
+                    distance={distance}
+                    duration={duration}
                     processing={processing}
                     onIndexChanged={(index, item) => {
                         setDispatchItem(item)
@@ -779,8 +817,8 @@ export default Home = ({ navigation }) => {
                             console.log('result :>>', result?.end_location)
                             console.log(`Distance: ${result.distance} km`)
                             console.log(`Duration: ${result.duration} min.`)
-                            // setDistance(result.distance);
-                            // setDuration(result.duration);
+                            setDistance(result.distance);
+                            setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
                             this.mapView.fitToCoordinates(result.coordinates, {
