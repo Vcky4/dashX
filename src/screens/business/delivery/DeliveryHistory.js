@@ -1,13 +1,16 @@
 import React, { useContext, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { AuthContext } from "../../../../../context/AuthContext";
-import colors from "../../../../../assets/colors/colors";
+import { AuthContext } from "../../../../context/AuthContext";
+import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
 
 export default DeliveryHistory = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState(new Date());
+    const [open2, setOpen2] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
 
     return (
         <>
@@ -26,7 +29,7 @@ export default DeliveryHistory = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}>
                         <Image
-                            source={require('../../../assets/images/back.png')}
+                            source={require('../../../../assets/images/back.png')}
                             style={{
                                 width: 30,
                                 height: 30,
@@ -61,7 +64,41 @@ export default DeliveryHistory = ({ navigation }) => {
                             fontSize: 16,
                             fontFamily: 'Inter-Regular',
                         }}>{
-                                date.toLocaleDateString('en-US', {
+                                startDate.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                })
+                        }</Text>
+                        <Image
+                            source={require('../../../../assets/images/back.png')}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                resizeMode: "contain",
+                                tintColor: colors[colorScheme].textGray,
+                                transform: [{ rotate: '-90deg' }],
+                            }}
+                        />
+                    </TouchableOpacity>
+
+                    <Text style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 16,
+                        color: colors[colorScheme].textDark,
+                    }}>to</Text>
+
+                    <TouchableOpacity onPress={() => setOpen2(true)}
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors[colorScheme].textGray,
+                            fontSize: 16,
+                            fontFamily: 'Inter-Regular',
+                        }}>{
+                                startDate.toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: 'short',
                                     day: 'numeric'
@@ -100,7 +137,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                 alignItems: 'center',
                             }}>
                                 <Image
-                                    source={require('../../../assets/images/user.png')}
+                                    source={require('../../../../assets/images/user.png')}
                                     style={{
                                         width: 50,
                                         height: 50,
@@ -145,14 +182,28 @@ export default DeliveryHistory = ({ navigation }) => {
             <DatePicker
                 modal
                 open={open}
-                date={date}
+                date={startDate}
                 onConfirm={date => {
                     setOpen(false);
-                    setDate(date);
+                    setStartDate(date);
                 }}
                 mode="date"
                 onCancel={() => {
                     setOpen(false);
+                }}
+            />
+
+            <DatePicker
+                modal
+                open={open2}
+                date={endDate}
+                onConfirm={date => {
+                    setOpen2(false);
+                    setEndDate(date);
+                }}
+                mode="date"
+                onCancel={() => {
+                    setOpen2(false);
                 }}
             />
         </>
