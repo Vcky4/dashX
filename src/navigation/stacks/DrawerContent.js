@@ -6,11 +6,13 @@ import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import mainRoute from "../routs/mainRouts";
 import profileRouts from "../routs/profileRouts";
+import businessRoutes from "../routs/businessRouts";
 
 
 export default function DrawerContent(props, onPendingOrderPress = () => { }) {
     const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
     // console.log('from drawer', user);
+    const isBusiness = true
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <>
@@ -125,61 +127,103 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }}
                             />
                         </View>
-                        <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => {
-                                props.navigation.toggleDrawer()
-                                onPendingOrderPress()
-                            }}>
-                            <View style={styles.itemWrapper}>
-                                <Image
-                                    source={require('../../../assets/images/time.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        resizeMode: "contain",
-                                        tintColor: colors[colorScheme].textGray,
-                                    }}
-                                />
-                                <Text style={[styles.items, {
-                                    color: colors[colorScheme].textGray,
-                                }]}>Pending orders</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
-                            <View style={styles.itemWrapper}>
-                                <Image
-                                    source={require('../../../assets/images/time.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        resizeMode: "contain",
-                                        tintColor: colors[colorScheme].textGray,
-                                    }}
-                                />
-                                <Text style={[styles.items, {
-                                    color: colors[colorScheme].textGray,
-                                }]}>History</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(mainRoute.wallet)}>
-                            <View style={styles.itemWrapper}>
-                                <Image
-                                    source={require('../../../assets/images/wallet.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        resizeMode: "contain",
-                                        tintColor: colors[colorScheme].textGray,
-                                    }}
-                                />
-                                <Text style={[styles.items, {
-                                    color: colors[colorScheme].textGray,
-                                }]}>Wallet</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {/* <TouchableOpacity style={{ marginTop: 30 }}
+
+
+                        {
+                            isBusiness
+                                ? <>
+                                <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(businessRoutes.monitorRider)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/monitor.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>Monitor</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(mainRoute.wallet)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/wallet.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>Wallet</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </>
+                                : <>
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => {
+                                            props.navigation.toggleDrawer()
+                                            onPendingOrderPress()
+                                        }}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/time.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>Pending orders</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/time.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>History</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(mainRoute.wallet)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/wallet.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>Wallet</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
                                 <Image
@@ -196,24 +240,24 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Message</Text>
                             </View>
                         </TouchableOpacity> */}
-                        <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
-                            <View style={styles.itemWrapper}>
-                                <Image
-                                    source={require('../../../assets/images/support.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        resizeMode: "contain",
-                                        tintColor: colors[colorScheme].textGray,
-                                    }}
-                                />
-                                <Text style={[styles.items, {
-                                    color: colors[colorScheme].textGray,
-                                }]}>Support</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {/* <TouchableOpacity style={{ marginTop: 30 }}
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/support.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>Support</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
                                 <Image
@@ -230,23 +274,25 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Settings</Text>
                             </View>
                         </TouchableOpacity> */}
-                        <TouchableOpacity style={{ marginTop: 30 }}
-                            onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
-                            <View style={styles.itemWrapper}>
-                                <Image
-                                    source={require('../../../assets/images/help.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        resizeMode: "contain",
-                                        tintColor: colors[colorScheme].textGray,
-                                    }}
-                                />
-                                <Text style={[styles.items, {
-                                    color: colors[colorScheme].textGray,
-                                }]}>About</Text>
-                            </View>
-                        </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginTop: 30 }}
+                                        onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
+                                        <View style={styles.itemWrapper}>
+                                            <Image
+                                                source={require('../../../assets/images/help.png')}
+                                                style={{
+                                                    width: 22,
+                                                    height: 22,
+                                                    resizeMode: "contain",
+                                                    tintColor: colors[colorScheme].textGray,
+                                                }}
+                                            />
+                                            <Text style={[styles.items, {
+                                                color: colors[colorScheme].textGray,
+                                            }]}>About</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </>
+                        }
                     </ScrollView>
 
                     <View style={{
