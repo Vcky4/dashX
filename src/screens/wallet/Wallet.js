@@ -70,7 +70,7 @@ export default Wallet = ({ navigation }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                 }}>
-                    {/* <TouchableOpacity onPress={() => navigation.navigate(mainRouts.deposit)}
+                    <TouchableOpacity onPress={() => navigation.navigate(mainRouts.deposit)}
                         style={{
                             backgroundColor: colors[colorScheme].primary,
                             paddingHorizontal: 16,
@@ -82,7 +82,7 @@ export default Wallet = ({ navigation }) => {
                             fontSize: 16,
                             fontFamily: 'Inter-SemiBold',
                         }}>+ Deposit</Text>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => navigation.navigate(mainRouts.withdraw)}
                         style={{
