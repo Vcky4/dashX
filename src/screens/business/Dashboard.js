@@ -56,7 +56,7 @@ export default Dashboard = ({ navigation }) => {
                             } else if (index == 1) {
                                 navigation.navigate(businessRoutes.totalFleet)
                             } else if (index == 2) {
-                                navigation.navigate(businessRoutes.activeOrder)
+                                navigation.navigate(businessRoutes.activeOrders)
                             } else if (index == 3) {
                                 navigation.navigate(businessRoutes.activeRider)
                             }

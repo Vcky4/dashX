@@ -27,6 +27,7 @@ import DeliveryHistory from '../../screens/business/delivery/DeliveryHistory';
 import DeliveryDetails from '../../screens/business/delivery/DeliveryDetails';
 import TotalOrder from '../../screens/business/order/TotalOrder';
 import Order from '../../screens/business/order/Order';
+import ActiveOrders from '../../screens/business/order/ActiveOrders';
 
 
 const { width, height } = Dimensions.get('window');
@@ -110,6 +111,7 @@ const AuthPassed = () => {
                         <Stack.Screen name={businessRoutes.deliveryDetails} component={DeliveryDetails} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.totalOrder} component={TotalOrder} options={{ headerShown: false }} />
                         <Stack.Screen name={businessRoutes.orderDetails} component={Order} options={{ headerShown: false }} />
+                        <Stack.Screen name={businessRoutes.activeOrders} component={ActiveOrders} options={{ headerShown: false }} />
                     </>
                     : <>
                         <Stack.Screen
