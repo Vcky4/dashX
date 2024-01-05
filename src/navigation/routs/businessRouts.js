@@ -11,6 +11,7 @@ const businessRoutes = {
   totalFleet: 'totalFleet',
   fleetDetails: 'fleetDetails',
   orders: 'orders',
+  editFleet: 'editFleet',
 };
 
 export default businessRoutes;

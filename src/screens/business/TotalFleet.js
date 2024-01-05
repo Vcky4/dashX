@@ -93,9 +93,7 @@ export default DeliveryHistory = ({navigation}) => {
             data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
             renderItem={({item, index}) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(businessRoutes.fleetDetails)
-                }
+                onPress={() => navigation.navigate(businessRoutes.fleetDetails)}
                 style={{
                   backgroundColor: colors[colorScheme].background,
                   paddingVertical: 10,
@@ -142,7 +140,10 @@ export default DeliveryHistory = ({navigation}) => {
                     alignItems: 'center',
                     flexDirection: 'row',
                   }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate(businessRoutes.editFleet);
+                    }}>
                     <Image
                       tintColor={colors[appearance].textDark}
                       source={require('../../../assets/images/edits.png')}
@@ -153,7 +154,7 @@ export default DeliveryHistory = ({navigation}) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{marginStart:20}}>
+                  <TouchableOpacity style={{marginStart: 20}}>
                     <Image
                       tintColor={colors[appearance].textDark}
                       source={require('../../../assets/images/trash.png')}
