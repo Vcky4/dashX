@@ -17,6 +17,7 @@ import Dispatch from "./Dispatch";
 import DispatchSheet from "./DispatchSheet";
 import Toast from "react-native-toast-message";
 import PendingOrder from "./PendingOrder";
+import mapStyles from "./mapStyles/mapStyles";
 
 var Sound = require('react-native-sound');
 
@@ -335,26 +336,7 @@ export default Home = ({ navigation }) => {
     //         </TouchableOpacity>
     //     )
     // }
-    const mapCustomStyle = [
-        {
-            //   elementType: 'geometry',
-            stylers: [
-                {
-                    color: colors[colorScheme].mapBackground,
-                },
-            ],
-        },
-        {
-            elementType: 'labels.text.fill',
-            stylers: [
-                {
-                    color: colors[colorScheme].mapText,
-                },
-            ],
-        },
-        // Add more styles here...
-    ];
-
+    const mapCustomStyle = mapStyles[colorScheme]
     //check if ready
     // const ready = variableUser?.data?.longitude != 0 && variableUser?.data?.is_online == 1;
     return (
@@ -628,6 +610,7 @@ export default Home = ({ navigation }) => {
                 showsUserLocation={true}
                 customMapStyle={mapCustomStyle}
                 // showsTraffic={true}
+                tintColor={colors[colorScheme].primary}
                 showsBuildings={true}
                 showsCompass={true}
                 followsUserLocation={true}
@@ -656,8 +639,8 @@ export default Home = ({ navigation }) => {
                 rotateEnabled={true}
                 compassOffset={{ x: -10, y: 300 }}
                 onUserLocationChange={updateMyLocation}
-                // showsIndoors={true}
-                // showsIndoorLevelPicker={true}
+                showsIndoors={true}
+                showsIndoorLevelPicker={true}
                 showsPointsOfInterest={true}
                 // loadingEnabled
                 // region={{
