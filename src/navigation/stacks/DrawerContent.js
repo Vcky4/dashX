@@ -11,7 +11,7 @@ import businessRoutes from "../routs/businessRouts";
 
 export default function DrawerContent(props, onPendingOrderPress = () => { }) {
     const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
-    const isBusiness = user?.bussiess?.bussiness_type
+    const isBusiness = !user?.personel_account
     // console.log('from drawer', user);
     const [modalVisible, setModalVisible] = useState(false);
     return (
