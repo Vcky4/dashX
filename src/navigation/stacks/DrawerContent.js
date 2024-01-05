@@ -11,8 +11,8 @@ import businessRoutes from "../routs/businessRouts";
 
 export default function DrawerContent(props, onPendingOrderPress = () => { }) {
     const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
+    const isBusiness = user?.bussiess?.bussiness_type
     // console.log('from drawer', user);
-    const isBusiness = true
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <>
@@ -61,7 +61,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 alignItems: 'center',
                             }}>
                                 <Image
-                                    source={user?.photo?.length}
+                                    source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../assets/images/user.png')}
                                     style={{
                                         width: 46,
                                         height: 46,
@@ -132,7 +132,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                         {
                             isBusiness
                                 ? <>
-                                <TouchableOpacity style={{ marginTop: 30 }}
+                                    <TouchableOpacity style={{ marginTop: 30 }}
                                         onPress={() => props.navigation.navigate(businessRoutes.monitorRider)}>
                                         <View style={styles.itemWrapper}>
                                             <Image
