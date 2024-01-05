@@ -129,7 +129,7 @@ export default DrawerStack = () => {
 const AuthPassed = () => {
     const { user } = useContext(AuthContext)
     console.log(user)
-    const isBusiness = !user?.personel_account
+    const isBusiness = !(user?.personel_account ?? true)
     return (
         <Stack.Navigator>
             {
