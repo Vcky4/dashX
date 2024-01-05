@@ -98,7 +98,7 @@ export default OrderDetails = ({ navigation, route }) => {
                                 fontFamily: 'Inter-Regular',
                                 marginLeft: 10,
                             }}>{
-                                    index == 0 ? 'Naime:' : 'Address'
+                                    index == 0 ? 'Name:' : 'Address'
                                 }</Text>
                         </View>
                         <Text style={{

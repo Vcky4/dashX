@@ -21,6 +21,8 @@ import { useNavigation } from '@react-navigation/native';
 import Wallet from '../../screens/wallet/Wallet';
 import Withdraw from '../../screens/wallet/Withdraw';
 import Deposit from '../../screens/wallet/Deposit';
+import businessRoutes from '../routs/businessRouts';
+import Dashboard from '../../screens/business/Dashboard';
 
 
 const { width, height } = Dimensions.get('window');
@@ -93,21 +95,30 @@ export default DrawerStack = () => {
 };
 
 const AuthPassed = () => {
+    const isBusiness = true
     return (
         <Stack.Navigator>
-            <Stack.Screen
-                name={mainRouts.home}
-                component={Home}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
-            <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
-            <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
-            <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
-            <Stack.Screen name={profileRouts.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
-            <Stack.Screen name={mainRouts.wallet} component={Wallet} options={{ headerShown: false }} />
-            <Stack.Screen name={mainRouts.withdraw} component={Withdraw} options={{ headerShown: false }} />
-            <Stack.Screen name={mainRouts.deposit} component={Deposit} options={{ headerShown: false }} />
+            {
+                isBusiness
+                    ? <>
+                        <Stack.Screen name={businessRoutes.dashboard} component={Dashboard} options={{ headerShown: false }} />
+                    </>
+                    : <>
+                        <Stack.Screen
+                            name={mainRouts.home}
+                            component={Home}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
+                        <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
+                        <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
+                        <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
+                        <Stack.Screen name={profileRouts.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
+                        <Stack.Screen name={mainRouts.wallet} component={Wallet} options={{ headerShown: false }} />
+                        <Stack.Screen name={mainRouts.withdraw} component={Withdraw} options={{ headerShown: false }} />
+                        <Stack.Screen name={mainRouts.deposit} component={Deposit} options={{ headerShown: false }} />
+                    </>
+            }
         </Stack.Navigator>
 
     );
