@@ -114,7 +114,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     color: colors[colorScheme].textGray,
                                     fontSize: 25,
                                     fontFamily: 'Inter-SemiBold',
-                                }}>₦8,900</Text>
+                                }}>₦0</Text>
                             </View>
                             <Image
                                 source={require('../../../assets/images/outline.png')}
