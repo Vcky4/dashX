@@ -156,13 +156,13 @@ export default Home = ({ navigation }) => {
         }).then(res => res.json())
             .then(resJson => {
                 setProcessing(false)
-                console.log('resJson', resJson)
+                // console.log('resJson', resJson)
                 if (resJson.status) {
                     saveUser({
                         id: resJson.data._id,
                         ...resJson.data,
                     });
-                    setOnline(resJson.data.online_status)
+                    setOnline(!online)
                 }
             })
             .catch(err => {
