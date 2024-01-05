@@ -10,6 +10,7 @@ const businessRoutes = {
   addRider: 'addRider',
   totalFleet: 'totalFleet',
   fleetDetails: 'fleetDetails',
+  orders: 'orders',
 };
 
 export default businessRoutes;

@@ -13,6 +13,7 @@ import DatePicker from 'react-native-date-picker';
 import InputField from '../../component/InputField';
 import PasswordInput from '../../component/PasswordInput';
 import Button from '../../component/Button';
+import businessRoutes from '../../navigation/routs/businessRouts';
 
 export default DeliveryHistory = ({navigation}) => {
   const {colorScheme, user, token} = useContext(AuthContext);
@@ -180,20 +181,18 @@ export default DeliveryHistory = ({navigation}) => {
                 900{' '}
               </Text>
             </View>
-            <TouchableOpacity 
-            onPress={()=>{
-                
-            }}
-            >
-
-            <Text
-              style={{
-                color: colors[colorScheme].primary,
-                fontSize: 16,
-                fontFamily: 'Inter-Regular',
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(businessRoutes.totalOrder);
               }}>
-              See orders{' '}
-            </Text>
+              <Text
+                style={{
+                  color: colors[colorScheme].primary,
+                  fontSize: 16,
+                  fontFamily: 'Inter-Regular',
+                }}>
+                See orders{' '}
+              </Text>
             </TouchableOpacity>
           </View>
           <View
