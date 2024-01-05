@@ -78,7 +78,7 @@ export default Dashboard = ({ navigation }) => {
             <TouchableOpacity style={{
                 backgroundColor: colors[colorScheme].primary,
                 padding: 20,
-                paddingBottom: 20,
+                // paddingBottom: 20,
                 borderBottomLeftRadius: 30,
                 borderBottomRightRadius: 30,
                 marginTop: 8,
@@ -123,7 +123,7 @@ export default Dashboard = ({ navigation }) => {
                         style={{
                             backgroundColor: colors[colorScheme].background,
                             paddingVertical: 10,
-                            paddingHorizontal: 10,
+                            // paddingHorizontal: 10,
                             alignSelf: 'center',
                             borderBottomWidth: 0.5,
                             flexDirection: 'row',
@@ -148,7 +148,7 @@ export default Dashboard = ({ navigation }) => {
                                 marginStart: 10,
                             }}>
                                 <Text style={{
-                                    color: colors[colorScheme].black,
+                                    color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
                                 }}>Peter Andrew</Text>
@@ -161,9 +161,10 @@ export default Dashboard = ({ navigation }) => {
                         </View>
                         <View style={{
                             marginStart: 10,
+                            alignItems: 'flex-end',
                         }}>
                             <Text style={{
-                                color: colors[colorScheme].black,
+                                color: colors[colorScheme].textDark,
                                 fontSize: 16,
                                 fontFamily: 'Inter-Medium',
                             }}>+N20,000</Text>
