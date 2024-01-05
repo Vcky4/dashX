@@ -5,6 +5,7 @@ const businessRoutes = {
     totalOrder: 'TotalOrder',
     orderDetails: 'Order',
     activeOrders: 'ActiveOrders',
+    activeRider: 'ActiveRider',
 }
 
 export default businessRoutes;
