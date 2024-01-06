@@ -960,7 +960,7 @@ export default Home = ({ navigation }) => {
                     setIsOpen(false)
                 }}
                 ref={ref => panelRef2.current = ref}>
-                <View style={{
+                {/* <View style={{
                     backgroundColor: '#E6CEF2',
                     top: -95,
                     alignSelf: 'center',
@@ -975,7 +975,7 @@ export default Home = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: 'Inter-SemiBold',
                     }}>Pending  Orders</Text>
-                </View>
+                </View> */}
                 <PendingOrder
                     onClose={() => {
                         panelRef2.current?.togglePanel()

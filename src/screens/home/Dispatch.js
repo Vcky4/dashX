@@ -146,11 +146,28 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, distance, d
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                             }}>
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter-Medium',
-                                }}>₦{item?.delivery_fee.toLocaleString()}</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Medium',
+                                    }}>₦{item?.delivery_fee.toLocaleString()}</Text>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 12,
+                                        fontFamily: 'Inter-Regular',
+                                        marginLeft: 10,
+                                        borderRadius: 10,
+                                        paddingHorizontal: 8,
+                                        paddingVertical: 1,
+                                        borderColor: colors[colorScheme].primary,
+                                        borderWidth: 1,
+                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
+                                    }}>Picked</Text>
+                                </View>
                                 <View style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',
@@ -188,21 +205,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, distance, d
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
                                     }}>{item?.productname}</Text>
-                                    <Text style={{
-                                        color: colors[colorScheme].textDark,
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Regular',
-                                        marginLeft: 10,
-                                        borderRadius: 10,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 1,
-                                        borderColor: colors[colorScheme].primary,
-                                        borderWidth: 1,
-                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
-                                    }}>Picked</Text>
                                 </View>
-
-
                             </View>
 
                             <View style={{

@@ -138,14 +138,10 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     <TouchableOpacity onPress={() => setSelectCity(true)}
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
+                            // justifyContent: 'space-between',
                             alignItems: 'center',
                             paddingHorizontal: 10,
                             paddingVertical: 10,
-                            borderColor: colors[colorScheme].primary,
-                            borderWidth: 1,
-                            borderRadius: 30,
-                            width: '60%',
                         }}>
                         <View style={{
                             flexDirection: 'row',
@@ -169,7 +165,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                 }}>{city}</Text>
                         </View>
 
-                        <Image
+                        {/* <Image
                             source={require('../../../assets/images/back.png')}
                             style={{
                                 width: 22,
@@ -179,7 +175,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                 tintColor: colors[colorScheme].primary,
                                 // tintColor: colors[colorScheme].textDark,
                             }}
-                        />
+                        /> */}
                     </TouchableOpacity>
                 }
                 ListEmptyComponent={
@@ -222,7 +218,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                             fontSize: 20,
                             color: colors[appearance].textDark,
                             alignSelf: 'center',
-                        }}>Select City</Text>
+                        }}>Cities</Text>
                         <ScrollView style={{
                             marginTop: 20,
                         }}>
@@ -232,6 +228,9 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                         style={{
                                             borderTopWidth: 1,
                                             borderTopColor: colors[appearance].primary,
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
                                         }}
                                         key={index} onPress={() => {
                                             setCity(item)
@@ -244,6 +243,14 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                             alignSelf: 'center',
                                             marginVertical: 10,
                                         }}>{item}</Text>
+
+                                        <Text style={{
+                                            fontFamily: 'Inter-Medium',
+                                            fontSize: 16,
+                                            color: colors[appearance].textDark,
+                                            alignSelf: 'center',
+                                            marginVertical: 10,
+                                        }}>0</Text>
                                     </TouchableOpacity>
                                 )
                             }

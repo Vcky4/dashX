@@ -95,7 +95,7 @@ export default DrawerStack = () => {
                     setIsOpen(false);
                 }}
                 ref={ref => (panelRef.current = ref)}>
-                <View
+                {/* <View
                     style={{
                         backgroundColor: '#E6CEF2',
                         top: -95,
@@ -114,7 +114,7 @@ export default DrawerStack = () => {
                         }}>
                         Pending Orders
                     </Text>
-                </View>
+                </View> */}
                 <PendingOrder
                     onClose={() => {
                         panelRef.current?.togglePanel();

@@ -59,5 +59,8 @@
 		<string>Inter-SemiBold.ttf</string>
 		<string>Inter-Thin.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key><string>Allow permission to use your camera</string>
+	<key>NSPhotoLibraryAddUsageDescription</key><string>Allow permission to use you camera</string>
+	<key>NSPhotoLibraryUsageDescription</key><string>Allow permission to use your camera</string>
 </dict>
 </plist>

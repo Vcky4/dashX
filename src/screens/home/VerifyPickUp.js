@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, BackHandler } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, BackHandler, SafeAreaView } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import InputField from "../../component/InputField";
@@ -8,6 +8,7 @@ import Toast from "react-native-toast-message";
 import endpoints from "../../../assets/endpoints/endpoints";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { RNCamera } from "react-native-camera";
 
 
 export default VerifyPickUp = ({ navigation, route }) => {
@@ -18,8 +19,41 @@ export default VerifyPickUp = ({ navigation, route }) => {
     const [packageImage, setPackageImage] = useState(null);
     const [processing, setProcessing] = useState(false);
     const [step, setStep] = useState(1)
+    const camera = useRef(null);
+    const [takingPic, setTakingPic] = useState(false)
+    const [isSnaping, setIsSnapping] = useState(true)
 
     const canProceed = packageImage !== null
+
+
+    const takePicture = async () => {
+        if (camera.current && !takingPic) {
+
+            let options = {
+                quality: 0.85,
+                fixOrientation: true,
+                forceUpOrientation: true,
+            };
+
+            setTakingPic(true);
+
+            try {
+                const data = await camera.current.takePictureAsync(options);
+                console.log('Success', JSON.stringify(data));
+                setPackageImage({
+                    uri: data.uri,
+                    type: 'image/jpeg',
+                    name: new Date().getTime() + '.jpg',
+                })
+                setIsSnapping(false)
+            } catch (err) {
+                console.log('Error', 'Failed to take picture: ' + (err.message || err));
+                return;
+            } finally {
+                setTakingPic(false);
+            }
+        }
+    };
 
 
     const uploadImage = (pic, onComplete) => {
@@ -127,38 +161,12 @@ export default VerifyPickUp = ({ navigation, route }) => {
                     width: '80%',
                     textAlign: 'center',
                 }}>*Please inspect package carefully as when uploaded, you will be fully responsible for any damage or loss.</Text>
-                <TouchableOpacity onPress={() => {
-                    launchCamera({
-                        mediaType: 'photo',
-                        // includeBase64: true,
-                        // maxHeight: 200,
-                        // maxWidth: 200,
-                    }, (res) => {
-                        console.log(res);
-                        if (res.didCancel) {
-                            console.log('User cancelled image picker');
-                            Toast.show({
-                                type: 'success',
-                                text1: 'Cancelled',
-                                text2: 'Process cancelled successfully'
-                            });
-                        }
-                        else if (res.error) {
-                            console.log('ImagePicker Error: ', res.error);
-                            Toast.show({
-                                type: 'error',
-                                text1: 'failed to get image',
-                                text2: res.error
-                            });
-                        }
-                        else if (res.assets) {
-                            setPackageImage(res.assets[0]);
-                        }
-                    })
+                <SafeAreaView onPress={() => {
+
                 }}
                     style={{
                         width: 250,
-                        height: 250,
+                        height: 330,
                         borderRadius: 10,
                         alignSelf: 'center',
                         borderWidth: 8,
@@ -166,22 +174,53 @@ export default VerifyPickUp = ({ navigation, route }) => {
                         borderColor: colors[appearance].secondary,
                         justifyContent: 'center'
                     }}>
-                    <Image
-                        source={packageImage ? { uri: packageImage.uri } : require('../../../assets/images/camera.png')}
+
+                    {isSnaping ? <RNCamera
+                        ref={ref => {
+                            camera.current = ref;
+                        }}
+                        captureAudio={false}
                         style={{
                             width: '100%',
                             height: '100%',
-                            resizeMode: 'contain',
                         }}
-                    />
+                        type={RNCamera.Constants.Type.back}
+                        androidCameraPermissionOptions={{
+                            title: 'Permission to use camera',
+                            message: 'We need your permission to use your camera',
+                            buttonPositive: 'Ok',
+                            buttonNegative: 'Cancel',
+                        }} />
+                        :
+                        <Image
+                            source={packageImage ? { uri: packageImage.uri } : require('../../../assets/images/camera.png')}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                resizeMode: 'contain',
+                            }}
+                        />}
+                </SafeAreaView>
+                <TouchableOpacity onPress={() => {
+                    if (isSnaping) {
+                        takePicture()
+                        return
+                    }
+                    setIsSnapping(true)
+                }}
+                    style={{
+                        alignSelf: 'center',
+                        marginVertical: 20,
+                        marginTop: 20,
+                    }}>
+                    <Text style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: 16,
+                        color: colors[appearance].primary,
+                    }}>{
+                            isSnaping ? 'Take Picture' : 'Retake Picture'
+                        }</Text>
                 </TouchableOpacity>
-                <Text style={{
-                    fontFamily: 'Inter-Medium',
-                    fontSize: 16,
-                    color: colors[appearance].textDark,
-                    alignSelf: 'center',
-                    marginVertical: 20,
-                }}>Snap package</Text>
             </View>
 
             <Button
