@@ -10,7 +10,7 @@ import profileRouts from "../../navigation/routs/profileRouts";
 
 const { width, height } = Dimensions.get('window');
 
-export default Dispatch = ({ navigation, onIndexChanged, onDispatch, distance, duration, items = [], processing = false }) => {
+export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue, distance, duration, items = [], processing = false }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [index, setIndex] = useState(0)
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
@@ -269,10 +269,13 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, distance, d
                                     marginTop: 20,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
+                                <Button title={item?.order_status === 'pickup' ? 'Dispatch'
+                                    : item?.order_status === 'shipping' ? 'End Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
                                         if (item?.order_status === 'pickup') {
                                             onDispatch(item)
+                                        } else if (item?.order_status === 'shipping') {
+                                            onContinue(item)
                                         } else {
                                             navigation.navigate(mainRouts.verifyPickup, {
                                                 item: item

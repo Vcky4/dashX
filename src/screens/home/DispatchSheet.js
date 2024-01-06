@@ -176,63 +176,72 @@ export default Dispatch = ({ onEnd, item }) => {
                         }}> {item?._id}</Text></Text>
                     </View>
                 </View>
-                <View style={{
-                    width: '100%',
-                    marginTop: 5,
-                    flexDirection: 'row',
-                }}>
-                    <Image
-                        source={require('../../../assets/images/point.png')}
-                        style={{
-                            width: 14,
-                            height: 14,
-                            resizeMode: "contain",
-                            marginTop: 2,
-                            marginEnd: 4,
-                        }}
-                    />
-                    <Text style={{
-                        color: colors[colorScheme].textDark,
-                        fontSize: 14,
-                        fontFamily: 'Inter-Medium',
-                        marginLeft: 5,
-                    }}>{item?.senderaddress}</Text>
-                </View>
-
-                <View style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                    marginTop: 5
-                }}>
-                    <Image
-                        source={require('../../../assets/images/point2.png')}
-                        style={{
-                            width: 14,
-                            height: 14,
-                            resizeMode: "contain",
-                            marginTop: 2,
-                            marginEnd: 4,
-                        }}
-                    />
-                    <Text style={{
-                        color: colors[colorScheme].textDark,
-                        fontSize: 14,
-                        fontFamily: 'Inter-Meduim',
-                        marginLeft: 5,
-                    }}>{item?.receiveraddress}</Text>
-                </View>
             </View>
 
             <View style={{
-                marginTop: 20,
+                marginTop: 10,
                 elevation: 10,
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 10,
                 shadowColor: '#000000',
-                padding: 14,
+                paddingHorizontal: 14,
                 marginHorizontal: 10,
+                paddingVertical: 10,
             }}>
+                <View style={{
+                    width: '100%',
+                    marginTop: 15,
+                    flexDirection: 'row',
+                }}>
+                    <View style={{
+                        alignItems: 'center',
+                    }}>
+                        <Image
+                            source={require('../../../assets/images/point.png')}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                resizeMode: "contain",
+                                marginTop: 2,
+                            }}
+                        />
+                        <View style={{
+                            width: 2,
+                            height: 30,
+                            backgroundColor: colors[colorScheme].primary,
+                        }} />
+                        <Image
+                            source={require('../../../assets/images/point2.png')}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                resizeMode: "contain",
+                            }}
+                        />
+                    </View>
+                    <View style={{
+                        justifyContent: 'space-between',
+                    }}>
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                            marginBottom: 2,
+                        }}>Pickup: <Text style={{
+                            fontFamily: 'Inter-Medium',
+                        }}>{item?.senderaddress}</Text></Text>
 
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                        }}>Delivery: <Text style={{
+                            fontFamily: 'Inter-Medium',
+                        }}>{item?.receiveraddress}</Text></Text>
+                    </View>
+                </View>
                 <Button title={'Input code to end dispatch'}
                     onPress={() => {
                         setInputCode(true)

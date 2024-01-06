@@ -173,8 +173,8 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         //find for oder_status == shipping
-        if (myOrders.find(item => item.order_status == 'shipping') && !isDispatch) {
-            bottomStep == 0 && setBottomStep(1)
+        if (myOrders.find(item => item.order_status == 'shipping' && bottomStep === 0) && !isDispatch) {
+            bottomStep == 0 && setBottomStep(2)
             setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
             setIsDispatch(true)
             panelRef.current.togglePanel()
@@ -452,17 +452,23 @@ export default Home = ({ navigation }) => {
                 }}>{newOrders}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setBottomStep(0)}
+            <TouchableOpacity onPress={() => {
+                if (bottomStep === 2) {
+                    setIsDispatch(false)
+                    panelRef.current.togglePanel()
+                }
+                setBottomStep(bottomStep - 1)
+            }}
                 style={{
                     backgroundColor: colors[colorScheme].primary,
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 320 : 170,
+                    bottom: bottomStep === 1 ? 320 : 380,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
-                    display: bottomStep === 1 && !isDispatch && !isOpen ? 'flex' : 'none',
+                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
                 }}>
                 <Image
                     source={require('../../../assets/images/down.png')}
@@ -512,14 +518,21 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
-                dispatchItem && openDirection(
-                    parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                    parseFloat(dispatchItem?.sendercordinate?.senderlong),
-                )
+                if (isDispatch || dispatchItem.order_status === 'pickup') {
+                    openDirection(
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                    )
+                } else {
+                    dispatchItem && openDirection(
+                        parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                        parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                    )
+                }
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 320 : 170,
+                    bottom: bottomStep === 1 ? 320 : 380,
                     right: 80,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -528,7 +541,7 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     paddingHorizontal: 20,
                     paddingVertical: 6,
-                    display: bottomStep === 1 && !isDispatch && !isOpen ? 'flex' : 'none',
+                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -668,7 +681,14 @@ export default Home = ({ navigation }) => {
                 <Dispatch items={myOrders}
                     navigation={navigation}
                     onDispatch={(item) => {
+                        setBottomStep(2)
                         startDispatch(item._id)
+                    }}
+                    onContinue={(item) => {
+                        setIsDispatch(true)
+                        setDispatchItem(item)
+                        setBottomStep(2)
+                        panelRef.current.togglePanel()
                     }}
                     distance={distance}
                     duration={duration}
@@ -875,7 +895,7 @@ export default Home = ({ navigation }) => {
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>
 
-            <BottomSheet isOpen={false}
+            <BottomSheet isOpen={isDispatch}
                 wrapperStyle={{
                     borderTopLeftRadius: 22,
                     borderTopRightRadius: 22,
@@ -901,7 +921,7 @@ export default Home = ({ navigation }) => {
                 }}
                     style={{
                         position: 'absolute',
-                        bottom: 435,
+                        bottom: 380,
                         right: 20,
                         zIndex: 100,
                         backgroundColor: colors[colorScheme].white,
