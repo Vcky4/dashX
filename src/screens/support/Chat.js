@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
@@ -83,27 +83,87 @@ export default Chat = ({ navigation }) => {
                         <View style={{
                             flexDirection: 'row',
                             marginHorizontal: 20,
-                            marginVertical: 10,
+                            marginVertical: 5,
                             justifyContent: item % 2 === 0 ? 'flex-start' : 'flex-end',
                         }}>
 
                             <View style={{
-                                backgroundColor: colors[colorScheme].primary,
-                                padding: 10,
-                                borderRadius: 10,
-                                marginHorizontal: 10,
+                                alignItems: item % 2 === 0 ? 'flex-start' : 'flex-end',
                             }}>
                                 <Text style={{
-                                    color: colors[colorScheme].white,
-                                    fontSize: 16,
+                                    color: colors[colorScheme].textGray,
+                                    fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Hello</Text>
+                                }}>Today, 9:51 AM</Text>
+                                <View style={{
+                                    backgroundColor: item % 2 === 0 ? colors[colorScheme].secondary : colors[colorScheme].primary,
+                                    padding: 10,
+                                    borderRadius: 10,
+                                    borderBottomStartRadius: item % 2 === 0 ? 0 : 10,
+                                    borderBottomEndRadius: item % 2 === 0 ? 10 : 0,
+                                    marginTop: 4,
+                                    maxWidth: '80%',
+                                    minWidth: 150,
+                                }}>
+                                    <Text style={{
+                                        color: item % 2 === 0 ? colors[colorScheme].black : colors[colorScheme].white,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Regular',
+                                    }}>Hello</Text>
+                                </View>
                             </View>
                         </View>
                     )
                 }}
             />
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+            }}>
+                <View style={{
+                    // backgroundColor: 'rgba(217,217,217,0.05)',
+                    borderRadius: 10,
+                    flex: 1,
+                    marginEnd: 10,
+                    // flexDirection: 'row',
+                    alignItems: 'center',
+                    // paddingHorizontal: 10,
+                }}>
+                    <TextInput
+                        placeholder="Type a message"
+                        placeholderTextColor={colors[colorScheme].textGray}
+                        cursorColor={colors[colorScheme].textDark}
+                        style={{
+                            padding: 10,
+                            backgroundColor: 'rgba(217,217,217,0.05)',
+                            borderRadius: 10,
+                            fontFamily: 'Inter-Regular',
+                            width: '100%',
+                            color: colors[colorScheme].textDark,
+                        }}
+                    />
+                </View>
 
+                <TouchableOpacity style={{
+                    backgroundColor: colors[colorScheme].primary,
+                    padding: 10,
+                    borderRadius: 10,
+                
+                }}>
+                    <Image
+                        source={require('../../../assets/images/send.png')}
+                        style={{
+                            width: 24,
+                            height: 24,
+                            resizeMode: "contain",
+                            tintColor: colors[colorScheme].white
+                        }}
+                    />
+                </TouchableOpacity>
+            </View>
 
         </View>
     )
