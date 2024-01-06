@@ -1,11 +1,45 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import businessRoutes from "../../../navigation/routs/businessRouts";
+import endpoints from "../../../../assets/endpoints/endpoints";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default ActiveRider = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
+    const [activeFleets, setActiveFleets] = useState([]);
+    const [processing, setProcessing] = useState(false)
+
+
+    const getActiveRiders = async () => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.activeFleet, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        setProcessing(false)
+        // console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setActiveFleets(json.data)
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+    useEffect(() => {
+        getActiveRiders()
+    }, [])
 
 
     return (
@@ -39,7 +73,7 @@ export default ActiveRider = ({ navigation }) => {
                         fontSize: 18,
                         fontFamily: 'Inter-Bold',
                         marginStart: 20,
-                    }}>Delivery History</Text>
+                    }}>Active Riders</Text>
                 </View>
 
                 <View style={{
@@ -56,10 +90,16 @@ export default ActiveRider = ({ navigation }) => {
                         color: colors[colorScheme].textDark,
                         fontSize: 16,
                         fontFamily: 'Inter-SemiBold',
-                    }}>50</Text>
+                    }}>{activeFleets.length}</Text>
                 </View>
                 <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={processing}
+                            onRefresh={getActiveRiders}
+                        />
+                    }
+                    data={activeFleets}
                     renderItem={({ item, index }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryDetails, { item: item })}
                             style={{

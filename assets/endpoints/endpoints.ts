@@ -31,7 +31,8 @@ const endpoints = {
     dashboard: '/bussiness/dashboard',
     fleetOrders: '/bussiness/retrieve/fleet/order',
     fleetDetails: '/bussiness/retrieve/single/fleet',
-    updateFleet: '/bussiness/update/dispatch'
+    updateFleet: '/bussiness/update/dispatch',
+    activeFleet: '/bussiness/active/rider',
 }
 
 export default endpoints;
