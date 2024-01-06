@@ -38,6 +38,12 @@ export default OrderDetails = ({ navigation, route }) => {
                     text1: 'Order cancelled',
                     text2: 'Order has been cancelled successfully',
                 })
+            }else{
+                Toast.show({
+                    type: 'error',
+                    text1: 'Order cancellation failed',
+                    text2: json.message,
+                })
             }
         }
         catch (e) {
