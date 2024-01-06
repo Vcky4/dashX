@@ -20,6 +20,7 @@ const endpoints = {
     startDispatch: '/dispatch/start/dispatch',
     deliverOrder: '/dispatch/delivered/order',
     history: '/dispatch/order/history',
+    cancelOrder: '/dispatch/cancel/order',
 
     //business
     addRider: '/bussiness/add/dispatch',
