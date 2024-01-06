@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, Linking } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, Linking, ActivityIndicator } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
@@ -27,8 +27,34 @@ export default Monitor = ({ navigation }) => {
         latitude: 0,
         longitude: 0,
     });
+    const [fleets, setFleets] = useState([]);
+    const [processing, setProcessing] = useState(false);
 
+    const getTotalFleests = async () => {
+        setProcessing(true);
+        const response = await fetch(endpoints.baseUrl + endpoints.retriveFleets, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        console.log(json)
+        setProcessing(false)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setFleets(json.data)
 
+        }
+    }
+
+    useEffect(() => {
+        getTotalFleests()
+    }, [])
 
     //open direction on maps
     const openDirection = (lat, lng) => {
@@ -84,7 +110,7 @@ export default Monitor = ({ navigation }) => {
 
         <View style={[styles.container, {}]}>
             <TouchableOpacity onPress={() => {
-                // setBottomStep(1)
+                getTotalFleests()
             }}
                 style={{
                     position: 'absolute',
@@ -103,7 +129,17 @@ export default Monitor = ({ navigation }) => {
                     color: colors[colorScheme].white,
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
+                    display: processing ? 'none' : 'flex',
                 }}>Refresh</Text>
+
+                <ActivityIndicator
+                    animating={processing}
+                    size="small"
+                    color={colors[colorScheme].white}
+                    style={{
+                        display: processing ? 'flex' : 'none',
+                    }}
+                />
 
             </TouchableOpacity>
 
@@ -119,16 +155,18 @@ export default Monitor = ({ navigation }) => {
                 elevation: 10,
                 paddingEnd: 10,
             }}>
-                <Image
-                    source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../../assets/images/user.png')}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        alignSelf: 'center',
-                        resizeMode: 'cover',
-                        borderRadius: 25,
-                    }}
-                />
+                <TouchableOpacity onPress={()=> navigation.openDrawer()}>
+                    <Image
+                        source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../../assets/images/user.png')}
+                        style={{
+                            width: 40,
+                            height: 40,
+                            alignSelf: 'center',
+                            resizeMode: 'cover',
+                            borderRadius: 25,
+                        }}
+                    />
+                </TouchableOpacity>
 
                 <Text style={{
                     color: colors[colorScheme].textDark,

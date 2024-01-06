@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
 import businessRoutes from "../../../navigation/routs/businessRouts";
+import endpoints from "../../../../assets/endpoints/endpoints";
 
 export default DeliveryHistory = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -11,6 +12,35 @@ export default DeliveryHistory = ({ navigation }) => {
     const [open2, setOpen2] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [deliveryHistory, setDeliveryHistory] = useState([]);
+
+
+    const getDeliveryHistory = async () => {
+        const response = await fetch(endpoints.baseUrl + endpoints.deliveryHistory, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        // console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setDeliveryHistory(json.data)
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+    useEffect(() => {
+        getDeliveryHistory()
+    }, [])
 
 
     return (
@@ -56,10 +86,10 @@ export default DeliveryHistory = ({ navigation }) => {
                     marginBottom: 10
                 }}>
                     <TouchableOpacity onPress={() => setOpen(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -70,7 +100,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -90,10 +120,10 @@ export default DeliveryHistory = ({ navigation }) => {
                     }}>to</Text>
 
                     <TouchableOpacity onPress={() => setOpen2(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -104,7 +134,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -118,7 +148,7 @@ export default DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    data={deliveryHistory}
                     renderItem={({ item, index }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryDetails, { item: item })}
                             style={{
@@ -157,7 +187,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,
                                         fontFamily: 'Inter-Regular',
-                                    }}>09:19am  - Jan. 1st, 2024</Text>
+                                    }}>{new Date(item.createdAt).toLocaleTimeString()}- {new Date(item.createdAt).toLocaleDateString()}</Text>
                                 </View>
                             </View>
                             <View style={{
@@ -168,12 +198,12 @@ export default DeliveryHistory = ({ navigation }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>+N20,000</Text>
+                                }}>+₦{item.delivery_fee.toLocaleString()}</Text>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Delivered</Text>
+                                }}>{item.order_status}</Text>
                             </View>
                         </TouchableOpacity>
                     }

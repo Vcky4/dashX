@@ -112,12 +112,68 @@ export default OrderDetails = ({ navigation, route }) => {
                             }</Text>
                     </View>)
             }
+
+
+            <Text style={{
+                color: colors[colorScheme].textDark,
+                fontSize: 16,
+                fontFamily: 'Inter-SemiBold',
+                marginHorizontal: 20,
+                marginTop: 20,
+                marginBottom: 10,
+            }}>Reciever Details</Text>
+
+            {
+                [1, 2].map((item, index) =>
+                    <View key={index}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginHorizontal: 20,
+                            marginTop: 10,
+                            justifyContent: 'space-between',
+                        }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Image
+                                source={
+                                    index == 0 ? require('../../../assets/images/user.png') : require('../../../assets/images/pin.png')
+                                }
+                                style={{
+                                    width: 29,
+                                    height: 29,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].textGray,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                                marginLeft: 10,
+                            }}>{
+                                    index == 0 ? 'Name:' : 'Address'
+                                }</Text>
+                        </View>
+                        <Text style={{
+                            color: colors[colorScheme].textGray,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Regular',
+                            marginLeft: 10,
+                            width: '50%',
+                        }}>{
+                                index == 0 ? order?.receivername : order?.receiveraddress
+                            }</Text>
+                    </View>)
+            }
+
             <View style={{
                 width: '84%',
                 height: 0.4,
                 backgroundColor: colors[colorScheme].border,
                 alignSelf: 'center',
-                marginTop: 25,
+                marginTop: 10,
             }} />
 
             <Text style={{
@@ -176,7 +232,9 @@ export default OrderDetails = ({ navigation, route }) => {
                             width: '50%',
                         }}>{
                                 index == 0 ? order?._id
-                                    : index == 1 ? '12:00PM'
+                                    : index == 1 ? order.pickuptime.length > 0
+                                        ? new Date(order.pickuptime).toLocaleTimeString()
+                                        : 'N/A'
                                         : index == 2 ? 'Cash'
                                             : order.productname
                             }</Text>

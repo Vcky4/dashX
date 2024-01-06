@@ -1,15 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import Button from "../../component/Button";
 
 
-export default PendingOrderItem = ({ item, onPress,onAccept, processing }) => {
+export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
+    const [loading, setLoading] = useState(false)
     const { colorScheme } = useContext(AuthContext)
+
+    useEffect(() => {
+        if (!processing) setLoading(false)
+    }, [processing])
     return (
         <TouchableOpacity
-         onPress={onPress}
+            onPress={onPress}
             style={{
                 backgroundColor: colors[colorScheme].background,
                 width: '100%',
@@ -25,72 +30,83 @@ export default PendingOrderItem = ({ item, onPress,onAccept, processing }) => {
                 alignItems: 'center',
             }}>
                 <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 16,
-                    fontFamily: 'Medium',
-                }}>{item?.productname}</Text>
-                <Text style={{
                     color: colors[colorScheme].textDark,
-                    fontSize: 16,
-                    fontFamily: 'Medium',
+                    fontSize: 18,
+                    fontFamily: 'Inter-Bold',
                 }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                 <Button title={'Accept'}
-                    onPress={onAccept}
+                    onPress={() => {
+                        setLoading(true)
+                        onAccept()
+                    }}
                     buttonStyle={{
                         borderRadius: 20,
                         height: 30,
                         width: 86,
                     }}
                     fontSize={16}
-                    loading={processing}
-                    enabled={!processing}
+                    loading={loading}
+                    enabled={!loading}
                 />
             </View>
+            <Text style={{
+                color: colors[colorScheme].primary,
+                fontSize: 16,
+                fontFamily: 'Medium',
+            }}>{item?.productname}</Text>
             <View style={{
                 width: '100%',
                 marginTop: 15,
                 flexDirection: 'row',
             }}>
-                <Image
-                    source={require('../../../assets/images/point.png')}
-                    style={{
-                        width: 14,
-                        height: 14,
-                        resizeMode: "contain",
-                        marginTop: 2,
-                    }}
-                />
-                <Text style={{
-                    color: colors[colorScheme].textDark,
-                    fontSize: 14,
-                    fontFamily: 'Inter-Bold',
-                    marginLeft: 5,
-                }}>Pickup: <Text style={{
-                    fontFamily: 'Inter-Medium',
-                }}>{item?.receiveraddress}</Text></Text>
-            </View>
-            <View style={{
-                width: '100%',
-                flexDirection: 'row',
-                marginTop: 5
-            }}>
-                <Image
-                    source={require('../../../assets/images/point2.png')}
-                    style={{
-                        width: 14,
-                        height: 14,
-                        resizeMode: "contain",
-                        marginTop: 2,
-                    }}
-                />
-                <Text style={{
-                    color: colors[colorScheme].textDark,
-                    fontSize: 14,
-                    fontFamily: 'Inter-Bold',
-                    marginLeft: 5,
-                }}>Delivery: <Text style={{
-                    fontFamily: 'Inter-Medium',
-                }}>{item?.senderaddress}</Text></Text>
+                <View style={{
+                    alignItems: 'center',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginTop: 2,
+                        }}
+                    />
+                    <View style={{
+                        width: 2,
+                        height: 30,
+                        backgroundColor: colors[colorScheme].primary,
+                    }} />
+                    <Image
+                        source={require('../../../assets/images/point2.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                        }}
+                    />
+                </View>
+                <View style={{
+                    justifyContent: 'space-between',
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Bold',
+                        marginLeft: 5,
+                        marginBottom: 2,
+                    }}>Pickup: <Text style={{
+                        fontFamily: 'Inter-Medium',
+                    }}>{item?.senderaddress}</Text></Text>
+
+                    <Text style={{
+                        color: colors[colorScheme].textDark,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Bold',
+                        marginLeft: 5,
+                    }}>Delivery: <Text style={{
+                        fontFamily: 'Inter-Medium',
+                    }}>{item?.receiveraddress}</Text></Text>
+                </View>
             </View>
         </TouchableOpacity>
     )

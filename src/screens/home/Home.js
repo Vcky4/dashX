@@ -38,8 +38,8 @@ export default Home = ({ navigation }) => {
     const GOOGLE_API_KEY = endpoints.gg;
     const { user, token, saveUser, colorScheme } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
-    // const [distance, setDistance] = useState(0);
-    // const [duration, setDuration] = useState(0);
+    const [distance, setDistance] = useState(0);
+    const [duration, setDuration] = useState(0);
     const [isDispatch, setIsDispatch] = useState(false);
     const [address, setAddress] = useState('');
     const [bottomStep, setBottomStep] = useState(0);
@@ -173,8 +173,8 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         //find for oder_status == shipping
-        if (myOrders.find(item => item.order_status == 'shipping') && !isDispatch) {
-            bottomStep == 0 && setBottomStep(1)
+        if (myOrders.find(item => item.order_status == 'shipping' && bottomStep === 0) && !isDispatch) {
+            bottomStep == 0 && setBottomStep(2)
             setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
             setIsDispatch(true)
             panelRef.current.togglePanel()
@@ -436,7 +436,7 @@ export default Home = ({ navigation }) => {
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
                 }}>New Orders</Text>
-                
+
                 <Text style={{
                     color: colors[colorScheme].primary,
                     fontSize: 16,
@@ -452,17 +452,23 @@ export default Home = ({ navigation }) => {
                 }}>{newOrders}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setBottomStep(0)}
+            <TouchableOpacity onPress={() => {
+                if (bottomStep === 2) {
+                    setIsDispatch(false)
+                    panelRef.current.togglePanel()
+                }
+                setBottomStep(bottomStep - 1)
+            }}
                 style={{
                     backgroundColor: colors[colorScheme].primary,
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep === 1 ? 320 : 380,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
-                    display: bottomStep === 1 && !isDispatch && !isOpen ? 'flex' : 'none',
+                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
                 }}>
                 <Image
                     source={require('../../../assets/images/down.png')}
@@ -480,7 +486,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep > 0 ? 320 : 170,
                     left: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -510,6 +516,39 @@ export default Home = ({ navigation }) => {
                     textAlign: 'center',
                 }}>{myOrders.length}</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {
+                if (isDispatch || dispatchItem.order_status === 'pickup') {
+                    openDirection(
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                        parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                    )
+                } else {
+                    dispatchItem && openDirection(
+                        parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                        parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                    )
+                }
+            }}
+                style={{
+                    position: 'absolute',
+                    bottom: bottomStep === 1 ? 320 : 380,
+                    right: 80,
+                    zIndex: 100,
+                    backgroundColor: colors[colorScheme].primary,
+                    borderRadius: 40,
+                    padding: 6,
+                    elevation: 10,
+                    paddingHorizontal: 20,
+                    paddingVertical: 6,
+                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
+                }} >
+                <Text style={{
+                    color: colors[colorScheme].white,
+                    fontSize: 16,
+                    fontFamily: 'Inter-Bold',
+                }}>Directions</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
                     latitude: coordinate.latitude,
@@ -520,7 +559,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 310 : 170,
+                    bottom: bottomStep > 0 ? 320 : 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,
@@ -642,8 +681,17 @@ export default Home = ({ navigation }) => {
                 <Dispatch items={myOrders}
                     navigation={navigation}
                     onDispatch={(item) => {
+                        setBottomStep(2)
                         startDispatch(item._id)
                     }}
+                    onContinue={(item) => {
+                        setIsDispatch(true)
+                        setDispatchItem(item)
+                        setBottomStep(2)
+                        panelRef.current.togglePanel()
+                    }}
+                    distance={distance}
+                    duration={duration}
                     processing={processing}
                     onIndexChanged={(index, item) => {
                         setDispatchItem(item)
@@ -779,8 +827,8 @@ export default Home = ({ navigation }) => {
                             console.log('result :>>', result?.end_location)
                             console.log(`Distance: ${result.distance} km`)
                             console.log(`Duration: ${result.duration} min.`)
-                            // setDistance(result.distance);
-                            // setDuration(result.duration);
+                            setDistance(result.distance);
+                            setDuration(result.duration);
                             // setWaypoints(result.coordinates);
 
                             this.mapView.fitToCoordinates(result.coordinates, {
@@ -847,7 +895,7 @@ export default Home = ({ navigation }) => {
                     <Marker coordinate={coordinates[1]} /> */}
             </MapView>
 
-            <BottomSheet isOpen={false}
+            <BottomSheet isOpen={isDispatch}
                 wrapperStyle={{
                     borderTopLeftRadius: 22,
                     borderTopRightRadius: 22,
@@ -873,7 +921,7 @@ export default Home = ({ navigation }) => {
                 }}
                     style={{
                         position: 'absolute',
-                        bottom: 435,
+                        bottom: 380,
                         right: 20,
                         zIndex: 100,
                         backgroundColor: colors[colorScheme].white,
@@ -932,7 +980,7 @@ export default Home = ({ navigation }) => {
                     setIsOpen(false)
                 }}
                 ref={ref => panelRef2.current = ref}>
-                <View style={{
+                {/* <View style={{
                     backgroundColor: '#E6CEF2',
                     top: -95,
                     alignSelf: 'center',
@@ -947,7 +995,7 @@ export default Home = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: 'Inter-SemiBold',
                     }}>Pending  Orders</Text>
-                </View>
+                </View> */}
                 <PendingOrder
                     onClose={() => {
                         panelRef2.current?.togglePanel()

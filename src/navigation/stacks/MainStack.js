@@ -44,83 +44,83 @@ const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default DrawerStack = () => {
-  const panelRef = useRef(null);
-  const {colorScheme} = useContext(AuthContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const navigation = useNavigation();
-  const openPanel = () => {
-    panelRef.current?.togglePanel();
-  };
-  return (
-    <>
-      <Drawer.Navigator
-        drawerContent={props =>
-          DrawerContent(props, () => {
-            openPanel();
-          })
-        }>
-        <Drawer.Screen
-          name="Main"
-          component={AuthPassed}
-          options={{headerShown: false}}
-        />
-      </Drawer.Navigator>
-      <BottomSheet
-        isOpen={false}
-        wrapperStyle={{
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          elevation: 10,
-          backgroundColor: colors[colorScheme].background,
-          flex: 1,
-        }}
-        sliderMaxHeight={height * 0.8}
-        outerContentStyle={{
-          width: width,
-          left: -20.5,
-        }}
-        lineContainerStyle={
-          {
-            // display: 'none'
-          }
-        }
-        sliderMinHeight={0}
-        onOpen={() => {
-          setIsOpen(true);
-        }}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-        ref={ref => (panelRef.current = ref)}>
-        <View
-          style={{
-            backgroundColor: '#E6CEF2',
-            top: -95,
-            alignSelf: 'center',
-            borderRadius: 30,
-            position: 'absolute',
-            paddingHorizontal: 20,
-            paddingVertical: 6,
-            display: isOpen ? 'flex' : 'none',
-          }}>
-          <Text
-            style={{
-              color: colors[colorScheme].black,
-              fontSize: 16,
-              fontFamily: 'Inter-SemiBold',
-            }}>
-            Pending Orders
-          </Text>
-        </View>
-        <PendingOrder
-          onClose={() => {
-            panelRef.current?.togglePanel();
-          }}
-          navigation={navigation}
-        />
-      </BottomSheet>
-    </>
-  );
+    const panelRef = useRef(null);
+    const { colorScheme, user } = useContext(AuthContext);
+    const [isOpen, setIsOpen] = useState(false);
+    const navigation = useNavigation();
+    const openPanel = () => {
+        panelRef.current?.togglePanel();
+    };
+    return (
+        <>
+            <Drawer.Navigator
+                drawerContent={props =>
+                    DrawerContent(props, () => {
+                        openPanel();
+                    })
+                }>
+                <Drawer.Screen
+                    name="Main"
+                    component={AuthPassed}
+                    options={{ headerShown: false }}
+                />
+            </Drawer.Navigator>
+            <BottomSheet
+                isOpen={false}
+                wrapperStyle={{
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    elevation: 10,
+                    backgroundColor: colors[colorScheme].background,
+                    flex: 1,
+                }}
+                sliderMaxHeight={height * 0.8}
+                outerContentStyle={{
+                    width: width,
+                    left: -20.5,
+                }}
+                lineContainerStyle={
+                    {
+                        // display: 'none'
+                    }
+                }
+                sliderMinHeight={0}
+                onOpen={() => {
+                    setIsOpen(true);
+                }}
+                onClose={() => {
+                    setIsOpen(false);
+                }}
+                ref={ref => (panelRef.current = ref)}>
+                {/* <View
+                    style={{
+                        backgroundColor: '#E6CEF2',
+                        top: -95,
+                        alignSelf: 'center',
+                        borderRadius: 30,
+                        position: 'absolute',
+                        paddingHorizontal: 20,
+                        paddingVertical: 6,
+                        display: isOpen ? 'flex' : 'none',
+                    }}>
+                    <Text
+                        style={{
+                            color: colors[colorScheme].black,
+                            fontSize: 16,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>
+                        Pending Orders
+                    </Text>
+                </View> */}
+                <PendingOrder
+                    onClose={() => {
+                        panelRef.current?.togglePanel();
+                    }}
+                    navigation={navigation}
+                />
+            </BottomSheet>
+        </>
+    );
 };
 
 const AuthPassed = () => {

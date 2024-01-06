@@ -1,37 +1,49 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {AuthContext} from '../../../context/AuthContext';
+import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
-import DatePicker from 'react-native-date-picker';
-import InputField from '../../component/InputField';
-import PasswordInput from '../../component/PasswordInput';
-import Button from '../../component/Button';
 import businessRoutes from '../../navigation/routs/businessRouts';
+import endpoints from '../../../assets/endpoints/endpoints';
 
-export default DeliveryHistory = ({navigation}) => {
-  const {colorScheme, user, token} = useContext(AuthContext);
-  const [open, setOpen] = useState(false);
-  const [requestData, setRequestData] = useState({
-    ridername: '',
-    riderPhone: '',
-    password: '',
-    upLoadImage: '',
-    VechicleType: '',
-  });
-
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+export default DeliveryHistory = ({ navigation }) => {
+  const { colorScheme, user, token } = useContext(AuthContext);
   const appearance = colorScheme;
   const [processing, setProcessing] = useState(false);
-  const [dropDown, setDropDown] = useState(false);
-  const [isSelected, setIsSelected] = useState('');
+  const [fleets, setFleets] = useState([]);
+
+  const getTotalFleests = async () => {
+    setProcessing(true);
+    const response = await fetch(endpoints.baseUrl + endpoints.retriveFleets, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        "dispatchid": user.id,
+      })
+    })
+    const json = await response.json()
+    // console.log(json)
+    setProcessing(false)
+    //check if array
+    if (Array.isArray(json.data)) {
+      setFleets(json.data)
+
+    }
+  }
+
+  useEffect(() => {
+    getTotalFleests()
+  }, [])
 
   return (
     <>
@@ -70,7 +82,7 @@ export default DeliveryHistory = ({navigation}) => {
             Fleet
           </Text>
         </View>
-        <View style={{marginHorizontal: 20, marginTop: 10, height: '100%'}}>
+        <View style={{ marginHorizontal: 20, marginTop: 10, height: '100%' }}>
           <Text
             style={{
               color: colors[colorScheme].textDark,
@@ -86,14 +98,19 @@ export default DeliveryHistory = ({navigation}) => {
               fontSize: 16,
               fontFamily: 'Inter-Bold',
             }}>
-            100
+            {fleets.length}
           </Text>
 
           <FlatList
-            data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-            renderItem={({item, index}) => (
+            data={fleets}
+            refreshControl={
+              <RefreshControl refreshing={processing} onRefresh={getTotalFleests} />
+            }
+            renderItem={({ item, index }) => (
               <TouchableOpacity
-                onPress={() => navigation.navigate(businessRoutes.fleetDetails)}
+                onPress={() =>
+                  navigation.navigate(businessRoutes.fleetDetails, {id: item._id})
+                }
                 style={{
                   backgroundColor: colors[colorScheme].background,
                   paddingVertical: 10,
@@ -114,8 +131,8 @@ export default DeliveryHistory = ({navigation}) => {
                   <Image
                     source={require('../../../assets/images/user.png')}
                     style={{
-                      width: 50,
-                      height: 50,
+                      width: 40,
+                      height: 40,
                       resizeMode: 'contain',
                     }}
                   />
@@ -129,7 +146,7 @@ export default DeliveryHistory = ({navigation}) => {
                         fontSize: 16,
                         fontFamily: 'Inter-Medium',
                       }}>
-                      Peter Andrew
+                      {item.name}
                     </Text>
                   </View>
                 </View>
@@ -154,7 +171,7 @@ export default DeliveryHistory = ({navigation}) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{marginStart: 20}}>
+                  <TouchableOpacity style={{ marginStart: 20 }}>
                     <Image
                       tintColor={colors[appearance].textDark}
                       source={require('../../../assets/images/trash.png')}

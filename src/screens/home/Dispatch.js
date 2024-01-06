@@ -10,7 +10,7 @@ import profileRouts from "../../navigation/routs/profileRouts";
 
 const { width, height } = Dimensions.get('window');
 
-export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [], processing = false }) => {
+export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue, distance, duration, items = [], processing = false }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [index, setIndex] = useState(0)
     const name = items[index]?.order_status !== 'pickup' ? items[index]?.sendername : items[index]?.receivername
@@ -106,8 +106,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
             </View>
 
             <View style={{
-                paddingStart: 10,
-                paddingEnd: 10,
+                // paddingStart: 10,
+                // paddingEnd: 10,
                 width: width
             }}>
                 <FlatList
@@ -126,15 +126,71 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                         <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
                             style={{
                                 marginTop: 20,
-                                elevation: 20,
+                                elevation: 10,
                                 backgroundColor: colors[colorScheme].background,
                                 borderRadius: 10,
-                                shadowColor: '#000000',
+                                // shadowColor: '#000000',
                                 padding: 14,
-                                // marginHorizontal: 10,
+                                marginHorizontal: 10,
                                 marginBottom: 20,
                                 width: width - 20,
+                                shadowOffset: {
+                                    width: 30,
+                                    height: 30
+                                },
+                                shadowRadius: 10,
+                                // shadowOpacity: 1.0
                             }}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Medium',
+                                    }}>₦{item?.delivery_fee.toLocaleString()}</Text>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 12,
+                                        fontFamily: 'Inter-Regular',
+                                        marginLeft: 10,
+                                        borderRadius: 10,
+                                        paddingHorizontal: 8,
+                                        paddingVertical: 1,
+                                        borderColor: colors[colorScheme].primary,
+                                        borderWidth: 1,
+                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
+                                    }}>Picked</Text>
+                                </View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Medium',
+                                        marginEnd: 20,
+                                    }}>{parseInt(distance)}<Text style={{
+                                        color: colors[colorScheme].primary,
+                                    }}>km</Text></Text>
+
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter-Medium',
+                                    }}>{parseInt(duration)}<Text style={{
+                                        color: colors[colorScheme].primary,
+                                    }}>mins</Text></Text>
+                                </View>
+                            </View>
+
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
@@ -149,25 +205,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
                                     }}>{item?.productname}</Text>
-                                    <Text style={{
-                                        color: colors[colorScheme].textDark,
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Regular',
-                                        marginLeft: 10,
-                                        borderRadius: 10,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 1,
-                                        borderColor: colors[colorScheme].primary,
-                                        borderWidth: 1,
-                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
-                                    }}>Picked</Text>
                                 </View>
-
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter-Medium',
-                                }}>₦{item?.delivery_fee.toLocaleString()}</Text>
                             </View>
 
                             <View style={{
@@ -175,46 +213,54 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                                 marginTop: 15,
                                 flexDirection: 'row',
                             }}>
-                                <Image
-                                    source={require('../../../assets/images/point.png')}
-                                    style={{
-                                        width: 14,
-                                        height: 14,
-                                        resizeMode: "contain",
-                                        marginTop: 2,
-                                    }}
-                                />
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Bold',
-                                    marginLeft: 5,
-                                }}>Pickup: <Text style={{
-                                    fontFamily: 'Inter-Medium',
-                                }}>{item?.senderaddress}</Text></Text>
-                            </View>
-                            <View style={{
-                                width: '100%',
-                                flexDirection: 'row',
-                                marginTop: 5
-                            }}>
-                                <Image
-                                    source={require('../../../assets/images/point2.png')}
-                                    style={{
-                                        width: 14,
-                                        height: 14,
-                                        resizeMode: "contain",
-                                        marginTop: 2,
-                                    }}
-                                />
-                                <Text style={{
-                                    color: colors[colorScheme].textDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Bold',
-                                    marginLeft: 5,
-                                }}>Delivery: <Text style={{
-                                    fontFamily: 'Inter-Medium',
-                                }}>{item?.receiveraddress}</Text></Text>
+                                <View style={{
+                                    alignItems: 'center',
+                                }}>
+                                    <Image
+                                        source={require('../../../assets/images/point.png')}
+                                        style={{
+                                            width: 14,
+                                            height: 14,
+                                            resizeMode: "contain",
+                                            marginTop: 2,
+                                        }}
+                                    />
+                                    <View style={{
+                                        width: 2,
+                                        height: 30,
+                                        backgroundColor: colors[colorScheme].primary,
+                                    }} />
+                                    <Image
+                                        source={require('../../../assets/images/point2.png')}
+                                        style={{
+                                            width: 14,
+                                            height: 14,
+                                            resizeMode: "contain",
+                                        }}
+                                    />
+                                </View>
+                                <View style={{
+                                    justifyContent: 'space-between',
+                                }}>
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 14,
+                                        fontFamily: 'Inter-Bold',
+                                        marginLeft: 5,
+                                        marginBottom: 2,
+                                    }}>Pickup: <Text style={{
+                                        fontFamily: 'Inter-Medium',
+                                    }}>{item?.senderaddress}</Text></Text>
+
+                                    <Text style={{
+                                        color: colors[colorScheme].textDark,
+                                        fontSize: 14,
+                                        fontFamily: 'Inter-Bold',
+                                        marginLeft: 5,
+                                    }}>Delivery: <Text style={{
+                                        fontFamily: 'Inter-Medium',
+                                    }}>{item?.receiveraddress}</Text></Text>
+                                </View>
                             </View>
                             <View
                                 style={{
@@ -223,10 +269,13 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, items = [],
                                     marginTop: 20,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Button title={item?.order_status === 'pickup' ? 'Dispatch' : 'Verify Pickup'}
+                                <Button title={item?.order_status === 'pickup' ? 'Dispatch'
+                                    : item?.order_status === 'shipping' ? 'End Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
                                         if (item?.order_status === 'pickup') {
                                             onDispatch(item)
+                                        } else if (item?.order_status === 'shipping') {
+                                            onContinue(item)
                                         } else {
                                             navigation.navigate(mainRouts.verifyPickup, {
                                                 item: item
