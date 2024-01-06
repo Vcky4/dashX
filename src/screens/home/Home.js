@@ -72,19 +72,6 @@ export default Home = ({ navigation }) => {
         Linking.openURL(url);
     }
 
-    //open direction between two point
-    const openDirection2 = (lat, lng, lat2, lng2) => {
-        const scheme = Platform.select({
-            ios:'maps:0,0?q=',
-            android: 'geo:0,0?q=',
-        });
-        const latLng = `${lat},${lng}`;
-        const latLng2 = `${lat2},${lng2}`;
-        const label = 'Custom Label';
-        const url = Platform.OS === 'ios'? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
-        Linking.openURL(url);
-    }
-
     // //setup to socket
     // const socket = io(endpoints.socketUrl, {
     //     extraHeaders: {
@@ -525,7 +512,10 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
-
+                dispatchItem && openDirection(
+                    parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                    parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                )
             }}
                 style={{
                     position: 'absolute',
