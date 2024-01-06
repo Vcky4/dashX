@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, Linking } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Platform, Dimensions, Linking, ActivityIndicator } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
@@ -28,6 +28,7 @@ export default Monitor = ({ navigation }) => {
         longitude: 0,
     });
     const [fleets, setFleets] = useState([]);
+    const [processing, setProcessing] = useState(false);
 
     const getTotalFleests = async () => {
         setProcessing(true);
@@ -128,7 +129,17 @@ export default Monitor = ({ navigation }) => {
                     color: colors[colorScheme].white,
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
+                    display: processing ? 'none' : 'flex',
                 }}>Refresh</Text>
+
+                <ActivityIndicator
+                    animating={processing}
+                    size="small"
+                    color={colors[colorScheme].white}
+                    style={{
+                        display: processing ? 'flex' : 'none',
+                    }}
+                />
 
             </TouchableOpacity>
 
