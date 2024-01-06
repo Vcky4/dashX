@@ -29,7 +29,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 })
             })
             const json = await response.json()
-            console.log(json)
+            // console.log(json)
             setProcessing(false)
             if (response.ok) {
                 Toast.show({

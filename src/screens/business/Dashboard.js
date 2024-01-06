@@ -33,7 +33,7 @@ export default Dashboard = ({ navigation }) => {
             })
         })
         const json = await response.json()
-        // console.log(json)
+        // console.log(json.data[0]?.dispatchid)
         setProcessing(false)
         //check if array
         if (Array.isArray(json.data)) {
@@ -325,7 +325,7 @@ export default Dashboard = ({ navigation }) => {
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
                                     }}>
-                                    Peter Andrew
+                                    {item?.dispatchid.name}
                                 </Text>
                                 <Text
                                     style={{

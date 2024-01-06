@@ -201,12 +201,12 @@ export default TotalOrder = ({ navigation, route }) => {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
-                                    }}>Peter Andrew</Text>
+                                    }}> {item?.dispatchid.name}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,
                                         fontFamily: 'Inter-Regular',
-                                    }}>09:19am  - Jan. 1st, 2024</Text>
+                                    }}>{new Date(item.createdAt).toLocaleTimeString()}- {new Date(item.createdAt).toLocaleDateString()}</Text>
                                 </View>
                             </View>
                             <View style={{
@@ -217,12 +217,12 @@ export default TotalOrder = ({ navigation, route }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>+N20,000</Text>
+                                }}>+₦{item.delivery_fee.toLocaleString()}</Text>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Delivered</Text>
+                                }}>{item.order_status}</Text>
                             </View>
                         </TouchableOpacity>
                     }

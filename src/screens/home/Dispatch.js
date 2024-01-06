@@ -18,7 +18,6 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
 
     useEffect(() => {
         onIndexChanged(index, items[index] === undefined ? items[items.length - 1] : items[index])
-        console.log('items', index)
     }, [index, items.length])
     return (
         <>

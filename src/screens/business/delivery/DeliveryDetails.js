@@ -58,7 +58,7 @@ export default DeliveryDetails = ({ navigation, route }) => {
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                }}>Peter Andrew</Text>
+                }}>{item?.dispatchid.name}</Text>
             </View>
 
             <View style={{

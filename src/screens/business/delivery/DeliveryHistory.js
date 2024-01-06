@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
@@ -13,9 +13,11 @@ export default DeliveryHistory = ({ navigation }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [deliveryHistory, setDeliveryHistory] = useState([]);
+    const [processing, setProcessing] = useState(false)
 
 
     const getDeliveryHistory = async () => {
+        setProcessing(true)
         const response = await fetch(endpoints.baseUrl + endpoints.deliveryHistory, {
             method: 'POST',
             headers: {
@@ -27,6 +29,7 @@ export default DeliveryHistory = ({ navigation }) => {
             })
         })
         const json = await response.json()
+        setProcessing(false)
         // console.log(json)
         //check if array
         if (Array.isArray(json.data)) {
@@ -148,6 +151,12 @@ export default DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={processing}
+                            onRefresh={getDeliveryHistory}
+                        />
+                    }
                     data={deliveryHistory}
                     renderItem={({ item, index }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryDetails, { item: item })}
@@ -182,7 +191,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
-                                    }}>Peter Andrew</Text>
+                                    }}> {item?.dispatchid.name}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,

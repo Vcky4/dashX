@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from 'react-native-simple-bottom-sheet';
+import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
 import endpoints from "../../../assets/endpoints/endpoints";
@@ -73,11 +74,11 @@ export default Home = ({ navigation }) => {
     }
 
     // //setup to socket
-    // const socket = io(endpoints.socketUrl, {
-    //     extraHeaders: {
-    //         authorization: `Bearer ${token}`,
-    //     },
-    // });
+    const socket = io(endpoints.socketUrl, {
+        // extraHeaders: {
+        //     authorization: `Bearer ${token}`,
+        // },
+    });
 
     const getMyOrder = async () => {
         const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
@@ -223,44 +224,24 @@ export default Home = ({ navigation }) => {
         retriveProfile();
     }, [])
 
-    // // console.log('dispatchItem', dispatchItem)
-    // //connect to socket
-    // useEffect(() => {
-    //     // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-    //     socket.on('connect', e => {
-    //         console.log('connected', socket.connected);
-    //         // setOnline(true);
-    //         // socket.emit('updateLocation', {
-    //         //   latitude: parseFloat(coordinate.latitude),
-    //         //   longitude: parseFloat(coordinate.longitude),
-    //         //   // location: callback
-    //         // });
-    //         // console.log(' first sent', [coordinate.longitude, coordinate.latitude]);
-    //     });
+    //connect socket
+    useEffect(() => {
+        // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+        socket.on('connect', e => {
+            console.log('connected', socket.connected);
 
-    //     socket.on('disconnect', e => {
-    //         setOnline(false);
-    //         console.log('disconnected', socket.connected);
-    //     });
-    //     // }
-    //     return () => {
-    //         socket.off('connect');
-    //         socket.off('disconnect');
-    //         // socket.off('receiveAlerts');
-    //     };
-    // }, [token]);
-    // useEffect(() => {
-    //     messageTrigger && setFade(1)
-    //     setTimeout(() => { setFade(0); setMessageTrigger(false) }, 10000)
-    // }, [messageTrigger]);
+        });
 
-    // useEffect(() => {
-    //     Animated.timing(fadeIn, {
-    //         toValue: fade,
-    //         duration: 1000,
-    //         useNativeDriver: true,
-    //     }).start();
-    // }, [fade]);
+        socket.on('disconnect', e => {
+            console.log('disconnected', socket.connected);
+        });
+        // }
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            // socket.off('receiveAlerts');
+        };
+    }, []);
 
     const playPause = () => {
         ding.play(success => {
@@ -293,6 +274,11 @@ export default Home = ({ navigation }) => {
         setCoordinates({
             latitude: e.nativeEvent.coordinate.latitude,
             longitude: e.nativeEvent.coordinate.longitude,
+        });
+        socket.emit('updatecordinate', {
+            "dispatchid": user.id,
+            "latitude": e.nativeEvent.coordinate.latitude,
+            "longitude": e.nativeEvent.coordinate.longitude
         });
         if (autoPosition && !helpCoordinates || autoPosition && isDispatch) {
             this.mapView.setCamera({
@@ -330,21 +316,6 @@ export default Home = ({ navigation }) => {
     useEffect(() => {
         requestLocationPermission()
     }, [])
-    useEffect(() => {
-
-        if (requestLocationPermission()) {
-            setTimeout(() => {
-                setHelpCoordinate({
-                    latitude: 6.59,
-                    longitude: 3.78,
-                })
-                // panelRef.current.togglePanel()
-            }, 5000);
-            // setTimeout(() => {
-            //     setAccepted(true)
-            // }, 10000);
-        }
-    }, [])
 
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
@@ -363,28 +334,7 @@ export default Home = ({ navigation }) => {
         };
     }, []);
 
-    // Subscribe to network state updates
-    // useEffect(() => {
-    //     NetInfo.addEventListener(state => {
-    //         console.log("Connection type", state.type);
-    //         // updateUserStatus(state.isConnected && forceOnline);
-    //     });
-    // }, [forceOnline])
 
-    //update user location every 30 seconds
-
-    // let ratings = []
-    // for (let i = 0; i < 5; i++) {
-    //     ratings.push(
-    //         <TouchableOpacity key={i}
-    //             onPress={() => { setRating(i + 1) }}
-    //             style={{
-    //                 marginHorizontal: 4,
-    //             }}>
-    //             {/* <StarLgIcon fill={rating > i ? colors.primary : colors.inactiveBt} /> */}
-    //         </TouchableOpacity>
-    //     )
-    // }
     const mapCustomStyle = mapStyles[colorScheme]
     //check if ready
     // const ready = variableUser?.data?.longitude != 0 && variableUser?.data?.is_online == 1;
@@ -695,7 +645,7 @@ export default Home = ({ navigation }) => {
                     processing={processing}
                     onIndexChanged={(index, item) => {
                         setDispatchItem(item)
-                        console.log('item', item)
+                        // console.log('item', item)
                     }} />
             </View>
             <MapView
