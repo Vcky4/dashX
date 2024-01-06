@@ -23,6 +23,8 @@ const endpoints = {
 
     //business
     addRider: '/bussiness/add/dispatch',
+    retriveFleets: '/bussiness/retrieve/all/fleet',
+    singleFleet: '/bussiness/retrieve/single/fleet',
     deliveryHistory: '/bussiness/delivery/history',
 }
 

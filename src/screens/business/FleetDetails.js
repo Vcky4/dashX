@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -7,31 +7,41 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {AuthContext} from '../../../context/AuthContext';
+import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
-import DatePicker from 'react-native-date-picker';
-import InputField from '../../component/InputField';
-import PasswordInput from '../../component/PasswordInput';
-import Button from '../../component/Button';
 import businessRoutes from '../../navigation/routs/businessRouts';
+import endpoints from '../../../assets/endpoints/endpoints';
 
-export default DeliveryHistory = ({navigation}) => {
-  const {colorScheme, user, token} = useContext(AuthContext);
-  const [open, setOpen] = useState(false);
-  const [requestData, setRequestData] = useState({
-    ridername: '',
-    riderPhone: '',
-    password: '',
-    upLoadImage: '',
-    VechicleType: '',
-  });
-
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const appearance = colorScheme;
+export default DeliveryHistory = ({ navigation, route }) => {
+  const { id } = route.params;
+  const { colorScheme, user, token } = useContext(AuthContext);
+  const [details, setDetails] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [dropDown, setDropDown] = useState(false);
-  const [isSelected, setIsSelected] = useState('');
+
+  console.log(details)
+
+  const getTotalFleests = async () => {
+    setProcessing(true);
+    const response = await fetch(endpoints.baseUrl + endpoints.singleFleet, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        "dispatchid": user.id,
+        "fleetid": id
+      })
+    })
+    const json = await response.json()
+    // console.log(json)
+    setDetails(json.data)
+    setProcessing(false)
+  }
+
+  useEffect(() => {
+    getTotalFleests()
+  }, [])
 
   return (
     <>
@@ -67,7 +77,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontFamily: 'Inter-Bold',
               marginStart: 20,
             }}>
-            Peter Andrew
+            {details?.fleet?.name}
           </Text>
         </View>
 
@@ -95,7 +105,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontSize: 16,
               fontFamily: 'Inter-Regular',
             }}>
-            Car - UYY9765
+            {details.fleet?.vehicle?.vehicle_type} - {details.fleet?.vehicle?.vehicle_number}
           </Text>
           <View
             style={{
@@ -120,7 +130,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontSize: 16,
               fontFamily: 'Inter-Regular',
             }}>
-            07078983749
+            {details.fleet?.phone}
           </Text>
           <View
             style={{
@@ -146,7 +156,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontSize: 16,
               fontFamily: 'Inter-Regular',
             }}>
-            August 15th, 2024
+            {new Date(details.fleet?.createdAt).toDateString()}
           </Text>
           <View
             style={{
@@ -178,7 +188,7 @@ export default DeliveryHistory = ({navigation}) => {
                   fontSize: 16,
                   fontFamily: 'Inter-Regular',
                 }}>
-                900{' '}
+                {details.totalorder}
               </Text>
             </View>
             <TouchableOpacity
@@ -191,7 +201,7 @@ export default DeliveryHistory = ({navigation}) => {
                   fontSize: 16,
                   fontFamily: 'Inter-Regular',
                 }}>
-                See orders{' '}
+                See orders
               </Text>
             </TouchableOpacity>
           </View>
@@ -226,17 +236,17 @@ export default DeliveryHistory = ({navigation}) => {
                   fontSize: 16,
                   fontFamily: 'Inter-Regular',
                 }}>
-                N500,000{' '}
+                ₦{details.totalamount}
               </Text>
             </View>
-            <Text
+            {/* <Text
               style={{
                 color: colors[colorScheme].primary,
                 fontSize: 16,
                 fontFamily: 'Inter-Regular',
               }}>
               See amount{' '}
-            </Text>
+            </Text> */}
           </View>
           <View
             style={{

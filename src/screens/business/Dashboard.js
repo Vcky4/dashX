@@ -1,16 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ScrollView, Text, TouchableOpacity, View, Dimensions, RefreshControl } from 'react-native';
 import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
 import businessRoutes from '../../navigation/routs/businessRouts';
 import endpoints from '../../../assets/endpoints/endpoints';
 
+const { width, height } = Dimensions.get('window');
+
 export default Dashboard = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext);
     const [deliveryHistory, setDeliveryHistory] = useState([]);
+    const [processing, setProcessing] = useState(false);
+    const [stats, setStats] = useState({
+        totalOrders: 0,
+        totalFleet: 0,
+        activeOrders: 0,
+        activeRiders: 0,
+    });
 
 
     const getDeliveryHistory = async () => {
+        setProcessing(true);
         const response = await fetch(endpoints.baseUrl + endpoints.deliveryHistory, {
             method: 'POST',
             headers: {
@@ -23,6 +33,7 @@ export default Dashboard = ({ navigation }) => {
         })
         const json = await response.json()
         console.log(json)
+        setProcessing(false)
         //check if array
         if (Array.isArray(json.data)) {
             setDeliveryHistory(json.data)
@@ -33,15 +44,56 @@ export default Dashboard = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
+
+    const getTotalFleests = async () => {
+        setProcessing(true);
+        const response = await fetch(endpoints.baseUrl + endpoints.retriveFleets, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        setProcessing(false)
+        // console.log(json.data)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setStats({
+                ...stats,
+                totalFleet: json.data.length
+            })
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+    const onRefresh = () => {
         getDeliveryHistory()
+        getTotalFleests()
+    }
+    useEffect(() => {
+        onRefresh()
     }, [])
 
     return (
-        <View
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={processing}
+                    onRefresh={onRefresh}
+                />
+            }
+            nestedScrollEnabled={true}
             style={{
                 flex: 1,
                 backgroundColor: colors[colorScheme].background,
+                height: height
             }}>
             <View
                 style={{
@@ -124,7 +176,15 @@ export default Dashboard = ({ navigation }) => {
                                 fontSize: 24,
                                 fontFamily: 'Inter-Bold',
                             }}>
-                            0
+                            {
+                                index == 0
+                                    ? stats.totalOrders
+                                    : index == 1
+                                        ? stats.totalFleet
+                                        : index == 2
+                                            ? stats.activeOrders
+                                            : stats.activeRiders
+                            }
                         </Text>
                     </TouchableOpacity>
                 ))}
@@ -187,7 +247,8 @@ export default Dashboard = ({ navigation }) => {
             </View>
 
             <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                nestedScrollEnabled={true}
+                data={deliveryHistory}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity
                         onPress={() =>
@@ -265,6 +326,6 @@ export default Dashboard = ({ navigation }) => {
                     </TouchableOpacity>
                 )}
             />
-        </View>
+        </ScrollView>
     );
 };
