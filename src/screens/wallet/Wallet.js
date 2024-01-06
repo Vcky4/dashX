@@ -1,11 +1,77 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
+import endpoints from "../../../assets/endpoints/endpoints";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default Wallet = ({ navigation }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
+    const [processing, setProcessing] = React.useState(false)
+    const [balance, setBalance] = React.useState({})
+    const [history, setHistory] = React.useState([])
+
+
+    const getHistory = (id) => {
+        setProcessing(true)
+        fetch(endpoints.baseUrl + endpoints.walletHistory, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                walletid: id
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setProcessing(false)
+                if (Array.isArray(json.data)) {
+                    console.log('resJson', resJson)
+                    setHistory(resJson.data)
+                }
+            })
+            .catch(err => {
+                setProcessing(false)
+                console.log('err', err)
+            })
+    }
+
+    const getBalance = () => {
+        setProcessing(true)
+        fetch(endpoints.baseUrl + endpoints.getBalance, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setProcessing(false)
+                // console.log('resJson', resJson.data)
+                if (resJson.status) {
+                    setBalance(resJson.data)
+                    getHistory(resJson.data._id)
+                }
+            })
+            .catch(err => {
+                setProcessing(false)
+                console.log('err', err)
+            })
+    }
+
+    useEffect(() => {
+        onRefresh()
+    }, [])
+
+    const onRefresh = () => {
+        getBalance()
+    }
     return (
         <View style={{
             flex: 1,
@@ -64,7 +130,7 @@ export default Wallet = ({ navigation }) => {
                     fontSize: 24,
                     fontFamily: 'Inter-Bold',
                     marginVertical: 15,
-                }}>₦ 4,589.55</Text>
+                }}>₦ {balance?.balance?.toLocaleString()}</Text>
                 <View style={{
                     marginTop: 10,
                     flexDirection: 'row',
@@ -121,7 +187,13 @@ export default Wallet = ({ navigation }) => {
 
 
             <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={processing}
+                        onRefresh={onRefresh}
+                    />
+                }
+                data={history}
                 contentContainerStyle={{
                     paddingBottom: 20,
                 }}
@@ -158,19 +230,19 @@ export default Wallet = ({ navigation }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-SemiBold',
-                                }}>Withdraw</Text>
+                                }}>Deposit</Text>
                                 <Text style={{
                                     color: colors[colorScheme].textDark,
                                     fontSize: 14,
                                     fontFamily: 'Inter-Regular',
-                                }}>To Bank Account</Text>
+                                }}>To wallet</Text>
                             </View>
                         </View>
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 16,
                             fontFamily: 'Inter-SemiBold',
-                        }}>₦ 4,589.55</Text>
+                        }}>₦{item.amount.toLocaleString()}</Text>
                     </View>
                 }
             />

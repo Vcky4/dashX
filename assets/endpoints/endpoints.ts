@@ -22,6 +22,8 @@ const endpoints = {
     history: '/dispatch/order/history',
     cancelOrder: '/dispatch/cancel/order',
     fundwallet: '/dispatch/fund/wallet',
+    getBalance: '/dispatch/wallet/balance',
+    walletHistory: '/dispatch/fund/history',
 
     //business
     addRider: '/bussiness/add/dispatch',
