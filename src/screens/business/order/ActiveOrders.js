@@ -1,12 +1,44 @@
-import React, { useContext, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import businessRoutes from "../../../navigation/routs/businessRouts";
+import endpoints from "../../../../assets/endpoints/endpoints";
 
 export default ActiveOrder = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
+    const [deliveryHistory, setDeliveryHistory] = useState([]);
+    const [processing, setProcessing] = useState(false)
 
+
+    const getDeliveryHistory = async () => {
+        setProcessing(true)
+        const response = await fetch(endpoints.baseUrl + endpoints.deliveryHistory, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        setProcessing(false)
+        // console.log(json.data)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setDeliveryHistory(json.data.filter(item => item.order_status === 'shipping'))
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+    useEffect(() => {
+        getDeliveryHistory()
+    }, [])
 
     return (
         <>
@@ -45,9 +77,15 @@ export default ActiveOrder = ({ navigation }) => {
 
 
                 <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={processing}
+                            onRefresh={getDeliveryHistory}
+                        />
+                    }
+                    data={deliveryHistory}
                     renderItem={({ item, index }) =>
-                        <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.orderDetails, { item: item })}
+                        <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryDetails, { item: item })}
                             style={{
                                 backgroundColor: colors[colorScheme].background,
                                 paddingVertical: 10,
@@ -64,16 +102,16 @@ export default ActiveOrder = ({ navigation }) => {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                             }}>
-                                {/* <Image
+                                <Image
                                     source={require('../../../../assets/images/user.png')}
                                     style={{
                                         width: 50,
                                         height: 50,
                                         resizeMode: "contain",
                                     }}
-                                /> */}
+                                />
                                 <View style={{
-                                    // marginStart: 10,
+                                    marginStart: 10,
                                 }}>
                                     <Text style={{
                                         color: colors[colorScheme].textDark,
@@ -84,7 +122,7 @@ export default ActiveOrder = ({ navigation }) => {
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,
                                         fontFamily: 'Inter-Regular',
-                                    }}>09:19am  - Jan. 1st, 2024</Text>
+                                    }}>{new Date(item.createdAt).toLocaleTimeString()}- {new Date(item.createdAt).toLocaleDateString()}</Text>
                                 </View>
                             </View>
                             <View style={{
@@ -95,12 +133,12 @@ export default ActiveOrder = ({ navigation }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>+N20,000</Text>
-                                {/* <Text style={{
+                                }}>+₦{item.delivery_fee.toLocaleString()}</Text>
+                                <Text style={{
                                     color: colors[colorScheme].textGray,
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Delivered</Text> */}
+                                }}>{item.order_status}</Text>
                             </View>
                         </TouchableOpacity>
                     }
