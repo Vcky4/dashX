@@ -89,13 +89,13 @@ export default Dashboard = ({ navigation }) => {
         }).then(res => res.json())
             .then(resJson => {
                 // console.log('resJson', resJson.data)
-                if (resJson.status) {   
+                if (resJson.status) {
                     setStats({
                         totalOrders: resJson.data.totalorders,
                         totalFleet: resJson.data.fleet,
                         activeOrders: resJson.data.activeorders,
                         activeRiders: resJson.data.activerider,
-                    })               
+                    })
                 }
             })
             .catch(err => {
@@ -173,7 +173,7 @@ export default Dashboard = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => {
                             if (index == 0) {
-                                navigation.navigate(businessRoutes.totalOrder);
+                                navigation.navigate(businessRoutes.totalOrder, { id: null });
                             } else if (index == 1) {
                                 navigation.navigate(businessRoutes.totalFleet);
                             } else if (index == 2) {

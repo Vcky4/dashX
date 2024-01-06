@@ -18,7 +18,7 @@ export default DeliveryHistory = ({ navigation, route }) => {
   const [details, setDetails] = useState(false);
   const [processing, setProcessing] = useState(false);
 
-  console.log(details)
+  // console.log(details)
 
   const getTotalFleests = async () => {
     setProcessing(true);
@@ -193,7 +193,7 @@ export default DeliveryHistory = ({ navigation, route }) => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(businessRoutes.totalOrder);
+                navigation.navigate(businessRoutes.totalOrder, { id: details.fleet._id });
               }}>
               <Text
                 style={{

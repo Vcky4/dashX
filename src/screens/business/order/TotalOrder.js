@@ -6,7 +6,9 @@ import DatePicker from "react-native-date-picker";
 import businessRoutes from "../../../navigation/routs/businessRouts";
 import endpoints from "../../../../assets/endpoints/endpoints";
 
-export default TotalOrder = ({ navigation }) => {
+export default TotalOrder = ({ navigation, route }) => {
+    const { id } = route.params;
+    // console.log(id)
     const { colorScheme, user, token } = useContext(AuthContext)
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
@@ -17,15 +19,22 @@ export default TotalOrder = ({ navigation }) => {
 
     const getTotalOrders = async () => {
         setProcessing(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.allOrders, {
+        const response = await fetch(endpoints.baseUrl + (
+            id !== null ? endpoints.fleetOrders : endpoints.allOrders
+        ), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({
+            body: id !== null ? JSON.stringify({
                 "dispatchid": user.id,
+                "fleetid": id
             })
+                :
+                JSON.stringify({
+                    "dispatchid": user.id,
+                })
         })
         const json = await response.json()
         setProcessing(false)
@@ -76,7 +85,9 @@ export default TotalOrder = ({ navigation }) => {
                         fontSize: 18,
                         fontFamily: 'Inter-Bold',
                         marginStart: 20,
-                    }}>Total Order</Text>
+                    }}>{
+                            id !== null ? 'Orders' : 'Total Orders'
+                    }</Text>
                 </View>
 
                 <View style={{

@@ -28,6 +28,7 @@ const endpoints = {
     deliveryHistory: '/bussiness/delivery/history',
     allOrders: '/bussiness/retrieve/all/order',
     dashboard: '/bussiness/dashboard',
+    fleetOrders: '/bussiness/retrieve/fleet/order',
 }
 
 export default endpoints;
