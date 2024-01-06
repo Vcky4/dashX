@@ -31,7 +31,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 })
             })
             const json = await response.json()
-            // console.log('cities', json.data)
+            console.log('cities', json.data)
             //check if array
             if (Array.isArray(json.data)) {
                 if (cities.length === json.data.length) return
