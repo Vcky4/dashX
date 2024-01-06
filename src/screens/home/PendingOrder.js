@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Modal, ScrollView, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import { FlatList, Image, Modal, ScrollView, Text, TouchableOpacity, View, Dimensions, RefreshControl } from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import PendingOrderItem from "./PendingOrderItem";
@@ -17,6 +17,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     const [selectCity, setSelectCity] = useState(false)
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('ajah')
+    const isBusiness = !(user?.personel_account ?? true)
 
     const getCities = async () => {
         try {
@@ -31,7 +32,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 })
             })
             const json = await response.json()
-            console.log('cities', json.data)
+            // console.log('cities', json.data)
             //check if array
             if (Array.isArray(json.data)) {
                 if (cities.length === json.data.length) return
@@ -39,16 +40,19 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 setCity(json.data[0])
             }
         } catch (error) {
-            console.error(error)
+            console.error(error.toString())
         }
     }
     useEffect(() => {
-        setInterval(() => {
-            getCities()
-        }, 5000);
+        if (!isBusiness) {
+            setInterval(() => {
+                getCities()
+            }, 5000);
+        }
     }, [])
 
     const getOrders = async () => {
+        setProcessing(true)
         try {
             const response = await fetch(endpoints.baseUrl + endpoints.listOdrders, {
                 method: 'POST',
@@ -57,12 +61,13 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({
-                    'city': city,
+                    'city': city.cityName,
                     "dispatchid": user.id,
                 })
             })
             const json = await response.json()
-            // console.log(city, json)
+            console.log(city.cityName, json)
+            setProcessing(false)
             //check if array
             if (Array.isArray(json.data)) {
                 if (orders.length !== json.data.length) {
@@ -117,9 +122,17 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             <FlatList style={{
                 backgroundColor: colors[colorScheme].background,
                 width: '100%',
-                paddingHorizontal: 5,
                 height: height - 200,
             }}
+            contentContainerStyle={{
+                paddingHorizontal: 10
+            }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={processing}
+                        onRefresh={getOrders}
+                    />
+                }
                 data={orders}
                 renderItem={({ item }) =>
                     <PendingOrderItem
@@ -162,7 +175,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                     color: colors[colorScheme].primary,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>{city}</Text>
+                                }}>{city?.cityName}</Text>
                         </View>
 
                         {/* <Image
@@ -242,7 +255,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                             color: colors[appearance].textDark,
                                             alignSelf: 'center',
                                             marginVertical: 10,
-                                        }}>{item}</Text>
+                                        }}>{item?.cityName}</Text>
 
                                         <Text style={{
                                             fontFamily: 'Inter-Medium',
@@ -250,7 +263,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                                             color: colors[appearance].textDark,
                                             alignSelf: 'center',
                                             marginVertical: 10,
-                                        }}>0</Text>
+                                        }}>{item?.length}</Text>
                                     </TouchableOpacity>
                                 )
                             }

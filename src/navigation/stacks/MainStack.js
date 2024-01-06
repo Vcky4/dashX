@@ -48,7 +48,7 @@ const Drawer = createDrawerNavigator();
 
 export default DrawerStack = () => {
     const panelRef = useRef(null);
-    const { colorScheme } = useContext(AuthContext);
+    const { colorScheme,user } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const navigation = useNavigation();
     const openPanel = () => {
