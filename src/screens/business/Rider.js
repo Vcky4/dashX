@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -7,30 +7,70 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {AuthContext} from '../../../context/AuthContext';
+import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
-import DatePicker from 'react-native-date-picker';
 import InputField from '../../component/InputField';
 import PasswordInput from '../../component/PasswordInput';
 import Button from '../../component/Button';
+import endpoints from '../../../assets/endpoints/endpoints';
+import Toast from 'react-native-toast-message';
 
-export default DeliveryHistory = ({navigation}) => {
-  const {colorScheme, user, token} = useContext(AuthContext);
-  const [open, setOpen] = useState(false);
+export default DeliveryHistory = ({ navigation }) => {
+  const { colorScheme, user, token } = useContext(AuthContext);
+  console.log(user.id);
   const [requestData, setRequestData] = useState({
-    ridername: '',
-    riderPhone: '',
-    password: '',
-    upLoadImage: '',
-    VechicleType: '',
+    dispatchid: user.id,
+    email: "",
+    name: "",
+    phone: "",
+    password: "",
+    vehicle_type: ""
   });
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const canProceed = requestData.name.length > 0 && requestData.email.length > 0 && requestData.phone.length > 0 && requestData.password.length > 0 && requestData.vehicle_type.length > 0;
+
   const appearance = colorScheme;
   const [processing, setProcessing] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-  const [isSelected, setIsSelected] = useState('');
+
+  const addRider = async () => {
+    setProcessing(true);
+    try {
+      const response = await fetch(endpoints.baseUrl + endpoints.addRider, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(requestData)
+      })
+      const json = await response.json()
+      console.log(json)
+      setProcessing(false);
+      if (json.status) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: json.message,
+        });
+        navigation.goBack();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: json.message,
+        });
+      }
+    } catch (error) {
+      console.log(error)
+      setProcessing(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Something went wrong',
+      });
+    }
+  }
 
   return (
     <>
@@ -69,7 +109,7 @@ export default DeliveryHistory = ({navigation}) => {
             Add Rider
           </Text>
         </View>
-        <View style={{marginHorizontal: 20, marginTop: 42, height: '100%'}}>
+        <View style={{ marginHorizontal: 20, marginTop: 42, height: '100%' }}>
           <Text
             style={{
               color: colors[colorScheme].textDark,
@@ -81,23 +121,36 @@ export default DeliveryHistory = ({navigation}) => {
 
           <InputField
             theme={appearance}
-            value={requestData.ridername}
+            value={requestData.name}
             onChangeText={text =>
               setRequestData(preState => ({
                 ...preState,
-                ridername: text,
+                name: text,
               }))
             }
             placeholder="Rider’s name"
             containerStyle={styles.input}
           />
+
           <InputField
             theme={appearance}
-            value={requestData.riderPhone}
+            value={requestData.email}
             onChangeText={text =>
               setRequestData(preState => ({
                 ...preState,
-                riderPhone: text,
+                email: text,
+              }))
+            }
+            placeholder="Rider’s email"
+            containerStyle={styles.input}
+          />
+          <InputField
+            theme={appearance}
+            value={requestData.phone}
+            onChangeText={text =>
+              setRequestData(preState => ({
+                ...preState,
+                phone: text,
               }))
             }
             placeholder="Rider’s phone number"
@@ -117,30 +170,6 @@ export default DeliveryHistory = ({navigation}) => {
             placeholderTextColor={'#AEAEAE'}
             containerStyle={styles.input}
           />
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderRadius: 30,
-              borderWidth: 1,
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-              marginTop: 20,
-              borderColor: colors[appearance].primary,
-            }}
-            onPress={() => {}}>
-            <Text
-              style={{
-                fontFamily: 'Inter-Regular',
-                fontSize: 16,
-                paddingStart: 10,
-                color: '#AEAEAE',
-              }}>
-              {requestData.upLoadImage.length > 0
-                ? requestData.upLoadImage
-                : 'Upload rider image'}
-            </Text>
-          </TouchableOpacity>
 
           <TouchableOpacity
             style={{
@@ -162,14 +191,14 @@ export default DeliveryHistory = ({navigation}) => {
                 fontFamily: 'Inter-Regular',
                 fontSize: 16,
                 paddingStart: 10,
-                color: '#AEAEAE',
+                color: requestData.vehicle_type.length > 0 ? colors[colorScheme].textDark : '#AEAEAE',
               }}>
-              {requestData.VechicleType.length > 0
-                ? requestData.VechicleType
+              {requestData.vehicle_type.length > 0
+                ? requestData.vehicle_type
                 : 'Select vehicle type'}
             </Text>
             <Image
-              style={{height: 24, width: 24}}
+              style={{ height: 24, width: 24 }}
               source={require('../../../assets/images/dropDown.png')}
             />
           </TouchableOpacity>
@@ -189,13 +218,13 @@ export default DeliveryHistory = ({navigation}) => {
               onPress={() => {
                 setRequestData(prestate => ({
                   ...prestate,
-                  VechicleType: 'Bike',
+                  vehicle_type: 'Bike',
                 }));
                 setDropDown(false);
               }}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                style={{height: 24, width: 24}}
+                style={{ height: 24, width: 24 }}
                 source={require('../../../assets/images/Scotter.png')}
               />
               <Text
@@ -212,13 +241,13 @@ export default DeliveryHistory = ({navigation}) => {
               onPress={() => {
                 setRequestData(prestate => ({
                   ...prestate,
-                  VechicleType: 'Car',
+                  vehicle_type: 'Car',
                 }));
                 setDropDown(false);
               }}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                style={{height: 24, width: 24}}
+                style={{ height: 24, width: 24 }}
                 source={require('../../../assets/images/sedan.png')}
               />
               <Text
@@ -235,13 +264,13 @@ export default DeliveryHistory = ({navigation}) => {
               onPress={() => {
                 setRequestData(prestate => ({
                   ...prestate,
-                  VechicleType: 'Van',
+                  vehicle_type: 'Van',
                 }));
                 setDropDown(false);
               }}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                style={{height: 24, width: 24}}
+                style={{ height: 24, width: 24 }}
                 source={require('../../../assets/images/van.png')}
               />
               <Text
@@ -258,13 +287,13 @@ export default DeliveryHistory = ({navigation}) => {
               onPress={() => {
                 setRequestData(prestate => ({
                   ...prestate,
-                  VechicleType: 'Truck',
+                  vehicle_type: 'Truck',
                 }));
                 setDropDown(false);
               }}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                style={{height: 24, width: 24}}
+                style={{ height: 24, width: 24 }}
                 source={require('../../../assets/images/Trucks.png')}
               />
               <Text
@@ -288,11 +317,11 @@ export default DeliveryHistory = ({navigation}) => {
               alignSelf: 'flexEnd',
             }}
             loading={processing}
-            enabled={!processing}
+            enabled={canProceed && !processing}
             textColor={colors[appearance].textDark}
             buttonColor={colors[appearance].primary}
             onPress={() => {
-              loginUser();
+              addRider()
               // navigation.navigate(authRouts.otpVerification)
             }}
           />

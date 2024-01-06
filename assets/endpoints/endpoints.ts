@@ -22,6 +22,7 @@ const endpoints = {
     history: '/dispatch/order/history',
 
     //business
+    addRider: '/bussiness/add/dispatch',
     deliveryHistory: '/bussiness/delivery/history',
 }
 

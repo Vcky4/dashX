@@ -4,6 +4,7 @@ import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
 import businessRoutes from "../../../navigation/routs/businessRouts";
+import endpoints from "../../../../assets/endpoints/endpoints";
 
 export default DeliveryHistory = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -11,6 +12,35 @@ export default DeliveryHistory = ({ navigation }) => {
     const [open2, setOpen2] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [deliveryHistory, setDeliveryHistory] = useState([]);
+
+
+    const getDeliveryHistory = async () => {
+        const response = await fetch(endpoints.baseUrl + endpoints.deliveryHistory, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        console.log(json)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setDeliveryHistory(json.data)
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+    useEffect(() => {
+        getDeliveryHistory()
+    }, [])
 
 
     return (
@@ -118,7 +148,7 @@ export default DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    data={deliveryHistory}
                     renderItem={({ item, index }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.deliveryDetails, { item: item })}
                             style={{
