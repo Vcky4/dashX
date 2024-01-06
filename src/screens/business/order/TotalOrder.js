@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
 import DatePicker from "react-native-date-picker";
 import businessRoutes from "../../../navigation/routs/businessRouts";
+import endpoints from "../../../../assets/endpoints/endpoints";
 
 export default TotalOrder = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
@@ -11,7 +12,38 @@ export default TotalOrder = ({ navigation }) => {
     const [open2, setOpen2] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [orders, setOrders] = useState([])
+    const [processing, setProcessing] = useState(false)
 
+    const getTotalOrders = async () => {
+        setProcessing(true);
+        const response = await fetch(endpoints.baseUrl + endpoints.allOrders, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        setProcessing(false)
+        // console.log(json.data)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setOrders(json.data)
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+
+    useEffect(() => {
+        getTotalOrders()
+    }, [])
 
     return (
         <>
@@ -56,10 +88,10 @@ export default TotalOrder = ({ navigation }) => {
                     marginBottom: 10
                 }}>
                     <TouchableOpacity onPress={() => setOpen(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -70,7 +102,7 @@ export default TotalOrder = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -90,10 +122,10 @@ export default TotalOrder = ({ navigation }) => {
                     }}>to</Text>
 
                     <TouchableOpacity onPress={() => setOpen2(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -104,7 +136,7 @@ export default TotalOrder = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -118,7 +150,13 @@ export default TotalOrder = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={processing}
+                            onRefresh={getTotalOrders}
+                        />
+                    }
+                    data={orders}
                     renderItem={({ item, index }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(businessRoutes.orderDetails, { item: item })}
                             style={{

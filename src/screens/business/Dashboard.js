@@ -4,11 +4,12 @@ import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
 import businessRoutes from '../../navigation/routs/businessRouts';
 import endpoints from '../../../assets/endpoints/endpoints';
+import profileRouts from '../../navigation/routs/profileRouts';
 
 const { width, height } = Dimensions.get('window');
 
 export default Dashboard = ({ navigation }) => {
-    const { colorScheme, user, token } = useContext(AuthContext);
+    const { colorScheme, user, token, saveUser } = useContext(AuthContext);
     const [deliveryHistory, setDeliveryHistory] = useState([]);
     const [processing, setProcessing] = useState(false);
     const [stats, setStats] = useState({
@@ -73,9 +74,71 @@ export default Dashboard = ({ navigation }) => {
         }
     }
 
+    const getTotalOrders = async () => {
+        setProcessing(true);
+        const response = await fetch(endpoints.baseUrl + endpoints.allOrders, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        setProcessing(false)
+        // console.log(json.data)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setStats({
+                ...stats,
+                totalOrders: json.data.length
+            })
+            // if (dispatchItem === null) {
+            //     setDispatchItem(json.data[0])
+            // }
+            // setDispatchItem(json.data[0])
+        }
+    }
+
+
+    const retriveProfile = () => {
+        fetch(endpoints.baseUrl + endpoints.retriveProfile, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                // console.log('resJson', resJson)
+                if (resJson.status) {
+                    // setOnline(resJson.data.online_status)
+                    saveUser({
+                        id: resJson.data._id,
+                        ...resJson.data,
+                    });
+                    // console.log('json.data.kin.kin_name', user?.photo.length)
+                    if (resJson.data?.photo?.length < 1) {
+                        navigation.navigate(profileRouts.editProfile)
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    }
+
+
     const onRefresh = () => {
         getDeliveryHistory()
         getTotalFleests()
+        getTotalOrders()
+        retriveProfile()
     }
     useEffect(() => {
         onRefresh()

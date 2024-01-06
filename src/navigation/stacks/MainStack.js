@@ -48,7 +48,7 @@ const Drawer = createDrawerNavigator();
 
 export default DrawerStack = () => {
     const panelRef = useRef(null);
-    const { colorScheme,user } = useContext(AuthContext);
+    const { colorScheme, user } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const navigation = useNavigation();
     const openPanel = () => {
@@ -154,13 +154,13 @@ const AuthPassed = () => {
                             component={Home}
                             options={{ headerShown: false }}
                         />
-                        <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
                         <Stack.Screen name={mainRouts.verifyPickup} component={VerifyPickUp} options={{ headerShown: false }} />
                         <Stack.Screen name={profileRouts.orderHistory} component={History} options={{ headerShown: false }} />
                         <Stack.Screen name={profileRouts.orderDetails} component={OrderDetails} options={{ headerShown: false }} />
                     </>
             }
 
+            <Stack.Screen name={profileRouts.editProfile} component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.chat} component={Chat} options={{ headerShown: false }} />
             <Stack.Screen name={profileRouts.profile} component={Profile} options={{ headerShown: false }} />
             <Stack.Screen name={mainRouts.wallet} component={Wallet} options={{ headerShown: false }} />
