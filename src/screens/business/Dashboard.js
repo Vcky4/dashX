@@ -33,68 +33,11 @@ export default Dashboard = ({ navigation }) => {
             })
         })
         const json = await response.json()
-        console.log(json)
+        // console.log(json)
         setProcessing(false)
         //check if array
         if (Array.isArray(json.data)) {
             setDeliveryHistory(json.data)
-            // if (dispatchItem === null) {
-            //     setDispatchItem(json.data[0])
-            // }
-            // setDispatchItem(json.data[0])
-        }
-    }
-
-
-    const getTotalFleests = async () => {
-        setProcessing(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.retriveFleets, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({
-                "dispatchid": user.id,
-            })
-        })
-        const json = await response.json()
-        setProcessing(false)
-        // console.log(json.data)
-        //check if array
-        if (Array.isArray(json.data)) {
-            setStats({
-                ...stats,
-                totalFleet: json.data.length
-            })
-            // if (dispatchItem === null) {
-            //     setDispatchItem(json.data[0])
-            // }
-            // setDispatchItem(json.data[0])
-        }
-    }
-
-    const getTotalOrders = async () => {
-        setProcessing(true);
-        const response = await fetch(endpoints.baseUrl + endpoints.allOrders, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({
-                "dispatchid": user.id,
-            })
-        })
-        const json = await response.json()
-        setProcessing(false)
-        console.log(json.data)
-        //check if array
-        if (Array.isArray(json.data)) {
-            setStats({
-                ...stats,
-                totalOrders: json.data.length
-            })
             // if (dispatchItem === null) {
             //     setDispatchItem(json.data[0])
             // }
@@ -133,12 +76,40 @@ export default Dashboard = ({ navigation }) => {
             })
     }
 
+    const retriveDashboard = () => {
+        fetch(endpoints.baseUrl + endpoints.dashboard, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                // console.log('resJson', resJson.data)
+                if (resJson.status) {   
+                    setStats({
+                        totalOrders: resJson.data.totalorders,
+                        totalFleet: resJson.data.fleet,
+                        activeOrders: resJson.data.activeorders,
+                        activeRiders: resJson.data.activerider,
+                    })               
+                }
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    }
+
 
     const onRefresh = () => {
-        getDeliveryHistory()
-        getTotalFleests()
-        getTotalOrders()
+        setProcessing(true)
+        retriveDashboard()
         retriveProfile()
+        getDeliveryHistory()
+        setProcessing(false)
     }
     useEffect(() => {
         onRefresh()

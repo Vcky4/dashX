@@ -27,7 +27,7 @@ export default DeliveryHistory = ({ navigation }) => {
             })
         })
         const json = await response.json()
-        console.log(json)
+        // console.log(json)
         //check if array
         if (Array.isArray(json.data)) {
             setDeliveryHistory(json.data)
