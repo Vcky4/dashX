@@ -280,11 +280,9 @@ export default Dashboard = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <FlatList
-                nestedScrollEnabled={true}
-                data={deliveryHistory}
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity
+            {
+                deliveryHistory.map((item, index) =>
+                    <TouchableOpacity key={index}
                         onPress={() =>
                             navigation.navigate(businessRoutes.deliveryDetails, { item: item })
                         }
@@ -362,8 +360,8 @@ export default Dashboard = ({ navigation }) => {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                )}
-            />
+                )
+            }
         </ScrollView>
     );
 };

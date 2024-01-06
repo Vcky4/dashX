@@ -27,8 +27,33 @@ export default Monitor = ({ navigation }) => {
         latitude: 0,
         longitude: 0,
     });
+    const [fleets, setFleets] = useState([]);
 
+    const getTotalFleests = async () => {
+        setProcessing(true);
+        const response = await fetch(endpoints.baseUrl + endpoints.retriveFleets, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "dispatchid": user.id,
+            })
+        })
+        const json = await response.json()
+        console.log(json)
+        setProcessing(false)
+        //check if array
+        if (Array.isArray(json.data)) {
+            setFleets(json.data)
 
+        }
+    }
+
+    useEffect(() => {
+        getTotalFleests()
+    }, [])
 
     //open direction on maps
     const openDirection = (lat, lng) => {
@@ -84,7 +109,7 @@ export default Monitor = ({ navigation }) => {
 
         <View style={[styles.container, {}]}>
             <TouchableOpacity onPress={() => {
-                // setBottomStep(1)
+                getTotalFleests()
             }}
                 style={{
                     position: 'absolute',
