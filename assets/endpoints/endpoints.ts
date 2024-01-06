@@ -20,6 +20,7 @@ const endpoints = {
     startDispatch: '/dispatch/start/dispatch',
     deliverOrder: '/dispatch/delivered/order',
     history: '/dispatch/order/history',
+    cancelOrder: '/dispatch/cancel/order',
 
     //business
     addRider: '/bussiness/add/dispatch',
@@ -31,6 +32,7 @@ const endpoints = {
     fleetOrders: '/bussiness/retrieve/fleet/order',
     fleetDetails: '/bussiness/retrieve/single/fleet',
     updateFleet: '/bussiness/update/dispatch',
+    activeFleet: '/bussiness/active/rider',
     blockFleet: '/bussiness/block/fleet',
     unblockFleet: '/bussiness/unblock/fleet'
 }
