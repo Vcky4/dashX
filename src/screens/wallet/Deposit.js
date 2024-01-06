@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 import Button from "../../component/Button";
+import InputField from "../../component/InputField";
 
 export default Deposit = ({ navigation }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [processing, setProcessing] = React.useState(false)
-    const [amount, setAmount] = React.useState('5000')
+    const [amount, setAmount] = React.useState('0')
 
     const deposit = () => {
         setProcessing(true)
@@ -95,35 +96,20 @@ export default Deposit = ({ navigation }) => {
                         fontFamily: 'Inter-Bold',
                         marginHorizontal: 20,
                         marginTop: 50,
-                    }}>Deposit To</Text>
-                    <View style={{
-                        backgroundColor: '#D8C7FF',
-                        padding: 20,
-                        borderRadius: 20,
-                        marginTop: 20,
-                        marginHorizontal: 20,
-                    }}>
-                        <Text style={{
-                            color: colors[colorScheme].black,
-                            fontSize: 16,
-                            fontFamily: 'Inter-SemiBold',
-                        }}>Emmanuel Jonah</Text>
-                        <Text style={{
-                            color: colors[colorScheme].black,
-                            fontSize: 24,
-                            fontFamily: 'Inter-Bold',
-                            marginVertical: 15,
-                        }}>Wema Bank</Text>
-                        <Text style={{
-                            color: colors[colorScheme].black,
-                            fontSize: 24,
-                            fontFamily: 'Inter-Bold',
-                        }}>4567809844567</Text>
-                    </View>
+                    }}>Enter amount to deposit</Text>
+
+                    <InputField
+                        theme={colorScheme}
+                        value={amount}
+                        onChangeText={setAmount}
+                        placeholder="Enter amount"
+                        containerStyle={styles.input}
+                        keyboardType="number-pad"
+                    />
                 </View>
 
                 <Button
-                    title={`Deposit ₦ ${amount.toLocaleString()}`}
+                    title={`Deposit ₦ ${parseInt(amount.length > 0 ? amount : '0').toLocaleString()}`}
                     buttonStyle={{
                         marginTop: 30,
                         marginHorizontal: 20,
@@ -141,3 +127,10 @@ export default Deposit = ({ navigation }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        marginTop: 20,
+        marginHorizontal: 20,
+    }
+});
