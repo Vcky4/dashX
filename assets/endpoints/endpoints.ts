@@ -19,7 +19,10 @@ const endpoints = {
     city: '/dispatch/order/city',
     startDispatch: '/dispatch/start/dispatch',
     deliverOrder: '/dispatch/delivered/order',
-    history: '/dispatch/order/history'
+    history: '/dispatch/order/history',
+
+    //business
+    deliveryHistory: '/bussiness/delivery/history',
 }
 
 export default endpoints;
