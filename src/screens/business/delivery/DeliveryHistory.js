@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../../context/AuthContext";
 import colors from "../../../../assets/colors/colors";
@@ -86,10 +86,10 @@ export default DeliveryHistory = ({ navigation }) => {
                     marginBottom: 10
                 }}>
                     <TouchableOpacity onPress={() => setOpen(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -100,7 +100,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -120,10 +120,10 @@ export default DeliveryHistory = ({ navigation }) => {
                     }}>to</Text>
 
                     <TouchableOpacity onPress={() => setOpen2(true)}
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
                         <Text style={{
                             color: colors[colorScheme].textGray,
                             fontSize: 16,
@@ -134,7 +134,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                     month: 'short',
                                     day: 'numeric'
                                 })
-                        }</Text>
+                            }</Text>
                         <Image
                             source={require('../../../../assets/images/back.png')}
                             style={{
@@ -187,7 +187,7 @@ export default DeliveryHistory = ({ navigation }) => {
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,
                                         fontFamily: 'Inter-Regular',
-                                    }}>09:19am  - Jan. 1st, 2024</Text>
+                                    }}>{new Date(item.createdAt).toLocaleTimeString()}- {new Date(item.createdAt).toLocaleDateString()}</Text>
                                 </View>
                             </View>
                             <View style={{
@@ -198,12 +198,12 @@ export default DeliveryHistory = ({ navigation }) => {
                                     color: colors[colorScheme].textDark,
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
-                                }}>+N20,000</Text>
+                                }}>+₦{item.delivery_fee.toLocaleString()}</Text>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Delivered</Text>
+                                }}>{item.order_status}</Text>
                             </View>
                         </TouchableOpacity>
                     }

@@ -88,7 +88,7 @@ export default Dashboard = ({ navigation }) => {
         })
         const json = await response.json()
         setProcessing(false)
-        // console.log(json.data)
+        console.log(json.data)
         //check if array
         if (Array.isArray(json.data)) {
             setStats({
@@ -335,7 +335,11 @@ export default Dashboard = ({ navigation }) => {
                                 alignItems: 'center',
                             }}>
                             <Image
-                                source={require('../../../assets/images/user.png')}
+                                source={
+                                    item?.photo?.length > 0
+                                        ? { uri: item?.photo }
+                                        : require('../../../assets/images/user.png')
+                                }
                                 style={{
                                     width: 50,
                                     height: 50,
@@ -360,7 +364,7 @@ export default Dashboard = ({ navigation }) => {
                                         fontSize: 12,
                                         fontFamily: 'Inter-Regular',
                                     }}>
-                                    09:19am - Jan. 1st, 2024
+                                    {new Date(item.createdAt).toLocaleTimeString()}- {new Date(item.createdAt).toLocaleDateString()}
                                 </Text>
                             </View>
                         </View>
@@ -375,7 +379,7 @@ export default Dashboard = ({ navigation }) => {
                                     fontSize: 16,
                                     fontFamily: 'Inter-Medium',
                                 }}>
-                                +N20,000
+                                +₦{item.delivery_fee.toLocaleString()}
                             </Text>
                             <Text
                                 style={{
@@ -383,7 +387,7 @@ export default Dashboard = ({ navigation }) => {
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
                                 }}>
-                                Delivered
+                                {item.order_status}
                             </Text>
                         </View>
                     </TouchableOpacity>
