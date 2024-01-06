@@ -3,9 +3,45 @@ import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
+import endpoints from "../../../assets/endpoints/endpoints";
+import Button from "../../component/Button";
 
 export default Deposit = ({ navigation }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
+    const [processing, setProcessing] = React.useState(false)
+    const [amount, setAmount] = React.useState('5000')
+
+    const deposit = () => {
+        setProcessing(true)
+        fetch(endpoints.baseUrl + endpoints.fundwallet, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                "amount": amount,
+                "email": user?.email,
+                "usertype": "dispatch"
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setProcessing(false)
+                console.log('resJson', resJson)
+                if (resJson.status) {
+                    navigation.navigate(mainRouts.browser, {
+                        url: resJson.data,
+                        title: 'Deposit'
+                    })
+                }
+            })
+            .catch(err => {
+                setProcessing(false)
+                console.log('err', err)
+            })
+    }
+
     return (
         <View style={{
             flex: 1,
@@ -85,22 +121,21 @@ export default Deposit = ({ navigation }) => {
                         }}>4567809844567</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={{
-                    backgroundColor: colors[colorScheme].primary,
-                    padding: 20,
-                    borderRadius: 30,
-                    marginTop: 20,
-                    marginHorizontal: 40,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 40
-                }}>
-                    <Text style={{
-                        color: colors[colorScheme].white,
-                        fontSize: 16,
-                        fontFamily: 'Inter-SemiBold',
-                    }}>I've paid</Text>
-                </TouchableOpacity>
+
+                <Button
+                    title={`Deposit ₦ ${amount.toLocaleString()}`}
+                    buttonStyle={{
+                        marginTop: 30,
+                        marginHorizontal: 20,
+                        borderRadius: 30,
+                        marginBottom: 50,
+                    }}
+                    loading={processing}
+                    enabled={amount.length > 0 && !processing}
+                    textColor={colors[colorScheme].textDark}
+                    buttonColor={colors[colorScheme].primary}
+                    onPress={() => deposit()}
+                />
 
             </View>
         </View>
