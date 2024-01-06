@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { AuthContext } from '../../../context/AuthContext';
+import {AuthContext} from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
 import businessRoutes from '../../navigation/routs/businessRouts';
 import endpoints from '../../../assets/endpoints/endpoints';
 
-export default DeliveryHistory = ({ navigation }) => {
-  const { colorScheme, user, token } = useContext(AuthContext);
+export default DeliveryHistory = ({navigation}) => {
+  const {colorScheme, user, token} = useContext(AuthContext);
   const appearance = colorScheme;
   const [processing, setProcessing] = useState(false);
   const [fleets, setFleets] = useState([]);
@@ -25,25 +25,24 @@ export default DeliveryHistory = ({ navigation }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({
-        "dispatchid": user.id,
-      })
-    })
-    const json = await response.json()
+        dispatchid: user.id,
+      }),
+    });
+    const json = await response.json();
     // console.log(json)
-    setProcessing(false)
+    setProcessing(false);
     //check if array
     if (Array.isArray(json.data)) {
-      setFleets(json.data)
-
+      setFleets(json.data);
     }
-  }
+  };
 
   useEffect(() => {
-    getTotalFleests()
-  }, [])
+    getTotalFleests();
+  }, []);
 
   return (
     <>
@@ -82,7 +81,7 @@ export default DeliveryHistory = ({ navigation }) => {
             Fleet
           </Text>
         </View>
-        <View style={{ marginHorizontal: 20, marginTop: 10, height: '100%' }}>
+        <View style={{marginHorizontal: 20, marginTop: 10, height: '100%'}}>
           <Text
             style={{
               color: colors[colorScheme].textDark,
@@ -104,12 +103,17 @@ export default DeliveryHistory = ({ navigation }) => {
           <FlatList
             data={fleets}
             refreshControl={
-              <RefreshControl refreshing={processing} onRefresh={getTotalFleests} />
+              <RefreshControl
+                refreshing={processing}
+                onRefresh={getTotalFleests}
+              />
             }
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(businessRoutes.fleetDetails, {id: item._id})
+                  navigation.navigate(businessRoutes.fleetDetails, {
+                    id: item._id,
+                  })
                 }
                 style={{
                   backgroundColor: colors[colorScheme].background,
@@ -129,7 +133,7 @@ export default DeliveryHistory = ({ navigation }) => {
                     alignItems: 'center',
                   }}>
                   <Image
-                    source={require('../../../assets/images/user.png')}
+                    source={ item?.phote?{uri:item?.photo}:require('../../../assets/images/user.png')}
                     style={{
                       width: 40,
                       height: 40,
@@ -159,7 +163,9 @@ export default DeliveryHistory = ({ navigation }) => {
                   }}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate(businessRoutes.editFleet);
+                      navigation.navigate(businessRoutes.editFleet, {
+                        item: item,
+                      });
                     }}>
                     <Image
                       tintColor={colors[appearance].textDark}
@@ -171,7 +177,7 @@ export default DeliveryHistory = ({ navigation }) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ marginStart: 20 }}>
+                  <TouchableOpacity style={{marginStart: 20}}>
                     <Image
                       tintColor={colors[appearance].textDark}
                       source={require('../../../assets/images/trash.png')}

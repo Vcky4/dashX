@@ -1,9 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -14,25 +15,80 @@ import InputField from '../../component/InputField';
 import PasswordInput from '../../component/PasswordInput';
 import Button from '../../component/Button';
 import businessRoutes from '../../navigation/routs/businessRouts';
+import endpoints from '../../../assets/endpoints/endpoints';
+import Toast from 'react-native-toast-message';
 
-export default DeliveryHistory = ({navigation}) => {
+export default DeliveryHistory = ({navigation, route}) => {
   const {colorScheme, user, token} = useContext(AuthContext);
+  const {item} = route.params;
   const [open, setOpen] = useState(false);
-  const [requestData, setRequestData] = useState({
-    ridername: '',
-    riderPhone: '',
-    password: '',
-    upLoadImage: '',
-    VechicleType: '',
-  });
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // console.log(item);
   const appearance = colorScheme;
   const [processing, setProcessing] = useState(false);
-  const [dropDown, setDropDown] = useState(false);
-  const [isSelected, setIsSelected] = useState('');
 
+  const [fleet, setFleets] = useState({});
+  console.log('text', item);
+
+  const [requestData, setRequestData] = useState({
+    ridername: item?.name || '',
+    riderPhone: item?.phone || '',
+    VechicleType: item?.vehicle?.vehicle_type || '',
+    vehiclenumber: item?.vehicle?.vehicle_number || '',
+  });
+
+  const updateFleet = async () => {
+    setProcessing(true);
+    const response = await fetch(endpoints.baseUrl + endpoints.updateFleet, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        dispatchid: user.id,
+        fleetid: item?._id,
+        name: requestData.ridername,
+        phone: requestData.riderPhone,
+        vehicle_type: requestData.VechicleType,
+      }), // body data type must match "Content-Type" header
+    });
+    response
+      .json()
+      .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+        setProcessing(false);
+        if (response.ok) {
+          navigation.goBack()
+          Toast.show({
+            type: 'success',
+            text1: 'update successful',
+            text2: data.message,
+          });
+
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'update failed',
+            text2: data.message,
+          });
+          console.log('response: ', response);
+          console.log('update error:', data);
+        }
+      })
+      .catch(error => {
+        setProcessing(false);
+        Toast.show({
+          type: 'error',
+          text1: 'update failed',
+          text2: error.message,
+        });
+        console.log('response: ', response);
+        console.log('update error:', error);
+      });
+  };
+
+  // console.log(item?.vehicle?.vehicle_type);
   return (
     <>
       <View
@@ -51,7 +107,11 @@ export default DeliveryHistory = ({navigation}) => {
           }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
-              source={require('../../../assets/images/back.png')}
+              source={
+                item?.photo
+                  ? {uri: item?.photo}
+                  : require('../../../assets/images/back.png')
+              }
               style={{
                 width: 30,
                 height: 30,
@@ -67,7 +127,7 @@ export default DeliveryHistory = ({navigation}) => {
               fontFamily: 'Inter-Bold',
               marginStart: 20,
             }}>
-            Peter Andrew
+            {item?.name}
           </Text>
         </View>
 
@@ -75,149 +135,81 @@ export default DeliveryHistory = ({navigation}) => {
           style={{
             marginHorizontal: 20,
             marginTop: 24,
-            height: 392,
+
             backgroundColor: colors[colorScheme].background,
             elevation: 1,
             paddingHorizontal: 32,
             paddingVertical: 32,
           }}>
-          <Image
-            source={require('../../../assets/images/camera.png')}
-            style={{
-              width: 60,
-              height: 60,
-              resizeMode: 'contain',
-              alignSelf: 'center',
-            }}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{}}>
-              <Text
-                style={{
-                  color: '#AEAEAE',
-                  fontSize: 11,
-                  fontFamily: 'Inter-Regular',
-                  paddingTop: 10,
-                }}>
-                Name
-              </Text>
-              <Text
-                style={{
-                  color: colors[colorScheme].textDark,
-                  fontSize: 16,
-                  fontFamily: 'Inter-Regular',
-                }}>
-                Peter Andrew{' '}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(businessRoutes.totalOrder);
-              }}>
-              <Image
-                tintColor={colors[appearance].textDark}
-                source={require('../../../assets/images/edits.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: 1,
-              width: '100%',
-              backgroundColor: '#AEAEAE',
-              marginTop: 8,
-            }}
-          />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{}}>
-              <Text
-                style={{
-                  color: '#AEAEAE',
-                  fontSize: 11,
-                  fontFamily: 'Inter-Regular',
-                  paddingTop: 10,
-                }}>
-                Phone Number
-              </Text>
-              <Text
-                style={{
-                  color: colors[colorScheme].textDark,
-                  fontSize: 16,
-                  fontFamily: 'Inter-Regular',
-                }}>
-                07078983749{' '}
-              </Text>
-            </View>
+          <TouchableOpacity onPress={() => {}}>
             <Image
-              tintColor={colors[appearance].textDark}
-              source={require('../../../assets/images/edits.png')}
+              source={require('../../../assets/images/user.png')}
               style={{
-                width: 24,
-                height: 24,
+                width: 70,
+                height: 70,
                 resizeMode: 'contain',
+                alignSelf: 'center',
               }}
             />
-          </View>
-          <View
-            style={{
-              height: 1,
-              width: '100%',
-              backgroundColor: '#AEAEAE',
-              marginTop: 8,
-            }}
+          </TouchableOpacity>
+          <InputField
+            theme={appearance}
+            value={requestData.ridername}
+            onChangeText={text =>
+              setRequestData(preState => ({
+                ...preState,
+                ridername: text,
+              }))
+            }
+            placeholder="Name"
+            containerStyle={styles.input}
           />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{}}>
-              <Text
-                style={{
-                  color: '#AEAEAE',
-                  fontSize: 11,
-                  fontFamily: 'Inter-Regular',
-                  paddingTop: 10,
-                }}>
-                Vehicle Type
-              </Text>
-              <Text
-                style={{
-                  color: colors[colorScheme].textDark,
-                  fontSize: 16,
-                  fontFamily: 'Inter-Regular',
-                }}>
-                Car - UYY9765
-              </Text>
-            </View>
-            <Image
-              tintColor={colors[appearance].textDark}
-              source={require('../../../assets/images/edits.png')}
-              style={{
-                width: 24,
-                height: 24,
-                resizeMode: 'contain',
-              }}
-            />
-          </View>
+          <InputField
+            theme={appearance}
+            value={requestData.riderPhone}
+            onChangeText={text =>
+              setRequestData(preState => ({
+                ...preState,
+                riderPhone: text,
+              }))
+            }
+            placeholder="Phone Number"
+            containerStyle={styles.input}
+            Yes
+          />
+
+          <InputField
+            theme={appearance}
+            value={requestData.VechicleType}
+            onChangeText={text =>
+              setRequestData(preState => ({
+                ...preState,
+                VechicleType: text,
+              }))
+            }
+            placeholder="Vehicle Type"
+            containerStyle={styles.input}
+          />
+
+          <Button
+            title={'Update'}
+            buttonStyle={{
+              marginBottom: 50,
+              marginHorizontal: 20,
+              borderRadius: 30,
+              marginTop: 20,
+            }}
+            loading={processing}
+            enabled={true}
+            textColor={colors[appearance].textDark}
+            buttonColor={colors[appearance].primary}
+            onPress={() => {
+              updateFleet()
+              // uploadImage(packageImage, url => verify(url));
+              // navigation.navigate(authRouts.otpVerification)
+            }}
+          />
         </View>
       </View>
     </>
