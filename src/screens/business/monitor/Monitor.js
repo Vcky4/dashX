@@ -155,16 +155,18 @@ export default Monitor = ({ navigation }) => {
                 elevation: 10,
                 paddingEnd: 10,
             }}>
-                <Image
-                    source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../../assets/images/user.png')}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        alignSelf: 'center',
-                        resizeMode: 'cover',
-                        borderRadius: 25,
-                    }}
-                />
+                <TouchableOpacity onPress={()=> navigation.openDrawer()}>
+                    <Image
+                        source={user?.photo?.length > 0 ? { uri: user?.photo } : require('../../../../assets/images/user.png')}
+                        style={{
+                            width: 40,
+                            height: 40,
+                            alignSelf: 'center',
+                            resizeMode: 'cover',
+                            borderRadius: 25,
+                        }}
+                    />
+                </TouchableOpacity>
 
                 <Text style={{
                     color: colors[colorScheme].textDark,
