@@ -58,7 +58,7 @@ export default OrderDetails = ({ navigation, route }) => {
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                }}>Peter Andrew</Text>
+                }}>{item?.dispatchid.name}</Text>
             </View>
 
             <View style={{
@@ -77,7 +77,7 @@ export default OrderDetails = ({ navigation, route }) => {
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                }}>N150,000</Text>
+                }}>+₦{item.delivery_fee.toLocaleString()}</Text>
             </View>
 
             <View style={{
@@ -96,7 +96,7 @@ export default OrderDetails = ({ navigation, route }) => {
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                }}>January 1st, 2024</Text>
+                }}>{new Date(item.createdAt).toLocaleDateString()}</Text>
             </View>
 
             <View style={{
@@ -115,7 +115,7 @@ export default OrderDetails = ({ navigation, route }) => {
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-Medium',
-                }}>09:23am</Text>
+                }}>{new Date(item.createdAt).toLocaleTimeString()}</Text>
             </View>
 
 
@@ -144,7 +144,7 @@ export default OrderDetails = ({ navigation, route }) => {
                         color: colors[colorScheme].textDark,
                         fontSize: 16,
                         fontFamily: 'Inter-Medium',
-                    }}>Delivered</Text>
+                    }}>{item.order_status}</Text>
                 </View>
             </View>
         </View>

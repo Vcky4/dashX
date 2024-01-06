@@ -117,7 +117,7 @@ export default ActiveOrder = ({ navigation }) => {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 16,
                                         fontFamily: 'Inter-Medium',
-                                    }}>Peter Andrew</Text>
+                                    }}>{item?.dispatchid.name}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textGray,
                                         fontSize: 12,
