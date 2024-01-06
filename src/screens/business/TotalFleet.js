@@ -2,7 +2,9 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
+  Modal,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,12 +14,19 @@ import {AuthContext} from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
 import businessRoutes from '../../navigation/routs/businessRouts';
 import endpoints from '../../../assets/endpoints/endpoints';
+import Button from '../../component/Button';
+import Toast from 'react-native-toast-message';
 
 export default DeliveryHistory = ({navigation}) => {
   const {colorScheme, user, token} = useContext(AuthContext);
   const appearance = colorScheme;
   const [processing, setProcessing] = useState(false);
+  const [block, setBlock] = useState(false);
+  const [unBlock, setUnBlock] = useState(false);
+  const [Loading, setLoading] = useState(false);
+  const [Loading2, setLoading2] = useState(false);
   const [fleets, setFleets] = useState([]);
+  const [fleetid, setFleetId] = useState({});
 
   const getTotalFleests = async () => {
     setProcessing(true);
@@ -38,6 +47,100 @@ export default DeliveryHistory = ({navigation}) => {
     if (Array.isArray(json.data)) {
       setFleets(json.data);
     }
+  };
+
+  const BlockFleet = async () => {
+    setLoading(true);
+    const response = await fetch(endpoints.baseUrl + endpoints.blockFleet, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        dispatchid: user.id,
+        fleetid: fleetid?._id,
+      }), // body data type must match "Content-Type" header
+    });
+    response
+      .json()
+      .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+        setLoading(false);
+        if (response.ok) {
+          setBlock(!block);
+          Toast.show({
+            type: 'success',
+            text1: 'Block successful',
+            text2: data.message,
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Block failed',
+            text2: data.message,
+          });
+          console.log('response: ', response);
+          console.log('Block error:', data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Block failed',
+          text2: error.message,
+        });
+        console.log('response: ', response);
+        console.log('Block error:', error);
+      });
+  };
+
+  const UnBlockFleet = async () => {
+    setLoading2(true);
+    const response = await fetch(endpoints.baseUrl + endpoints.unblockFleet, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        dispatchid: user.id,
+        fleetid: fleetid?._id,
+      }), // body data type must match "Content-Type" header
+    });
+    response
+      .json()
+      .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+        setLoading2(false);
+        if (response.ok) {
+          setUnBlock(!unBlock);
+          Toast.show({
+            type: 'success',
+            text1: 'Unblock successful',
+            text2: data.message,
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'unBlock failed',
+            text2: data.message,
+          });
+          console.log('response: ', response);
+          console.log('unBlock error:', data);
+        }
+      })
+      .catch(error => {
+        setLoading2(false);
+        Toast.show({
+          type: 'error',
+          text1: 'unBlock failed',
+          text2: error.message,
+        });
+        console.log('response: ', response);
+        console.log('unBlock error:', error);
+      });
   };
 
   useEffect(() => {
@@ -133,7 +236,11 @@ export default DeliveryHistory = ({navigation}) => {
                     alignItems: 'center',
                   }}>
                   <Image
-                    source={ item?.phote?{uri:item?.photo}:require('../../../assets/images/user.png')}
+                    source={
+                      item?.phote
+                        ? {uri: item?.photo}
+                        : require('../../../assets/images/user.png')
+                    }
                     style={{
                       width: 40,
                       height: 40,
@@ -177,16 +284,41 @@ export default DeliveryHistory = ({navigation}) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{marginStart: 20}}>
-                    <Image
-                      tintColor={colors[appearance].textDark}
-                      source={require('../../../assets/images/trash.png')}
-                      style={{
-                        width: 24,
-                        height: 24,
-                        resizeMode: 'contain',
-                      }}
-                    />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (item?.dispatch_blocked) {
+                        setUnBlock(true);
+                        setFleetId(item);
+                        
+                      } else {
+                        setBlock(true);
+
+                        setFleetId(item);
+                      }
+                    }}
+                    style={{marginStart: 20}}>
+                    {item?.dispatch_blocked ? (
+                      <Image
+                        tintColor={colors[appearance].textDark}
+                        source={require('../../../assets/images/unBlock.png')}
+                        style={{
+                          width: 24,
+                          height: 24,
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        tintColor={colors[appearance].textDark}
+                        source={require('../../../assets/images/block.png')}
+                        style={{
+                          width: 24,
+                          height: 24,
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    )}
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
@@ -194,6 +326,146 @@ export default DeliveryHistory = ({navigation}) => {
           />
         </View>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={block}
+        onRequestClose={() => {
+          setBlock(!block);
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            setBlock(!block);
+          }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={{
+              backgroundColor: colors[appearance].background,
+              width: '90%',
+              borderRadius: 20,
+              paddingVertical: 20,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Inter-SemiBold',
+                fontSize: 20,
+                color: colors[appearance].textDark,
+                alignSelf: 'center',
+              }}>
+              Block Driver
+            </Text>
+            <ScrollView
+              style={{
+                marginTop: 20,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: 12,
+                  color: colors[appearance].textDark,
+                  alignSelf: 'center',
+                }}>
+                Are you sure you want to block this driver?
+              </Text>
+
+              <Button
+                title={'Block Driver'}
+                buttonStyle={{
+                  marginBottom: 50,
+                  marginHorizontal: 20,
+                  borderRadius: 30,
+                  marginTop: 20,
+                }}
+                loading={Loading}
+                enabled={true}
+                textColor={colors[appearance].textDark}
+                buttonColor={colors[appearance].primary}
+                onPress={() => {
+                  BlockFleet();
+                  // uploadImage(packageImage, url => verify(url));
+                  // navigation.navigate(authRouts.otpVerification)
+                }}
+              />
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={unBlock}
+        onRequestClose={() => {
+          setUnBlock(!unBlock);
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            setBlock(!block);
+          }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={{
+              backgroundColor: colors[appearance].background,
+              width: '90%',
+              borderRadius: 20,
+              paddingVertical: 20,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Inter-SemiBold',
+                fontSize: 20,
+                color: colors[appearance].textDark,
+                alignSelf: 'center',
+              }}>
+              Unblock Driver
+            </Text>
+            <ScrollView
+              style={{
+                marginTop: 20,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: 12,
+                  color: colors[appearance].textDark,
+                  alignSelf: 'center',
+                }}>
+                Are you sure you want to unblock this driver?
+              </Text>
+
+              <Button
+                title={'Unblock Driver'}
+                buttonStyle={{
+                  marginBottom: 50,
+                  marginHorizontal: 20,
+                  borderRadius: 30,
+                  marginTop: 20,
+                }}
+                loading={Loading2}
+                enabled={true}
+                textColor={colors[appearance].textDark}
+                buttonColor={colors[appearance].primary}
+                onPress={() => {
+                  UnBlockFleet();
+                  // uploadImage(packageImage, url => verify(url));
+                  // navigation.navigate(authRouts.otpVerification)
+                }}
+              />
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </>
   );
 };

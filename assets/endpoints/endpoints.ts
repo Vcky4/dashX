@@ -30,7 +30,9 @@ const endpoints = {
     dashboard: '/bussiness/dashboard',
     fleetOrders: '/bussiness/retrieve/fleet/order',
     fleetDetails: '/bussiness/retrieve/single/fleet',
-    updateFleet: '/bussiness/update/dispatch'
+    updateFleet: '/bussiness/update/dispatch',
+    blockFleet: '/bussiness/block/fleet',
+    unblockFleet: '/bussiness/unblock/fleet'
 }
 
 export default endpoints;
