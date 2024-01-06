@@ -126,10 +126,10 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                         <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
                             style={{
                                 marginTop: 20,
-                                elevation: 20,
+                                elevation: 10,
                                 backgroundColor: colors[colorScheme].background,
                                 borderRadius: 10,
-                                shadowColor: '#000000',
+                                // shadowColor: '#000000',
                                 padding: 14,
                                 marginHorizontal: 10,
                                 marginBottom: 20,
