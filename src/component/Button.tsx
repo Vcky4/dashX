@@ -20,7 +20,8 @@ const Button: React.FC<Props> = ({ fontSize = 24, theme = 'dark', title, onPress
         <View pointerEvents={(enabled && !loading) ? 'auto' : 'none'}
             style={[{ height: 50 }, buttonStyle, {
                 opacity: (enabled && !loading) ? 1 : 0.5,
-                backgroundColor: buttonColor
+                backgroundColor: buttonColor,
+                borderRadius: 8,
             }]}>
             <TouchableOpacity onPress={() => enabled && !loading ? onPress() : {}}
                 style={{
