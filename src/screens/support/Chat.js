@@ -1,11 +1,121 @@
-import React, { useContext } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, TextInput } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput, RefreshControl } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
+import endpoints from "../../../assets/endpoints/endpoints";
+import io from 'socket.io-client';
+
 
 export default Chat = ({ navigation }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
+
+    const [chats, setChats] = React.useState([])
+    const [processing, setProcessing] = React.useState(false)
+    const [newChat, setNewChat] = React.useState({})
+    const [chat, setChat] = React.useState({
+        type: 'text',
+        content: ''
+    })
+
+    // //setup to socket
+    const socket = io(endpoints.socketUrl, {
+        // extraHeaders: {
+        //     authorization: `Bearer ${token}`,
+        // },
+    });
+
+    //connect socket
+    useEffect(() => {
+        // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+        socket.on('connect', e => {
+            console.log('connected', socket.connected);
+            socket.emit('supportuser', {
+                userid: user.id
+            })
+        });
+
+        socket.on('disconnect', e => {
+            console.log('disconnected', socket.connected);
+        });
+        // }
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            // socket.off('receiveAlerts');
+        };
+    }, []);
+
+    const sendChat = () => {
+        console.log('sendChat', chat);
+        socket.emit('send_dispatch_support', {
+            "userid": user.id,
+            "type": chat.type,
+            "usertype": "dispatch",
+            "text": chat.content
+        })
+        setChats([...chats, {
+            "type": chat.type,
+            "usertype": "dispatch",
+            "text": chat.content,
+            createdAt: new Date().toISOString()
+        }])
+        setChat({
+            type: 'text',
+            content: ''
+        })
+    }
+    useEffect(() => {
+        socket.on('receieve_dispatch_support', (data) => {
+            setNewChat(data)
+        });
+        return () => {
+            socket.off('receieve_dispatch_support');
+        };
+    }, [])
+
+    useEffect(() => {
+        if (Object.keys(newChat).length > 0) {
+            // console.log('lastChats', chats);
+            console.log('receieve_dispatch_support', [...chats, newChat]);
+            const prev = [...chats]
+            //check if last chat is from dispatch
+            if (prev.length > 0 && prev[prev.length - 1].usertype === 'dispatch') {
+                //remove last chat
+                prev.pop()
+            }
+            setChats([...prev, newChat])
+        }
+    }, [newChat])
+
+    const getChats = () => {
+        setProcessing(true)
+        fetch(endpoints.baseUrl + endpoints.chat, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                // console.log('resJson', resJson.data)
+                setProcessing(false)
+                if (Array.isArray(resJson.data)) {
+                    setChats(resJson.data)
+                }
+            })
+            .catch(err => {
+                setProcessing(false)
+                console.log('err', err)
+            })
+    }
+
+    useEffect(() => {
+        getChats()
+    }, [])
     return (
         <View style={{
             flex: 1,
@@ -76,41 +186,55 @@ export default Chat = ({ navigation }) => {
 
 
             <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                keyExtractor={item => item}
+                automaticallyAdjustKeyboardInsets
+                inverted
+                extraData={chats}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={processing}
+                        onRefresh={getChats}
+                    />
+                }
+                data={[...chats].reverse()}
+                // keyExtractor={item => item}
                 renderItem={({ item }) => {
                     return (
                         <View style={{
                             flexDirection: 'row',
                             marginHorizontal: 20,
                             marginVertical: 5,
-                            justifyContent: item % 2 === 0 ? 'flex-start' : 'flex-end',
+                            justifyContent: item.usertype === 'admin' ? 'flex-start' : 'flex-end',
                         }}>
 
                             <View style={{
-                                alignItems: item % 2 === 0 ? 'flex-start' : 'flex-end',
+                                alignItems: item.usertype === 'admin' ? 'flex-start' : 'flex-end',
                             }}>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
                                     fontSize: 12,
                                     fontFamily: 'Inter-Regular',
-                                }}>Today, 9:51 AM</Text>
+                                }}>{new Date(item.createdAt).toLocaleString()}</Text>
                                 <View style={{
-                                    backgroundColor: item % 2 === 0 ? colors[colorScheme].secondary : colors[colorScheme].primary,
+                                    backgroundColor: item.usertype === 'admin' ? colors[colorScheme].secondary : colors[colorScheme].primary,
                                     padding: 10,
                                     borderRadius: 10,
-                                    borderBottomStartRadius: item % 2 === 0 ? 0 : 10,
-                                    borderBottomEndRadius: item % 2 === 0 ? 10 : 0,
+                                    borderBottomStartRadius: item.usertype === 'admin' ? 0 : 10,
+                                    borderBottomEndRadius: item.usertype === 'admin' ? 10 : 0,
                                     marginTop: 4,
                                     maxWidth: '80%',
                                     minWidth: 150,
                                 }}>
                                     <Text style={{
-                                        color: item % 2 === 0 ? colors[colorScheme].black : colors[colorScheme].white,
+                                        color: item.usertype === 'admin' ? colors[colorScheme].black : colors[colorScheme].white,
                                         fontSize: 16,
                                         fontFamily: 'Inter-Regular',
-                                    }}>Hello</Text>
+                                    }}>{item?.text}</Text>
                                 </View>
+                                <Text style={{
+                                    color: colors[colorScheme].textGray,
+                                    fontSize: 12,
+                                    fontFamily: 'Inter-Regular',
+                                }}>{item?._id ? 'sent' : 'sending'}</Text>
                             </View>
                         </View>
                     )
@@ -144,15 +268,19 @@ export default Chat = ({ navigation }) => {
                             width: '100%',
                             color: colors[colorScheme].textDark,
                         }}
+                        value={chat.content}
+                        onChangeText={text => setChat({ ...chat, content: text })}
                     />
                 </View>
 
-                <TouchableOpacity style={{
-                    backgroundColor: colors[colorScheme].primary,
-                    padding: 10,
-                    borderRadius: 10,
-                
-                }}>
+                <TouchableOpacity
+                    onPress={sendChat}
+                    disabled={chat.content.length === 0}
+                    style={{
+                        backgroundColor: colors[colorScheme].primary,
+                        padding: 10,
+                        borderRadius: 10,
+                    }}>
                     <Image
                         source={require('../../../assets/images/send.png')}
                         style={{

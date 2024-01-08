@@ -24,6 +24,7 @@ const endpoints = {
     fundwallet: '/dispatch/fund/wallet',
     getBalance: '/dispatch/wallet/balance',
     walletHistory: '/dispatch/fund/history',
+    chat: '/dispatch/chat/support',
 
     //business
     addRider: '/bussiness/add/dispatch',

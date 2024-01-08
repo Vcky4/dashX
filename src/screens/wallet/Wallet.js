@@ -29,7 +29,7 @@ export default Wallet = ({ navigation }) => {
             .then(resJson => {
                 setProcessing(false)
                 if (Array.isArray(json.data)) {
-                    console.log('resJson', resJson)
+                    // console.log('resJson', resJson)
                     setHistory(resJson.data)
                 }
             })

@@ -22,7 +22,7 @@ export default Deposit = ({ navigation }) => {
             },
             body: JSON.stringify({
                 dispatchid: user?.id,
-                "amount": parseInt(amount) * 100,
+                "amount": parseInt(amount),
                 "email": user?.email,
                 "usertype": "dispatch"
             }),
