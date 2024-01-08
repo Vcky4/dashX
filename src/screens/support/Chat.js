@@ -1,10 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, TextInput, RefreshControl } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput, RefreshControl, PermissionsAndroid } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 import io from 'socket.io-client';
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import Toast from "react-native-toast-message";
 
 
 export default Chat = ({ navigation }) => {
@@ -12,6 +14,7 @@ export default Chat = ({ navigation }) => {
 
     const [chats, setChats] = React.useState([])
     const [processing, setProcessing] = React.useState(false)
+    const [uploading, setUploading] = React.useState(false)
     const [newChat, setNewChat] = React.useState({})
     const [chat, setChat] = React.useState({
         type: 'text',
@@ -46,20 +49,22 @@ export default Chat = ({ navigation }) => {
         };
     }, []);
 
-    const sendChat = () => {
-        console.log('sendChat', chat);
+    const sendChat = (content, type) => {
+        console.log('sendChat', content);
         socket.emit('send_dispatch_support', {
             "userid": user.id,
-            "type": chat.type,
+            "type": type ?? chat.type,
             "usertype": "dispatch",
-            "text": chat.content
+            "text": content ?? chat.content
         })
-        setChats([...chats, {
-            "type": chat.type,
-            "usertype": "dispatch",
-            "text": chat.content,
-            createdAt: new Date().toISOString()
-        }])
+        if (content === undefined) {
+            setChats([...chats, {
+                "type": chat.type,
+                "usertype": "dispatch",
+                "text": chat.content,
+                createdAt: new Date().toISOString()
+            }])
+        }
         setChat({
             type: 'text',
             content: ''
@@ -77,7 +82,7 @@ export default Chat = ({ navigation }) => {
     useEffect(() => {
         if (Object.keys(newChat).length > 0) {
             // console.log('lastChats', chats);
-            console.log('receieve_dispatch_support', [...chats, newChat]);
+            // console.log('receieve_dispatch_support', [...chats, newChat]);
             const prev = [...chats]
             //check if last chat is from dispatch
             if (prev.length > 0 && prev[prev.length - 1].usertype === 'dispatch') {
@@ -116,6 +121,109 @@ export default Chat = ({ navigation }) => {
     useEffect(() => {
         getChats()
     }, [])
+
+    const uploadImage = (pic, onComplete) => {
+        if (!pic.type) {
+            onComplete(pic.uri)
+            return
+        }
+        setUploading(true)
+        setChats([...chats, {
+            "type": chat.type,
+            "usertype": "dispatch",
+            "text": chat.content,
+            createdAt: new Date().toISOString()
+        }])
+        const data = new FormData()
+        const uri = pic.uri;
+        const type = pic.type;
+        const name = pic.fileName;
+        data.append('file', {
+            uri,
+            type,
+            name,
+        })
+        data.append('upload_preset', 'yhm2npph')
+        data.append("cloud_name", "drlz1cp2v")
+        fetch("https://api.cloudinary.com/v1_1/drlz1cp2v/upload", {
+            method: "POST",
+            body: data
+        }).then(res => res.json()).
+            then(data => {
+                setUploading(false)
+                console.log(data.url)
+                onComplete(data.url)
+            }).catch(err => {
+                setUploading(false)
+                console.log(err)
+            })
+    }
+
+
+    const snapPic = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "App Camera Permission",
+                    message: "App needs access to your camera ",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                launchCamera({
+                    mediaType: 'photo',
+                    // includeBase64: true,
+                    // maxHeight: 200,
+                    // maxWidth: 200,
+                }, (res) => {
+                    console.log(res);
+                    if (res.didCancel) {
+                        console.log('User cancelled image picker');
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Cancelled',
+                            text2: 'Process cancelled successfully'
+                        });
+                    }
+                    else if (res.error) {
+                        console.log('ImagePicker Error: ', res.error);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'failed to get image',
+                            text2: res.error
+                        });
+                    }
+                    else if (res.assets) {
+                        // setChats([...chats, {
+                        //     "type": 'image',
+                        //     "usertype": "dispatch",
+                        //     "text": res.assets[0].uri,
+                        //     createdAt: new Date().toISOString()
+                        // }])
+                        uploadImage(res.assets[0], (url) => {
+                            console.log(url);
+                            sendChat(
+                                url,
+                                'image'
+                            )
+                        });
+                    }
+                })
+            } else {
+                Toast.show({
+                    type: "error",
+                    text1: "Permission denied",
+                    text2: "App needs access to your camera ",
+                });
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
     return (
         <View style={{
             flex: 1,
@@ -221,14 +329,27 @@ export default Chat = ({ navigation }) => {
                                     borderBottomStartRadius: item.usertype === 'admin' ? 0 : 10,
                                     borderBottomEndRadius: item.usertype === 'admin' ? 10 : 0,
                                     marginTop: 4,
-                                    maxWidth: '80%',
+                                    // maxWidth: '80%',
                                     minWidth: 150,
                                 }}>
-                                    <Text style={{
-                                        color: item.usertype === 'admin' ? colors[colorScheme].black : colors[colorScheme].white,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter-Regular',
-                                    }}>{item?.text}</Text>
+                                    {
+                                        item.type === 'text'
+                                            ? <Text style={{
+                                                color: item.usertype === 'admin' ? colors[colorScheme].black : colors[colorScheme].white,
+                                                fontSize: 16,
+                                                fontFamily: 'Inter-Regular',
+                                            }}>{item?.text}</Text>
+                                            :
+                                            <Image
+                                                source={{ uri: item?.text }}
+                                                style={{
+                                                    width: 200,
+                                                    height:  200,
+                                                    resizeMode: "contain",
+                                                }}
+                                            />
+                                    }
+
                                 </View>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
@@ -246,15 +367,19 @@ export default Chat = ({ navigation }) => {
                 justifyContent: 'space-between',
                 paddingHorizontal: 20,
                 paddingVertical: 10,
+                width: '100%',
             }}>
                 <View style={{
-                    // backgroundColor: 'rgba(217,217,217,0.05)',
-                    borderRadius: 10,
+                    backgroundColor: 'rgba(217,217,217,0.05)',
                     flex: 1,
                     marginEnd: 10,
-                    // flexDirection: 'row',
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    // paddingHorizontal: 10,
+                    justifyContent: 'space-between',
+                    paddingEnd: 10,
+                    borderBottomEndRadius: 10,
+                    borderTopEndRadius: 10,
+                    borderTopStartRadius: 10
                 }}>
                     <TextInput
                         placeholder="Type a message"
@@ -262,19 +387,90 @@ export default Chat = ({ navigation }) => {
                         cursorColor={colors[colorScheme].textDark}
                         style={{
                             padding: 10,
-                            backgroundColor: 'rgba(217,217,217,0.05)',
-                            borderRadius: 10,
                             fontFamily: 'Inter-Regular',
-                            width: '100%',
+                            // width: '70%',
+                            flexGrow: 1,
                             color: colors[colorScheme].textDark,
                         }}
                         value={chat.content}
                         onChangeText={text => setChat({ ...chat, content: text })}
                     />
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+
+                    }}>
+                        <TouchableOpacity onPress={() => {
+                            launchImageLibrary({
+                                mediaType: 'photo',
+                                // includeBase64: true,
+                                // maxHeight: 200,
+                                // maxWidth: 200,
+                            }, (res) => {
+                                console.log(res);
+                                if (res.didCancel) {
+                                    console.log('User cancelled image picker');
+                                    Toast.show({
+                                        type: 'success',
+                                        text1: 'Cancelled',
+                                        text2: 'Process cancelled successfully'
+                                    });
+                                }
+                                else if (res.error) {
+                                    console.log('ImagePicker Error: ', res.error);
+                                    Toast.show({
+                                        type: 'error',
+                                        text1: 'failed to get image',
+                                        text2: res.error
+                                    });
+                                }
+                                else if (res.assets) {
+                                    // setChats([...chats, {
+                                    //     "type": 'image',
+                                    //     "usertype": "dispatch",
+                                    //     "text": 'res.assets[0].uri',
+                                    //     createdAt: new Date().toISOString()
+                                    // }])
+                                    uploadImage(res.assets[0], (url) => {
+                                        console.log(url);
+                                        sendChat(
+                                            url,
+                                            'image'
+                                        )
+                                    });
+                                }
+                            })
+                        }}>
+                            <Image
+                                source={require('../../../assets/images/image.png')}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    resizeMode: "contain",
+                                    tintColor: colors[colorScheme].primary,
+                                }}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            snapPic()
+                        }}>
+                            <Image
+                                source={require('../../../assets/images/cam.png')}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    resizeMode: "contain",
+                                    tintColor: colors[colorScheme].primary,
+                                    marginStart: 10,
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <TouchableOpacity
-                    onPress={sendChat}
+                    onPress={() => sendChat()}
                     disabled={chat.content.length === 0}
                     style={{
                         backgroundColor: colors[colorScheme].primary,
