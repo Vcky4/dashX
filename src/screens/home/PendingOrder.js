@@ -44,11 +44,13 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
         }
     }
     useEffect(() => {
+        const interval = setInterval(() => {
+            getCities()
+        }, 5000);
         if (!isBusiness) {
-            setInterval(() => {
-                getCities()
-            }, 5000);
+            clearInterval(interval)
         }
+        return () => clearInterval(interval)
     }, [])
 
     const getOrders = async () => {
@@ -124,9 +126,9 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 width: '100%',
                 height: height - 200,
             }}
-            contentContainerStyle={{
-                paddingHorizontal: 10
-            }}
+                contentContainerStyle={{
+                    paddingHorizontal: 10
+                }}
                 refreshControl={
                     <RefreshControl
                         refreshing={processing}

@@ -104,11 +104,15 @@ export default Home = ({ navigation }) => {
     }
 
     useEffect(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             if (!isDispatch) {
                 getMyOrder()
             }
         }, 5000)
+
+        return () => {
+            clearInterval(interval)
+        }
     }, [])
 
     const retriveProfile = () => {
