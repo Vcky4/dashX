@@ -68,7 +68,7 @@ export default Home = ({ navigation }) => {
             android: 'geo:0,0?q=',
         });
         const latLng = `${lat},${lng}`;
-        const label = 'Custom Label';
+        const label = 'Dispatch At';
         const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
         Linking.openURL(url);
     }
@@ -180,7 +180,7 @@ export default Home = ({ navigation }) => {
             setIsDispatch(true)
             panelRef.current.togglePanel()
         }
-    }, [myOrders])
+    }, [myOrders.length])
 
     const startDispatch = (id) => {
         fetch(endpoints.baseUrl + endpoints.startDispatch, {
@@ -414,7 +414,7 @@ export default Home = ({ navigation }) => {
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep === 1 ? 320 : 380,
+                    bottom: bottomStep === 1 ? 350 : 380,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
@@ -491,7 +491,7 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     paddingHorizontal: 20,
                     paddingVertical: 6,
-                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
+                    display: bottomStep > 1 && !isOpen ? 'flex' : 'none',
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -509,7 +509,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 320 : 170,
+                    bottom: bottomStep > 0 ? 350 : 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Linking, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import { FlatList, Image, Linking, Text, TouchableOpacity, View, Dimensions, Platform } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
@@ -19,6 +19,18 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
     useEffect(() => {
         onIndexChanged(index, items[index] === undefined ? items[items.length - 1] : items[index])
     }, [index, items.length])
+
+    //open direction on maps
+    const openDirection = (lat, lng) => {
+        const scheme = Platform.select({
+            ios: 'maps:0,0?q=',
+            android: 'geo:0,0?q=',
+        });
+        const latLng = `${lat},${lng}`;
+        const label = 'Pickup At';
+        const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+        Linking.openURL(url);
+    }
     return (
         <>
             <View style={{
@@ -118,27 +130,31 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                     onMomentumScrollEnd={(e) => {
                         const contentOffset = e.nativeEvent.contentOffset;
                         const viewSize = e.nativeEvent.layoutMeasurement;
-                        const pageNum = Math.floor(contentOffset.x / viewSize.width);
+                        const pageNum = Math.floor(contentOffset.x / (viewSize.width - 45));
                         setIndex(pageNum)
+                        // console.log('scrolled to page ', pageNum);
                     }}
-                    renderItem={({ item }) =>
+                    renderItem={({ item, index: indx }) =>
                         <TouchableOpacity onPress={() => navigation.navigate(profileRouts.orderDetails, { order: item })}
                             style={{
                                 marginTop: 20,
-                                elevation: 10,
+                                // elevation: 10,
                                 backgroundColor: colors[colorScheme].background,
                                 borderRadius: 10,
-                                // shadowColor: '#000000',
+                                shadowColor: '#000000',
                                 padding: 14,
-                                marginHorizontal: 10,
+                                marginEnd: 10,
                                 marginBottom: 20,
-                                width: width - 20,
-                                shadowOffset: {
-                                    width: 30,
-                                    height: 30
-                                },
-                                shadowRadius: 10,
-                                // shadowOpacity: 1.0
+                                marginStart: indx === 0 ? 10 : 0,
+                                width: width - (index === indx ? 40 : 0),
+                                // shadowOffset: {
+                                //     width: 30,
+                                //     height: 30
+                                // },
+                                // shadowRadius: 10,
+                                // shadowOpacity: 1.0,
+                                borderColor: colors[colorScheme].inactive,
+                                borderWidth: 5,
                             }}>
                             <View style={{
                                 flexDirection: 'row',
@@ -291,51 +307,44 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                     enabled={!processing}
                                 />
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                }}>
-                                    <TouchableOpacity onPress={() => {
-
-                                    }}>
-                                        <Image
-                                            source={require('../../../assets/images/arrow.png')}
-                                            style={{
-                                                width: 28,
-                                                height: 22,
-                                                resizeMode: "contain",
-                                                tintColor: colors[colorScheme].primary,
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-
-                                    <Text style={{
-                                        color: colors[colorScheme].primary,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter-Regular',
-                                        marginHorizontal: 10,
-                                    }}>Swipe</Text>
-
-                                    <TouchableOpacity>
-                                        <Image
-                                            source={require('../../../assets/images/arrow.png')}
-                                            style={{
-                                                width: 28,
-                                                height: 22,
-                                                resizeMode: "contain",
-                                                tintColor: colors[colorScheme].primary,
-                                                transform: [{ rotate: '180deg' }]
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
+                                <Button title={'Directions'}
+                                    onPress={() => {
+                                        openDirection(
+                                            parseFloat(item?.sendercordinate?.senderlat),
+                                            parseFloat(item?.sendercordinate?.senderlong),
+                                        )
+                                    }}
+                                    buttonStyle={{
+                                        borderRadius: 20,
+                                        height: 30,
+                                        width: 117,
+                                    }}
+                                    fontSize={16}
+                                    loading={false}
+                                    enabled={true}
+                                />
                             </View>
 
 
                         </TouchableOpacity>
                     }
                 />
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 10,
+                }}>
+                    {items.map((item, indx) =>
+                        <View key={indx} style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 50,
+                            backgroundColor: indx === index ? colors[colorScheme].primary : colors[colorScheme].inactive,
+                            marginHorizontal: 5,
+                        }} />
+                    )}
+                </View>
             </View>
         </>
     )
