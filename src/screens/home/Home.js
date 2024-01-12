@@ -379,17 +379,19 @@ export default Home = ({ navigation }) => {
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
                     borderRadius: 40,
-                    padding: 6,
                     elevation: 10,
-                    paddingHorizontal: 20,
-                    paddingVertical: 6,
                     display: online ? 'flex' : 'none',
+                    height: 45,
+                    width:45,
+                    alignItems:'center',
+                    justifyContent:'center'
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
-                    fontSize: 16,
+                    fontSize: 12,
                     fontFamily: 'Inter-Bold',
-                }}>New Orders</Text>
+                    textAlign: 'center',
+                }}>New</Text>
 
                 <Text style={{
                     color: colors[colorScheme].primary,
