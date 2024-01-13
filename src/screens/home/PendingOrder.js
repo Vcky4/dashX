@@ -17,7 +17,9 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     const [processing, setProcessing] = useState(false)
     const [selectCity, setSelectCity] = useState(false)
     const [cities, setCities] = useState([])
-    const [city, setCity] = useState('ajah')
+    const [city, setCity] = useState({
+        cityName: 'ajah'
+    })
     const isBusiness = !(user?.personel_account ?? true)
 
     //connect socket
@@ -123,10 +125,12 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
 
     useEffect(() => {
         getOrders()
-        socket.emit('request_pending_order', {
-            "dispatchid": user.id,
-            "city": city.cityName,
-        })
+        if (city?.cityName) {
+            socket.emit('request_pending_order', {
+                "dispatchid": user.id,
+                "city": city.cityName,
+            })
+        }
     }, [city])
 
     const acceptOrders = async (id) => {
