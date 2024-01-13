@@ -50,7 +50,7 @@ export default Chat = ({ navigation }) => {
     }, []);
 
     const sendChat = (content, type) => {
-        console.log('sendChat', content);
+        // console.log('sendChat', content);
         socket.emit('send_dispatch_support', {
             "userid": user.id,
             "type": type ?? chat.type,
