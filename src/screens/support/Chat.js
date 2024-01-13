@@ -4,13 +4,13 @@ import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Toast from "react-native-toast-message";
 
 
 export default Chat = ({ navigation }) => {
-    const { colorScheme, user, token } = useContext(AuthContext)
+    const { colorScheme, user, token, socket } = useContext(AuthContext)
 
     const [chats, setChats] = React.useState([])
     const [processing, setProcessing] = React.useState(false)
@@ -22,11 +22,11 @@ export default Chat = ({ navigation }) => {
     })
 
     // //setup to socket
-    const socket = io(endpoints.socketUrl, {
-        // extraHeaders: {
-        //     authorization: `Bearer ${token}`,
-        // },
-    });
+    // const socket = io(endpoints.socketUrl, {
+    //     // extraHeaders: {
+    //     //     authorization: `Bearer ${token}`,
+    //     // },
+    // });
 
     //connect socket
     useEffect(() => {

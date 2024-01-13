@@ -112,7 +112,7 @@ export default Home = ({ navigation }) => {
             }),
         }).then(res => res.json())
             .then(resJson => {
-                console.log('resJson', resJson)
+                // console.log('resJson', resJson)
                 if (resJson.status) {
                     setOnline(resJson.data.online_status)
                     saveUser({

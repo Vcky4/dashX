@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } from "react-native";
 import DeviceInfo from 'react-native-device-info';
 
@@ -7,13 +7,43 @@ import colors from "../../../assets/colors/colors";
 import mainRoute from "../routs/mainRouts";
 import profileRouts from "../routs/profileRouts";
 import businessRoutes from "../routs/businessRouts";
+import endpoints from "../../../assets/endpoints/endpoints";
 
 
 export default function DrawerContent(props, onPendingOrderPress = () => { }) {
-    const { logout, user, colorScheme, toggleTheme } = useContext(AuthContext);
+    const { logout, user, colorScheme, toggleTheme, token } = useContext(AuthContext);
     const isBusiness = !(user?.personel_account ?? true)
     // console.log('from drawer', user);
     const [modalVisible, setModalVisible] = useState(false);
+
+
+    const [balance, setBalance] = useState({})
+
+    const getBalance = () => {
+        fetch(endpoints.baseUrl + endpoints.getBalance, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                // console.log('resJson', resJson.data)
+                if (resJson.status) {
+                    setBalance(resJson.data)
+                }
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    }
+
+    useEffect(() => {
+        getBalance()
+    }, [])
     return (
         <>
             <View style={{
@@ -116,7 +146,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     color: colors[colorScheme].textGray,
                                     fontSize: 25,
                                     fontFamily: 'Inter-SemiBold',
-                                }}>₦0</Text>
+                                }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
                             </View>
                             <Image
                                 source={require('../../../assets/images/outline.png')}
@@ -260,7 +290,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 }]}>Support</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 30 }}
+                        {/* <TouchableOpacity style={{ marginTop: 30 }}
                             onPress={() => props.navigation.navigate(profileRouts.orderHistory)}>
                             <View style={styles.itemWrapper}>
                                 <Image
@@ -276,7 +306,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     color: colors[colorScheme].textGray,
                                 }]}>About</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </ScrollView>
 
                     <View style={{

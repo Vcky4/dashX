@@ -130,7 +130,7 @@ export default Wallet = ({ navigation }) => {
                     fontSize: 24,
                     fontFamily: 'Inter-Bold',
                     marginVertical: 15,
-                }}>₦ {balance?.balance?.toLocaleString()}</Text>
+                }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
                 <View style={{
                     marginTop: 10,
                     flexDirection: 'row',
