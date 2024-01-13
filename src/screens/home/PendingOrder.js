@@ -6,11 +6,12 @@ import PendingOrderItem from "./PendingOrderItem";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
 
+
 const { width, height } = Dimensions.get('window');
 
 
 export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => { } }) => {
-    const { colorScheme, user, token } = useContext(AuthContext)
+    const { colorScheme, user, token, socket } = useContext(AuthContext)
     const appearance = colorScheme
     const [orders, setOrders] = useState([])
     const [processing, setProcessing] = useState(false)
@@ -18,6 +19,48 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('ajah')
     const isBusiness = !(user?.personel_account ?? true)
+
+    //connect socket
+    // useEffect(() => {
+    //     // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+    //     socket.on('connect', e => {
+    //         console.log('connected', socket.connected);
+    //         socket.emit('joinorderdispatch', {
+    //             "dispatchid": user.id
+    //         })
+    //         socket.emit('request_city', {
+    //             "dispatchid": user.id
+    //         })
+    //     });
+
+    //     socket.on('receieve_city', e => {
+    //         console.log('receieve_city', e);
+    //         //heck if array
+    //         // if (Array.isArray(e)) {
+
+    //         // }
+    //     })
+
+    //     socket.on('receieve_pending_order', e => {
+    //         console.log('receieve_pending_order', e);
+    //         //heck if array
+    //         // if (Array.isArray(e)) {
+
+    //         // }
+    //     })
+
+    //     socket.on('disconnect', e => {
+    //         console.log('disconnected', socket.connected);
+    //     });
+    //     // }
+    //     return () => {
+    //         socket.off('connect');
+    //         socket.off('disconnect');
+    //         socket.off('receieve_city');
+    //         socket.off('receieve_pending_order');
+    //     };
+    // }, []);
+
 
     const getCities = async () => {
         try {
@@ -44,13 +87,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
         }
     }
     useEffect(() => {
-        const interval = setInterval(() => {
-            getCities()
-        }, 5000);
-        if (!isBusiness) {
-            clearInterval(interval)
-        }
-        return () => clearInterval(interval)
+        getCities()
     }, [])
 
     const getOrders = async () => {
@@ -83,11 +120,11 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     }
 
     useEffect(() => {
-        clearInterval(interval)
-        let interval = setInterval(() => {
-            getOrders()
-        }, 5000)
-        return () => clearInterval(interval)
+        getOrders()
+        // socket.emit('request_pending_order', {
+        //     "dispatchid": user.id,
+        //     "city": city.cityName,
+        // })
     }, [city])
 
     const acceptOrders = async (id) => {

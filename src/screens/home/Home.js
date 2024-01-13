@@ -37,7 +37,7 @@ export default Home = ({ navigation }) => {
     const [helpCoordinates, setHelpCoordinate] = useState(null);
     const { width, height } = Dimensions.get('window');
     const GOOGLE_API_KEY = endpoints.gg;
-    const { user, token, saveUser, colorScheme } = useContext(AuthContext);
+    const { user, token, saveUser, colorScheme, socket } = useContext(AuthContext);
     const [autoPosition, setAutoPosition] = useState(true);
     const [distance, setDistance] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -73,13 +73,6 @@ export default Home = ({ navigation }) => {
         Linking.openURL(url);
     }
 
-    // //setup to socket
-    const socket = io(endpoints.socketUrl, {
-        // extraHeaders: {
-        //     authorization: `Bearer ${token}`,
-        // },
-    });
-
     const getMyOrder = async () => {
         const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
             method: 'POST',
@@ -104,15 +97,7 @@ export default Home = ({ navigation }) => {
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (!isDispatch) {
-                getMyOrder()
-            }
-        }, 5000)
-
-        return () => {
-            clearInterval(interval)
-        }
+        getMyOrder()
     }, [])
 
     const retriveProfile = () => {
@@ -233,8 +218,22 @@ export default Home = ({ navigation }) => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
         socket.on('connect', e => {
             console.log('connected', socket.connected);
-
+            socket.emit('joinorderdispatch', {
+                "dispatchid": user.id
+            })
+            socket.emit('request_myorder', {
+                "dispatchid": user.id
+            })
         });
+
+        socket.on('receieve_myorder', e => {
+            //heck if array
+            if (Array.isArray(e)) {
+                setMyOrders(e)
+            }
+            // playPause();
+            // setHelpCoordinate(e);
+        })
 
         socket.on('disconnect', e => {
             console.log('disconnected', socket.connected);
@@ -243,6 +242,7 @@ export default Home = ({ navigation }) => {
         return () => {
             socket.off('connect');
             socket.off('disconnect');
+            socket.off('receieve_myorder');
             // socket.off('receiveAlerts');
         };
     }, []);
@@ -382,9 +382,9 @@ export default Home = ({ navigation }) => {
                     elevation: 10,
                     display: online ? 'flex' : 'none',
                     height: 45,
-                    width:45,
-                    alignItems:'center',
-                    justifyContent:'center'
+                    width: 45,
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }} >
                 <Text style={{
                     color: colors[colorScheme].white,
@@ -959,6 +959,7 @@ export default Home = ({ navigation }) => {
                     onNewOrderChange={(it) => {
                         setNewOrders(it)
                     }}
+                    socketM={socket}
                     navigation={navigation} />
             </BottomSheet>
         </View>

@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme } from "react-native";
+import { io } from "socket.io-client";
+import endpoints from "../assets/endpoints/endpoints";
 
 export const AuthContext = createContext(null);
 
@@ -13,6 +15,13 @@ export const AuthContextProvider = ({ children }) => {
     const [isOnboarded, setIsOnboarded] = useState(false)
     const appearance = useColorScheme()
 
+
+    // //setup to socket
+    const socket = io(endpoints.socketUrl, {
+        // extraHeaders: {
+        //     authorization: `Bearer ${token}`,
+        // },
+    });
 
     const login = (token, user) => {
         setIsLoading(true);
@@ -87,7 +96,7 @@ export const AuthContextProvider = ({ children }) => {
         isLoggedIn();
     }, []);
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme, isOnboarded, onboard, toggleTheme }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, token, user, saveUser, saveToken, colorScheme, isOnboarded, onboard, toggleTheme, socket }}>
             {children}
         </AuthContext.Provider>
     );
