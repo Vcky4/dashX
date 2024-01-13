@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 
 import colors from "../../../assets/colors/colors";
 import endpoints from "../../../assets/endpoints/endpoints";
-import dings from '../../../assets/sounds/trilla.mp3'
+import dings from '../../../assets/sounds/mikit.wav'
 import mainRouts from "../../navigation/routs/mainRouts";
 import { AuthContext } from "../../../context/AuthContext";
 import profileRouts from "../../navigation/routs/profileRouts";
@@ -112,7 +112,7 @@ export default Home = ({ navigation }) => {
             }),
         }).then(res => res.json())
             .then(resJson => {
-                // console.log('resJson', resJson)
+                console.log('resJson', resJson)
                 if (resJson.status) {
                     setOnline(resJson.data.online_status)
                     saveUser({
@@ -256,7 +256,7 @@ export default Home = ({ navigation }) => {
                 console.log('playback failed due to audio decoding errors');
             }
         });
-        ding.setNumberOfLoops(-1);
+        ding.setNumberOfLoops(0);
     };
 
 
@@ -958,6 +958,7 @@ export default Home = ({ navigation }) => {
                     }}
                     onNewOrderChange={(it) => {
                         setNewOrders(it)
+                        playPause()
                     }}
                     socketM={socket}
                     navigation={navigation} />
