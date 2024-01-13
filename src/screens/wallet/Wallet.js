@@ -150,7 +150,7 @@ export default Wallet = ({ navigation }) => {
                         }}>+ Deposit</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate(mainRouts.withdraw)}
+                    {/* <TouchableOpacity onPress={() => navigation.navigate(mainRouts.withdraw)}
                         style={{
                             backgroundColor: colors[colorScheme].primary,
                             paddingHorizontal: 16,
@@ -173,7 +173,7 @@ export default Wallet = ({ navigation }) => {
                             fontFamily: 'Inter-SemiBold',
                             marginLeft: 5,
                         }}>Withdraw</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
 
