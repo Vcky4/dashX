@@ -381,8 +381,8 @@ export default Home = ({ navigation }) => {
                     borderRadius: 40,
                     elevation: 10,
                     display: online ? 'flex' : 'none',
-                    height: 45,
-                    width: 45,
+                    height: 48,
+                    width: 48,
                     alignItems: 'center',
                     justifyContent: 'center'
                 }} >
@@ -391,7 +391,7 @@ export default Home = ({ navigation }) => {
                     fontSize: 12,
                     fontFamily: 'Inter-Bold',
                     textAlign: 'center',
-                }}>New</Text>
+                }}>{'New\nOrders'}</Text>
 
                 <Text style={{
                     color: colors[colorScheme].primary,
@@ -745,7 +745,7 @@ export default Home = ({ navigation }) => {
                             pinColor={colors[colorScheme].primary}
                         />
 
-                        <Marker
+                        {/* <Marker
                             coordinate={{
                                 latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
                                 longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
@@ -753,19 +753,21 @@ export default Home = ({ navigation }) => {
                             title={"Delivery"}
                             description={dispatchItem?.receiveraddress}
                             pinColor={colors[colorScheme].primary}
-                        />
+                        /> */}
                     </>
                 }
 
                 {(!isDispatch && bottomStep > 0 && dispatchItem) &&
                     <MapViewDirections
                         origin={{
-                            latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                            longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude,
                         }}
                         destination={{
-                            latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
-                            longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                            latitude: parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                            longitude: parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                            // latitude: parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                            // longitude: parseFloat(dispatchItem?.receivercordinate?.receiverlong),
                         }}
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={4}
@@ -958,6 +960,7 @@ export default Home = ({ navigation }) => {
                     }}
                     onNewOrderChange={(it) => {
                         setNewOrders(it)
+                        getMyOrder()
                         playPause()
                     }}
                     socketM={socket}

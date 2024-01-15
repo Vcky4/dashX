@@ -38,7 +38,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
         socket.on('receieve_city', e => {
             // console.log('receieve_city', e);
             //check if array
-            if (Array.isArray(e)) {
+            if (Array.isArray(e) && e.length > 0) {
                 setCities(e)
                 setCity(e[0])
             }
