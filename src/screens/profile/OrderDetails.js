@@ -38,7 +38,7 @@ export default OrderDetails = ({ navigation, route }) => {
                     text1: 'Order cancelled',
                     text2: 'Order has been cancelled successfully',
                 })
-            }else{
+            } else {
                 Toast.show({
                     type: 'error',
                     text1: 'Order cancellation failed',
@@ -119,7 +119,7 @@ export default OrderDetails = ({ navigation, route }) => {
                 }}>Customer Details</Text>
 
                 {
-                    [1, 2].map((item, index) =>
+                    ['Name', 'Address', 'Phone'].map((item, index) =>
                         <View key={index}
                             style={{
                                 flexDirection: 'row',
@@ -134,7 +134,9 @@ export default OrderDetails = ({ navigation, route }) => {
                             }}>
                                 <Image
                                     source={
-                                        index == 0 ? require('../../../assets/images/user.png') : require('../../../assets/images/pin.png')
+                                        index == 0 ? require('../../../assets/images/user.png')
+                                            : index == 1 ? require('../../../assets/images/pin.png')
+                                                : require('../../../assets/images/user.png')
                                     }
                                     style={{
                                         width: 29,
@@ -147,9 +149,7 @@ export default OrderDetails = ({ navigation, route }) => {
                                     fontSize: 14,
                                     fontFamily: 'Inter-Regular',
                                     marginLeft: 10,
-                                }}>{
-                                        index == 0 ? 'Name:' : 'Address'
-                                    }</Text>
+                                }}>{item}</Text>
                             </View>
                             <Text style={{
                                 color: colors[colorScheme].textGray,
@@ -158,7 +158,9 @@ export default OrderDetails = ({ navigation, route }) => {
                                 marginLeft: 10,
                                 width: '50%',
                             }}>{
-                                    index == 0 ? order?.sendername : order?.senderaddress
+                                    index == 0 ? order?.sendername
+                                        : index == 1 ? order?.senderaddress
+                                            : order?.senderphone
                                 }</Text>
                         </View>)
                 }
@@ -174,7 +176,7 @@ export default OrderDetails = ({ navigation, route }) => {
                 }}>Reciever Details</Text>
 
                 {
-                    [1, 2].map((item, index) =>
+                    ['Name', 'Address', 'Phone'].map((item, index) =>
                         <View key={index}
                             style={{
                                 flexDirection: 'row',
@@ -189,7 +191,7 @@ export default OrderDetails = ({ navigation, route }) => {
                             }}>
                                 <Image
                                     source={
-                                        index == 0 ? require('../../../assets/images/user.png') : require('../../../assets/images/pin.png')
+                                        index != 1 ? require('../../../assets/images/user.png') : require('../../../assets/images/pin.png')
                                     }
                                     style={{
                                         width: 29,
@@ -202,9 +204,7 @@ export default OrderDetails = ({ navigation, route }) => {
                                     fontSize: 14,
                                     fontFamily: 'Inter-Regular',
                                     marginLeft: 10,
-                                }}>{
-                                        index == 0 ? 'Name:' : 'Address'
-                                    }</Text>
+                                }}>{item}</Text>
                             </View>
                             <Text style={{
                                 color: colors[colorScheme].textGray,
@@ -213,7 +213,9 @@ export default OrderDetails = ({ navigation, route }) => {
                                 marginLeft: 10,
                                 width: '50%',
                             }}>{
-                                    index == 0 ? order?.receivername : order?.receiveraddress
+                                    index == 0 ? order?.receivername
+                                        : index === 1 ? order?.receiveraddress
+                                            : order?.receiverphone
                                 }</Text>
                         </View>)
                 }
@@ -251,10 +253,10 @@ export default OrderDetails = ({ navigation, route }) => {
                             }}>
                                 <Image
                                     source={
-                                        index == 0 ? require('../../../assets/images/pen.png')
+                                        index == 0 ? require('../../../assets/images/cart.png')
                                             : index == 1 ? require('../../../assets/images/recent.png')
                                                 : index == 2 ? require('../../../assets/images/money.png')
-                                                    : require('../../../assets/images/cart.png')
+                                                    : require('../../../assets/images/pen.png')
                                     }
                                     style={{
                                         width: 29,
@@ -271,7 +273,7 @@ export default OrderDetails = ({ navigation, route }) => {
                                         index == 0 ? 'Order ID:'
                                             : index == 1 ? 'Pick Up Time:'
                                                 : index == 2 ? 'Payment Method: '
-                                                    : 'Item(s) Ordered:'
+                                                    : 'Description:'
                                     }</Text>
                             </View>
                             <Text style={{
