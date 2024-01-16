@@ -300,7 +300,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                     buttonStyle={{
                                         borderRadius: 20,
                                         height: 30,
-                                        width: 137,
+                                        width: item?.order_status === 'accepted' ? 137 : '100%',
                                     }}
                                     fontSize={16}
                                     loading={processing}
@@ -318,6 +318,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                         borderRadius: 20,
                                         height: 30,
                                         width: 117,
+                                        display: item?.order_status === 'accepted' ? 'flex' : 'none'
                                     }}
                                     fontSize={16}
                                     loading={false}
