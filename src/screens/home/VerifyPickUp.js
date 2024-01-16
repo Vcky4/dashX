@@ -161,9 +161,14 @@ export default VerifyPickUp = ({ navigation, route }) => {
                     width: '80%',
                     textAlign: 'center',
                 }}>*Please inspect package carefully as when uploaded, you will be fully responsible for any damage or loss.</Text>
-                <SafeAreaView onPress={() => {
-
-                }}
+                <TouchableOpacity activeOpacity={0.8}
+                onPress={() => {
+                        if (isSnaping) {
+                            takePicture()
+                            return
+                        }
+                        setIsSnapping(true)
+                    }}
                     style={{
                         width: 250,
                         height: 330,
@@ -192,7 +197,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
                             buttonNegative: 'Cancel',
                         }} />
                         :
-                        <Image
+                        <Image 
                             source={packageImage ? { uri: packageImage.uri } : require('../../../assets/images/camera.png')}
                             style={{
                                 width: '100%',
@@ -200,7 +205,22 @@ export default VerifyPickUp = ({ navigation, route }) => {
                                 resizeMode: 'contain',
                             }}
                         />}
-                </SafeAreaView>
+                    <Text onPress={() => {
+                        if (isSnaping) {
+                            takePicture()
+                            return
+                        }
+                        setIsSnapping(true)
+                    }}
+                        style={{
+                            position: 'absolute',
+                            color: '#ffffff',
+                            alignSelf: 'center',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: 6,
+                            borderRadius: 10
+                        }}>{isSnaping ? 'Tap to capture' : 'Retake'}</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     if (isSnaping) {
                         takePicture()
