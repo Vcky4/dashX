@@ -54,6 +54,8 @@ export const AuthContextProvider = ({ children }) => {
         setIsLoading(true);
         setToken(null);
         AsyncStorage.removeItem('token');
+        setUser(null);
+        AsyncStorage.removeItem('user');
         setIsLoading(false);
     }
 
