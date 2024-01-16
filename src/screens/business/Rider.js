@@ -287,7 +287,7 @@ export default DeliveryHistory = ({ navigation }) => {
               onPress={() => {
                 setRequestData(prestate => ({
                   ...prestate,
-                  vehicle_type: 'Truck',
+                  vehicle_type: 'Small truck',
                 }));
                 setDropDown(false);
               }}
@@ -303,7 +303,53 @@ export default DeliveryHistory = ({ navigation }) => {
                   paddingStart: 10,
                   color: colors[appearance].textDark,
                 }}>
-                Truck
+                Small Truck
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setRequestData(prestate => ({
+                  ...prestate,
+                  vehicle_type: 'Medium truck',
+                }));
+                setDropDown(false);
+              }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={{ height: 24, width: 24 }}
+                source={require('../../../assets/images/Trucks.png')}
+              />
+              <Text
+                style={{
+                  fontFamily: 'Inter-Regular',
+                  fontSize: 16,
+                  paddingStart: 10,
+                  color: colors[appearance].textDark,
+                }}>
+                Medium truck
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setRequestData(prestate => ({
+                  ...prestate,
+                  vehicle_type: 'Big truck',
+                }));
+                setDropDown(false);
+              }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={{ height: 24, width: 24 }}
+                source={require('../../../assets/images/Trucks.png')}
+              />
+              <Text
+                style={{
+                  fontFamily: 'Inter-Regular',
+                  fontSize: 16,
+                  paddingStart: 10,
+                  color: colors[appearance].textDark,
+                }}>
+                Big truck
               </Text>
             </TouchableOpacity>
           </View>
