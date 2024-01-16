@@ -54,6 +54,7 @@ export default Home = ({ navigation }) => {
     const [processing, setProcessing] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const [newOrders, setNewOrders] = useState(0)
+    const [city, setCity] = useState('')
     const [coordinate, setCoordinates] = useState({
         latitude: 0,
         longitude: 0,
@@ -287,7 +288,8 @@ export default Home = ({ navigation }) => {
         socket.emit('updatecordinate', {
             "dispatchid": user.id,
             "latitude": e.nativeEvent.coordinate.latitude,
-            "longitude": e.nativeEvent.coordinate.longitude
+            "longitude": e.nativeEvent.coordinate.longitude,
+            "city": city ?? ''
         });
         if (autoPosition && !helpCoordinates || autoPosition && isDispatch) {
             this.mapView.setCamera({
@@ -329,10 +331,10 @@ export default Home = ({ navigation }) => {
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
             setAddress(result[0])
-            // getStateAndCity(result[0].place_id, (res) => {
-            //     // console.log('res', res)
-            //     // setCity(res.city)
-            // })
+            getStateAndCity(result[0].place_id, (res) => {
+                // console.log('res', res)
+                setCity(res.city)
+            })
         })
     }
     // console.log('dispatch', dispatchItem)

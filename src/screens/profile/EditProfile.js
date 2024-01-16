@@ -665,7 +665,7 @@ export default EditProfile = ({ navigation }) => {
                                     color: colors[appearance].textDark,
                                     alignSelf: 'center',
                                     marginVertical: 10,
-                                }}>Truck</Text>
+                                }}>Small Truck</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 setVehicleData({ ...vehicleData, vehicle_type: 'van' })
