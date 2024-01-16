@@ -190,6 +190,16 @@ export default SignUp = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
+                <Text style={{
+                    fontFamily: 'Inter-Regular',
+                    fontSize: 16,
+                    color: colors[appearance].textDark,
+                    marginTop: 20,
+                    marginLeft: 15,
+                }}>You are creating an account as <Text style={{ color: colors[colorScheme].primary }}>
+                        {accountType === 'Business' ? 'a Business' : 'an Individual'}
+                    </Text></Text>
+
                 <InputField
                     theme={appearance}
                     value={name}
