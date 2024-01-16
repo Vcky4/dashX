@@ -7,6 +7,7 @@ import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
 import getStateAndCity from "../../utils/getStateAndCity";
 import getAddress from "../../utils/getAddress";
+import Toast from "react-native-toast-message";
 
 
 const { width, height } = Dimensions.get('window');
@@ -44,7 +45,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     //connect socket
     useEffect(() => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-        if(!isBusiness){
+        if (!isBusiness) {
             socket.on('connect', e => {
                 console.log('connected', socket.connected);
                 // socket.emit('joinorderdispatch', {
@@ -54,7 +55,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     "dispatchid": user.id
                 })
             });
-    
+
             socket.on('receieve_city', e => {
                 // console.log('receieve_city', e);
                 //check if array
@@ -63,7 +64,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     // setCity(e[0])
                 }
             })
-    
+
             socket.on('receieve_pending_order', e => {
                 // console.log('receieve_pending_order', e);
                 //check if array
@@ -72,7 +73,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     onNewOrderChange(e.length)
                 }
             })
-    
+
         }
         socket.on('disconnect', e => {
             console.log('disconnected', socket.connected);
@@ -170,12 +171,21 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             })
             const json = await response.json()
             setProcessing(false)
-            // console.log(json)
-            onNewOrderChange(orders.length - 1)
-            setOrders(orders.filter((item) => item._id !== id))
-            //check if array
-            if (Array.isArray(json.data)) {
-                // setOrders(json.data)
+            console.log(json)
+            if (response.ok) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Order accepted',
+                    text2: json.message
+                })
+                onNewOrderChange(orders.length - 1)
+                setOrders(orders.filter((item) => item._id !== id))
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Order accept failed',
+                    text2: json.message
+                })
             }
         } catch (error) {
             setProcessing(false)
