@@ -164,12 +164,16 @@ export default Home = ({ navigation }) => {
 
     useEffect(() => {
         //find for oder_status == shipping
-        if (myOrders.find(item => item.order_status == 'shipping' && bottomStep === 0) && !isDispatch) {
-            bottomStep == 0 && setBottomStep(2)
-            setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
-            setIsDispatch(true)
-            panelRef.current.togglePanel()
-        }
+        clearInterval(interval)
+        let interval = setInterval(() => {
+            if (myOrders.find(item => item.order_status == 'shipping' && bottomStep === 0) && !isDispatch) {
+                bottomStep == 0 && setBottomStep(2)
+                setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
+                setIsDispatch(true)
+                panelRef.current.togglePanel()
+            }
+        }, 30000)
+        return clearInterval(interval)
     }, [myOrders.length])
 
     const startDispatch = (id) => {
