@@ -5,6 +5,8 @@ import colors from "../../../assets/colors/colors";
 import PendingOrderItem from "./PendingOrderItem";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
+import getStateAndCity from "../../utils/getStateAndCity";
+import getAddress from "../../utils/getAddress";
 
 
 const { width, height } = Dimensions.get('window');
@@ -22,37 +24,56 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     })
     const isBusiness = !(user?.personel_account ?? true)
 
+    const getAddres = (lat, lng) => {
+        getAddress(lat, lng, (result) => {
+            // console.log('getAddress', result)
+            getStateAndCity(result[0].place_id, (res) => {
+                setCity({
+                    cityName: res.city,
+                })
+            })
+        })
+    }
+
+    useEffect(() => {
+        if (user?.cordinate?.latitude && user?.cordinate?.longitude) {
+            getAddres(user?.cordinate?.latitude, user?.cordinate?.longitude)
+        }
+    }, [user?.cordinate])
+
     //connect socket
     useEffect(() => {
         // if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-        socket.on('connect', e => {
-            console.log('connected', socket.connected);
-            // socket.emit('joinorderdispatch', {
-            //     "dispatchid": user.id
-            // })
-            socket.emit('request_city', {
-                "dispatchid": user.id
+        if(!isBusiness){
+            socket.on('connect', e => {
+                console.log('connected', socket.connected);
+                // socket.emit('joinorderdispatch', {
+                //     "dispatchid": user.id
+                // })
+                socket.emit('request_city', {
+                    "dispatchid": user.id
+                })
+            });
+    
+            socket.on('receieve_city', e => {
+                // console.log('receieve_city', e);
+                //check if array
+                if (Array.isArray(e) && e.length > 0) {
+                    setCities(e)
+                    // setCity(e[0])
+                }
             })
-        });
-
-        socket.on('receieve_city', e => {
-            // console.log('receieve_city', e);
-            //check if array
-            if (Array.isArray(e) && e.length > 0) {
-                setCities(e)
-                setCity(e[0])
-            }
-        })
-
-        socket.on('receieve_pending_order', e => {
-            // console.log('receieve_pending_order', e);
-            //check if array
-            if (Array.isArray(e)) {
-                setOrders(e)
-                onNewOrderChange(e.length)
-            }
-        })
-
+    
+            socket.on('receieve_pending_order', e => {
+                // console.log('receieve_pending_order', e);
+                //check if array
+                if (Array.isArray(e)) {
+                    setOrders(e)
+                    onNewOrderChange(e.length)
+                }
+            })
+    
+        }
         socket.on('disconnect', e => {
             console.log('disconnected', socket.connected);
         });
@@ -84,7 +105,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             if (Array.isArray(json.data)) {
                 if (cities.length === json.data.length) return
                 setCities(json.data)
-                setCity(json.data[0])
+                // setCity(json.data[0])
             }
         } catch (error) {
             console.error(error.toString())
