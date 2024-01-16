@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, Modal } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, Modal, ScrollView } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
@@ -11,7 +11,7 @@ export default OrderDetails = ({ navigation, route }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [modalVisible, setModalVisible] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
-    // console.log(order)
+    console.log(order)
 
     const cancel = async () => {
         console.log(order._id)
@@ -109,7 +109,8 @@ export default OrderDetails = ({ navigation, route }) => {
                     }}>{user.online_status ? 'Online' : 'Offline'}</Text>
                 </View>
 
-                <Text style={{
+           <ScrollView>
+           <Text style={{
                     color: colors[colorScheme].textDark,
                     fontSize: 16,
                     fontFamily: 'Inter-SemiBold',
@@ -184,6 +185,7 @@ export default OrderDetails = ({ navigation, route }) => {
                                 marginHorizontal: 20,
                                 marginTop: 10,
                                 justifyContent: 'space-between',
+                                display: item === 'Phone' ? order.order_status !== 'pending' ?  'flex' : 'none' : 'flex',
                             }}>
                             <View style={{
                                 flexDirection: 'row',
@@ -308,8 +310,10 @@ export default OrderDetails = ({ navigation, route }) => {
                         marginTop: 30,
                         marginBottom: 20,
                         borderRadius: 50,
+                        display: order.order_status !== 'pending' ? 'flex' : 'none',
                     }}
                 />
+           </ScrollView>
             </View>
 
             <Modal
