@@ -277,7 +277,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                             fontFamily: 'Inter-Bold',
                             alignSelf: 'center',
                             marginTop: 30,
-                        }}>No pending orders here</Text>
+                        }}>Orders not in your current location</Text>
                     </View>
                 }
             />
