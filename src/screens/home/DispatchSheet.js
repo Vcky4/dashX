@@ -130,8 +130,8 @@ export default Dispatch = ({ onEnd, item }) => {
                         <Image
                             source={require('../../../assets/images/phone.png')}
                             style={{
-                                width: 22,
-                                height: 22,
+                                width: 19,
+                                height: 19,
                                 resizeMode: "contain",
                                 tintColor: colors[colorScheme].white,
                             }}
@@ -147,7 +147,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 <View style={{
                     width: '100%',
                     flexDirection: 'row',
-                    marginTop: 15,
+                    marginTop: 10,
                     alignItems: 'center',
                 }}>
                     <Image
@@ -165,7 +165,7 @@ export default Dispatch = ({ onEnd, item }) => {
                             fontSize: 14,
                             fontFamily: 'Inter-Bold',
                             marginLeft: 5,
-                        }}>Enroute Pickup</Text>
+                        }}>Enroute Delivery</Text>
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -177,24 +177,18 @@ export default Dispatch = ({ onEnd, item }) => {
                     </View>
                 </View>
             </View>
-
             <View style={{
-                marginTop: 10,
-                elevation: 10,
-                backgroundColor: colors[colorScheme].background,
-                borderRadius: 10,
-                shadowColor: '#000000',
-                paddingHorizontal: 14,
-                marginHorizontal: 10,
-                paddingVertical: 10,
+                width: '100%',
+                marginTop: 5,
+                flexDirection: 'row',
+                marginLeft: 20,
             }}>
+
                 <View style={{
-                    width: '100%',
-                    marginTop: 15,
-                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                 }}>
                     <View style={{
-                        alignItems: 'center',
+                        flexDirection: 'row',
                     }}>
                         <Image
                             source={require('../../../assets/images/point.png')}
@@ -205,23 +199,6 @@ export default Dispatch = ({ onEnd, item }) => {
                                 marginTop: 2,
                             }}
                         />
-                        <View style={{
-                            width: 2,
-                            height: 30,
-                            backgroundColor: colors[colorScheme].primary,
-                        }} />
-                        <Image
-                            source={require('../../../assets/images/point2.png')}
-                            style={{
-                                width: 14,
-                                height: 14,
-                                resizeMode: "contain",
-                            }}
-                        />
-                    </View>
-                    <View style={{
-                        justifyContent: 'space-between',
-                    }}>
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -231,7 +208,18 @@ export default Dispatch = ({ onEnd, item }) => {
                         }}>Pickup: <Text style={{
                             fontFamily: 'Inter-Medium',
                         }}>{item?.senderaddress}</Text></Text>
-
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                    }}>
+                        <Image
+                            source={require('../../../assets/images/point2.png')}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                resizeMode: "contain",
+                            }}
+                        />
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -242,20 +230,62 @@ export default Dispatch = ({ onEnd, item }) => {
                         }}>{item?.receiveraddress}</Text></Text>
                     </View>
                 </View>
-                <Button title={'Input code to end dispatch'}
+            </View>
+            <View style={{
+                marginTop: 10,
+                elevation: 10,
+                backgroundColor: colors[colorScheme].background,
+                borderRadius: 10,
+                shadowColor: '#000000',
+                paddingHorizontal: 14,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+            }}>
+
+                <View style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 2,
+                    borderColor: colors[colorScheme].primary,
+                    borderWidth: 1,
+                    borderRadius: 30,
+                    marginBottom: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginTop: 10
+                }}>
+                    <KeyboardAvoidingView>
+                        <TextInput
+                            placeholder="235jVG"
+                            value={code}
+                            onChangeText={(text) => {
+                                setCode(text)
+                            }}
+                            maxLength={6}
+                            cursorColor={colors[colorScheme].primary}
+                            placeholderTextColor={colors[colorScheme].textGray}
+                            style={{
+                                fontFamily: 'Inter-Medium',
+                                fontSize: 24,
+                                paddingHorizontal: 30,
+                                color: colors[colorScheme].textDark
+                            }} />
+                    </KeyboardAvoidingView>
+                </View>
+                <Button title={'End Dispatch'}
                     onPress={() => {
-                        setInputCode(true)
+                        endDispatch()
                     }}
                     buttonStyle={{
                         borderRadius: 30,
-                        height: 60,
+                        height: 50,
                         width: '90%',
                         marginTop: 10,
                         alignSelf: 'center',
                     }}
                     fontSize={16}
-                    loading={false}
-                    enabled={true}
+                    loading={processing}
+                    enabled={code.length > 4 && !processing}
                 />
             </View>
 

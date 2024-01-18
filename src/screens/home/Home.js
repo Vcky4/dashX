@@ -169,11 +169,11 @@ export default Home = ({ navigation }) => {
         let interval = setInterval(() => {
             if (myOrders.find(item => item.order_status == 'shipping' && bottomStep === 0) && !isDispatch) {
                 bottomStep == 0 && setBottomStep(2)
-                setDispatchItem(myOrders.find(item => item.order_status == 'shipping'))
+                setDispatchItem(myOrders.find(item => item.order_status === 'shipping'))
                 setIsDispatch(true)
                 panelRef.current.togglePanel()
             }
-        }, 30000)
+        }, 10000)
         return clearInterval(interval)
     }, [myOrders.length])
 
@@ -431,7 +431,7 @@ export default Home = ({ navigation }) => {
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep === 1 ? 350 : 380,
+                    bottom: bottomStep === 1 ? 350 : 400,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
@@ -499,7 +499,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep === 1 ? 320 : 380,
+                    bottom: bottomStep === 1 ? 320 : 400,
                     right: 80,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].primary,
@@ -890,7 +890,7 @@ export default Home = ({ navigation }) => {
                 }}
                     style={{
                         position: 'absolute',
-                        bottom: 380,
+                        bottom: 400,
                         right: 20,
                         zIndex: 100,
                         backgroundColor: colors[colorScheme].white,
