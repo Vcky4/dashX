@@ -310,7 +310,7 @@ export default OrderDetails = ({ navigation, route }) => {
                         marginTop: 30,
                         marginBottom: 20,
                         borderRadius: 50,
-                        display: order.order_status !== 'pending' ? 'flex' : 'none',
+                        display: order.order_status === 'accepted' ? 'flex' : 'none',
                     }}
                 />
            </ScrollView>
