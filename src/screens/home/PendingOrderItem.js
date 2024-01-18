@@ -30,6 +30,12 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                 alignItems: 'center',
             }}>
                 <Text style={{
+                    color: colors[colorScheme].primary,
+                    fontSize: 16,
+                    fontFamily: 'Medium',
+                    width: '30%',
+                }}>{item?.sendername}</Text>
+                <Text style={{
                     color: colors[colorScheme].textDark,
                     fontSize: 18,
                     fontFamily: 'Inter-Bold',
@@ -44,68 +50,67 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                         height: 30,
                         width: 86,
                     }}
+                    buttonColor={colors[colorScheme].success}
+                    textColor={colors[colorScheme].black}
                     fontSize={16}
                     loading={loading}
                     enabled={!loading}
                 />
             </View>
-            <Text style={{
-                color: colors[colorScheme].primary,
-                fontSize: 16,
-                fontFamily: 'Medium',
-            }}>{item?.productname}</Text>
             <View style={{
                 width: '100%',
-                marginTop: 15,
+                marginTop: 10,
                 flexDirection: 'row',
             }}>
                 <View style={{
-                    alignItems: 'center',
-                }}>
-                    <Image
-                        source={require('../../../assets/images/point.png')}
-                        style={{
-                            width: 14,
-                            height: 14,
-                            resizeMode: "contain",
-                            marginTop: 2,
-                        }}
-                    />
-                    <View style={{
-                        width: 2,
-                        height: 30,
-                        backgroundColor: colors[colorScheme].primary,
-                    }} />
-                    <Image
-                        source={require('../../../assets/images/point2.png')}
-                        style={{
-                            width: 14,
-                            height: 14,
-                            resizeMode: "contain",
-                        }}
-                    />
-                </View>
-                <View style={{
                     justifyContent: 'space-between',
                 }}>
-                    <Text style={{
-                        color: colors[colorScheme].textDark,
-                        fontSize: 14,
-                        fontFamily: 'Inter-Bold',
-                        marginLeft: 5,
-                        marginBottom: 2,
-                    }}>Pickup: <Text style={{
-                        fontFamily: 'Inter-Medium',
-                    }}>{item?.senderaddress}</Text></Text>
+                    <View style={{
+                        flexDirection: 'row',
+                    }}>
+                        <Image
+                            source={require('../../../assets/images/point.png')}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                resizeMode: "contain",
+                                marginTop: 2,
+                            }}
+                        />
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                            marginBottom: 2,
+                            width: '90%',
+                        }}>Pickup: <Text style={{
+                            fontFamily: 'Inter-Medium',
+                        }}>{item?.senderaddress}</Text></Text>
+                    </View>
 
-                    <Text style={{
-                        color: colors[colorScheme].textDark,
-                        fontSize: 14,
-                        fontFamily: 'Inter-Bold',
-                        marginLeft: 5,
-                    }}>Delivery: <Text style={{
-                        fontFamily: 'Inter-Medium',
-                    }}>{item?.receiveraddress}</Text></Text>
+                    <View style={{
+                        flexDirection: 'row',
+                    }}>
+                        <Image
+                            source={require('../../../assets/images/point2.png')}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                resizeMode: "contain",
+                                marginTop: 2,
+                            }}
+                        />
+                        <Text style={{
+                            color: colors[colorScheme].textDark,
+                            fontSize: 14,
+                            fontFamily: 'Inter-Bold',
+                            marginLeft: 5,
+                            width: '90%',
+                        }}>Delivery: <Text style={{
+                            fontFamily: 'Inter-Medium',
+                        }}>{item?.receiveraddress}</Text></Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>

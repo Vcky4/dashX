@@ -38,12 +38,12 @@ const Button: React.FC<Props> = ({ fontSize = 24, theme = 'dark', title, onPress
                         fontSize: fontSize,
                         textAlign: 'center',
                         fontFamily: 'Inter-SemiBold',
-                        color: colors[theme].white,
+                        color: textColor || colors[theme].white,
                         flex: 1
                     }}>{title}</Text>
 
                     <ActivityIndicator size={'large'}
-                        color={colors[theme].white}
+                        color={textColor || colors[theme].white}
                         hidesWhenStopped={true}
                         animating={loading ? loading : false}
                         style={{
