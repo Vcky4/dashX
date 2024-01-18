@@ -180,8 +180,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                         paddingVertical: 1,
                                         borderColor: colors[colorScheme].primary,
                                         borderWidth: 1,
-                                        display: item?.order_status === 'pickup' ? 'flex' : 'none'
-                                    }}>Picked</Text>
+                                        display: item?.order_status !== 'accepted' ? 'flex' : 'none'
+                                    }}>{item?.order_status === 'pickup' ? 'Picked' : item?.order_status}</Text>
                                 </View>
                                 <View style={{
                                     flexDirection: 'row',
@@ -284,7 +284,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                     marginTop: 20,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Button title={item?.order_status === 'pickup' ? 'Dispatch'
+                                <Button title={item?.order_status === 'pickup' ? 'Start Dispatch'
                                     : item?.order_status === 'shipping' ? 'End Dispatch' : 'Verify Pickup'}
                                     onPress={() => {
                                         if (item?.order_status === 'pickup') {
