@@ -29,12 +29,7 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
             }}>
-                <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 16,
-                    fontFamily: 'Medium',
-                    width: '30%',
-                }}>{item?.sendername}</Text>
+               
                 <Text style={{
                     color: colors[colorScheme].textDark,
                     fontSize: 18,
@@ -57,18 +52,52 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                     enabled={!loading}
                 />
             </View>
+            <Text style={{
+                    color: colors[colorScheme].primary,
+                    fontSize: 16,
+                    fontFamily: 'Medium',
+                    width: '60%',
+                }}>{item?.sendername}</Text>
             <View style={{
                 width: '100%',
                 marginTop: 10,
                 flexDirection: 'row',
             }}>
+
+                <View style={{
+                    alignItems: 'center',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginTop: 2,
+                        }}
+                    />
+                    <View style={{
+                        width: 2,
+                        // height: 30,
+                        flex: 0.7,
+                        backgroundColor: colors[colorScheme].primary,
+                    }} />
+                    <Image
+                        source={require('../../../assets/images/point2.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                        }}
+                    />
+                </View>
                 <View style={{
                     justifyContent: 'space-between',
                 }}>
                     <View style={{
                         flexDirection: 'row',
                     }}>
-                        <Image
+                        {/* <Image
                             source={require('../../../assets/images/point.png')}
                             style={{
                                 width: 14,
@@ -76,7 +105,7 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                                 resizeMode: "contain",
                                 marginTop: 2,
                             }}
-                        />
+                        /> */}
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -91,8 +120,9 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
 
                     <View style={{
                         flexDirection: 'row',
+                        marginTop: 5,
                     }}>
-                        <Image
+                        {/* <Image
                             source={require('../../../assets/images/point2.png')}
                             style={{
                                 width: 14,
@@ -100,7 +130,7 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                                 resizeMode: "contain",
                                 marginTop: 2,
                             }}
-                        />
+                        /> */}
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
