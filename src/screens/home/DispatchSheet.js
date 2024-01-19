@@ -112,8 +112,8 @@ export default Dispatch = ({ onEnd, item }) => {
                         <Image
                             source={require('../../../assets/images/whatsapp.png')}
                             style={{
-                                width: 30,
-                                height: 30,
+                                width: 34,
+                                height: 34,
                                 resizeMode: "contain",
                             }}
                         />
@@ -121,7 +121,7 @@ export default Dispatch = ({ onEnd, item }) => {
                     <TouchableOpacity style={{
                         backgroundColor: colors[colorScheme].primary,
                         borderRadius: 20,
-                        padding: 6,
+                        padding: 4,
                     }}
                         onPress={() => {
                             //call
@@ -130,8 +130,8 @@ export default Dispatch = ({ onEnd, item }) => {
                         <Image
                             source={require('../../../assets/images/phone.png')}
                             style={{
-                                width: 19,
-                                height: 19,
+                                width: 21,
+                                height: 21,
                                 resizeMode: "contain",
                                 tintColor: colors[colorScheme].white,
                             }}
@@ -183,14 +183,40 @@ export default Dispatch = ({ onEnd, item }) => {
                 flexDirection: 'row',
                 marginLeft: 20,
             }}>
-
+                <View style={{
+                    alignItems: 'center',
+                }}>
+                    <Image
+                        source={require('../../../assets/images/point.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                            marginTop: 2,
+                        }}
+                    />
+                    <View style={{
+                        width: 2,
+                        // height: 30,
+                        flex: 0.8,
+                        backgroundColor: colors[colorScheme].primary,
+                    }} />
+                    <Image
+                        source={require('../../../assets/images/point2.png')}
+                        style={{
+                            width: 14,
+                            height: 14,
+                            resizeMode: "contain",
+                        }}
+                    />
+                </View>
                 <View style={{
                     justifyContent: 'space-between',
                 }}>
                     <View style={{
                         flexDirection: 'row',
                     }}>
-                        <Image
+                        {/* <Image
                             source={require('../../../assets/images/point.png')}
                             style={{
                                 width: 14,
@@ -198,7 +224,7 @@ export default Dispatch = ({ onEnd, item }) => {
                                 resizeMode: "contain",
                                 marginTop: 2,
                             }}
-                        />
+                        /> */}
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -211,15 +237,16 @@ export default Dispatch = ({ onEnd, item }) => {
                     </View>
                     <View style={{
                         flexDirection: 'row',
+                        marginTop: 5,
                     }}>
-                        <Image
+                        {/* <Image
                             source={require('../../../assets/images/point2.png')}
                             style={{
                                 width: 14,
                                 height: 14,
                                 resizeMode: "contain",
                             }}
-                        />
+                        /> */}
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -247,16 +274,17 @@ export default Dispatch = ({ onEnd, item }) => {
                     paddingVertical: 2,
                     borderColor: colors[colorScheme].primary,
                     borderWidth: 1,
-                    borderRadius: 30,
+                    borderRadius: 10,
                     marginBottom: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
                     alignSelf: 'center',
-                    marginTop: 10
+                    marginTop: 10,
+                    width: '90%'
                 }}>
                     <KeyboardAvoidingView>
                         <TextInput
-                            placeholder="235jVG"
+                            placeholder="Enter Code"
                             value={code}
                             onChangeText={(text) => {
                                 setCode(text)
@@ -266,8 +294,8 @@ export default Dispatch = ({ onEnd, item }) => {
                             placeholderTextColor={colors[colorScheme].textGray}
                             style={{
                                 fontFamily: 'Inter-Medium',
-                                fontSize: 24,
-                                paddingHorizontal: 30,
+                                fontSize: 23,
+                                textAlign: 'center',
                                 color: colors[colorScheme].textDark
                             }} />
                     </KeyboardAvoidingView>
@@ -289,7 +317,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 />
             </View>
 
-
+{/* 
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -366,7 +394,7 @@ export default Dispatch = ({ onEnd, item }) => {
 
                     </View>
                 </TouchableOpacity>
-            </Modal>
+            </Modal> */}
         </>
     )
 }

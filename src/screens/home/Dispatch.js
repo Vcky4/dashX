@@ -89,8 +89,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                         <Image
                             source={require('../../../assets/images/whatsapp.png')}
                             style={{
-                                width: 30,
-                                height: 30,
+                                width: 34,
+                                height: 34,
                                 resizeMode: "contain",
                             }}
                         />
@@ -98,7 +98,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                     <TouchableOpacity style={{
                         backgroundColor: colors[colorScheme].primary,
                         borderRadius: 20,
-                        padding: 6,
+                        padding: 4,
                     }}
                         onPress={() => {
                             //call
@@ -107,8 +107,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                         <Image
                             source={require('../../../assets/images/phone.png')}
                             style={{
-                                width: 22,
-                                height: 22,
+                                width: 21,
+                                height: 21,
                                 resizeMode: "contain",
                                 tintColor: colors[colorScheme].white,
                             }}
