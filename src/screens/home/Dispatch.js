@@ -3,7 +3,6 @@ import { FlatList, Image, Linking, Text, TouchableOpacity, View, Dimensions, Pla
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import Button from "../../component/Button";
-import Swiper from "react-native-swiper";
 import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
@@ -19,6 +18,8 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
     useEffect(() => {
         onIndexChanged(index, items[index] === undefined ? items[items.length - 1] : items[index])
     }, [index, items.length])
+
+    // console.log('items', items)
 
     //open direction on maps
     const openDirection = (lat, lng) => {

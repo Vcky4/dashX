@@ -287,7 +287,7 @@ export default OrderDetails = ({ navigation, route }) => {
                             }}>{
                                     index == 0 ? order?._id
                                         : index == 1 ? order.pickuptime.length > 0
-                                            ? new Date(order.pickuptime).toLocaleTimeString()
+                                            ? order.pickuptime
                                             : 'N/A'
                                             : index == 2 ? 'Cash'
                                                 : order.productname
