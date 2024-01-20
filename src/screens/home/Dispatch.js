@@ -19,7 +19,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
         onIndexChanged(index, items[index] === undefined ? items[items.length - 1] : items[index])
     }, [index, items.length])
 
-    console.log('items', items)
+    // console.log('items', items)
 
     //open direction on maps
     const openDirection = (lat, lng) => {

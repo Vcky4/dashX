@@ -201,7 +201,7 @@ export default Home = ({ navigation }) => {
         }).then(res => res.json())
             .then(resJson => {
                 setProcessing(false)
-                console.log('resJson', resJson)
+                // console.log('resJson', resJson)
                 if (resJson.status_code !== 400) {
                     setIsDispatch(true)
                     setBottomStep(2)
