@@ -45,19 +45,19 @@ export default PendingOrderItem = ({ item, onPress, onAccept, processing }) => {
                         height: 30,
                         width: 86,
                     }}
-                    buttonColor={colors[colorScheme].success}
-                    textColor={colors[colorScheme].black}
+                    // buttonColor={colors[colorScheme].success}
+                    // textColor={colors[colorScheme].black}
                     fontSize={16}
                     loading={loading}
                     enabled={!loading}
                 />
             </View>
-            <Text style={{
+            {/* <Text style={{
                     color: colors[colorScheme].primary,
                     fontSize: 16,
                     fontFamily: 'Medium',
                     width: '60%',
-                }}>{item?.sendername}</Text>
+                }}>{item?.sendername}</Text> */}
             <View style={{
                 width: '100%',
                 marginTop: 10,
