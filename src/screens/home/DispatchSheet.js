@@ -13,6 +13,18 @@ export default Dispatch = ({ onEnd, item }) => {
     const [inputCode, setInputCode] = useState(false)
     // console.log(item)
 
+        //open direction on maps
+        const openDirection = (lat, lng) => {
+            const scheme = Platform.select({
+                ios: 'maps:0,0?q=',
+                android: 'geo:0,0?q=',
+            });
+            const latLng = `${lat},${lng}`;
+            const label = 'Dispatch At';
+            const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+            Linking.openURL(url);
+        }
+    
     const endDispatch = async () => {
         setProcessing(true)
         try {
@@ -37,7 +49,7 @@ export default Dispatch = ({ onEnd, item }) => {
                     text1: 'Success',
                     text2: 'Order Delivered'
                 })
-                setInputCode(false)
+                // setInputCode(false)
                 setCode('')
                 onEnd()
             }
@@ -161,12 +173,38 @@ export default Dispatch = ({ onEnd, item }) => {
                         }}
                     />
                     <View>
-                        <Text style={{
-                            color: colors[colorScheme].textDark,
-                            fontSize: 14,
-                            fontFamily: 'Inter-Bold',
-                            marginLeft: 5,
-                        }}>Enroute Delivery</Text>
+                        <View style={{
+                            flexDirection: 'row',
+                            width: '97%',
+                            justifyContent: 'space-between',
+                        }}>
+                            <Text style={{
+                                color: colors[colorScheme].textDark,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Bold',
+                                marginLeft: 5,
+                            }}>Enroute Delivery</Text>
+                            <TouchableOpacity onPress={() => {
+                                openDirection(
+                                    parseFloat(item?.receivercordinate?.receiverlat),
+                                    parseFloat(item?.receivercordinate?.receiverlong),
+                                )
+
+                            }}
+                                style={{
+                                    backgroundColor: colors[colorScheme].primary,
+                                    borderRadius: 30,
+                                    elevation: 10,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 4,
+                                }} >
+                                <Text style={{
+                                    color: colors[colorScheme].white,
+                                    fontSize: 12,
+                                    fontFamily: 'Inter-Bold',
+                                }}>Directions</Text>
+                            </TouchableOpacity>
+                        </View>
                         <Text style={{
                             color: colors[colorScheme].textDark,
                             fontSize: 14,
@@ -232,6 +270,7 @@ export default Dispatch = ({ onEnd, item }) => {
                             fontFamily: 'Inter-Bold',
                             marginLeft: 5,
                             marginBottom: 2,
+                            width: '90%',
                         }}>Pickup: <Text style={{
                             fontFamily: 'Inter-Medium',
                         }}>{item?.senderaddress}</Text></Text>
@@ -253,6 +292,7 @@ export default Dispatch = ({ onEnd, item }) => {
                             fontSize: 14,
                             fontFamily: 'Inter-Bold',
                             marginLeft: 5,
+                            width: '90%',
                         }}>Delivery: <Text style={{
                             fontFamily: 'Inter-Medium',
                         }}>{item?.receiveraddress}</Text></Text>

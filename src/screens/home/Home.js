@@ -883,38 +883,6 @@ export default Home = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    if (isDispatch || dispatchItem.order_status === 'pickup') {
-                        openDirection(
-                            parseFloat(dispatchItem?.receivercordinate?.receiverlat),
-                            parseFloat(dispatchItem?.receivercordinate?.receiverlong),
-                        )
-                    } else {
-                        dispatchItem && openDirection(
-                            parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                            parseFloat(dispatchItem?.sendercordinate?.senderlong),
-                        )
-                    }
-                }}
-                    style={{
-                        position: 'absolute',
-                        bottom: 440,
-                        right: 80,
-                        zIndex: 100,
-                        backgroundColor: colors[colorScheme].primary,
-                        borderRadius: 40,
-                        padding: 6,
-                        elevation: 10,
-                        paddingHorizontal: 20,
-                        paddingVertical: 6,
-                        display: isDispatch ? 'flex' : 'none',
-                    }} >
-                    <Text style={{
-                        color: colors[colorScheme].white,
-                        fontSize: 16,
-                        fontFamily: 'Inter-Bold',
-                    }}>Directions</Text>
-                </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => {
                     if (bottomStep === 2) {
