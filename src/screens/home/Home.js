@@ -187,6 +187,7 @@ export default Home = ({ navigation }) => {
     }, [myOrders.length])
 
     const startDispatch = (id) => {
+        setProcessing(true)
         fetch(endpoints.baseUrl + endpoints.startDispatch, {
             method: 'POST',
             headers: {
@@ -199,9 +200,11 @@ export default Home = ({ navigation }) => {
             }),
         }).then(res => res.json())
             .then(resJson => {
-                // console.log('resJson', resJson)
-                if (resJson.status) {
+                setProcessing(false)
+                console.log('resJson', resJson)
+                if (resJson.status_code !== 400) {
                     setIsDispatch(true)
+                    setBottomStep(2)
                     panelRef.current.togglePanel()
                     openDirection(
                         parseFloat(dispatchItem?.receivercordinate?.receiverlat),
@@ -622,7 +625,6 @@ export default Home = ({ navigation }) => {
                 <Dispatch items={myOrders}
                     navigation={navigation}
                     onDispatch={(item) => {
-                        setBottomStep(2)
                         startDispatch(item._id)
                     }}
                     onContinue={(item) => {
