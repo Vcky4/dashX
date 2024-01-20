@@ -32,23 +32,27 @@ const Button: React.FC<Props> = ({ fontSize = 24, theme = 'dark', title, onPress
                     flexDirection: 'row',
                     alignItems: 'center',
                     flex: 1,
-                    justifyContent: 'flex-end'
+                    justifyContent: 'center'
                 }}>
                     <Text style={{
                         fontSize: fontSize,
                         textAlign: 'center',
                         fontFamily: 'Inter-SemiBold',
                         color: textColor || colors[theme].white,
-                        flex: 1
+                        // flex: 1,
+                        display: loading ? 'none' : 'flex'
                     }}>{title}</Text>
 
-                    <ActivityIndicator size={'large'}
+                    <ActivityIndicator size={'small'}
                         color={textColor || colors[theme].white}
                         hidesWhenStopped={true}
                         animating={loading ? loading : false}
                         style={{
-                            position: 'absolute',
-                            paddingEnd: 10,
+                            // position: 'absolute',
+                            // paddingEnd: 10,
+                            alignSelf: 'center',
+                            // flex: 1,
+                            display: loading ? 'flex' : 'none'
                         }}
                     />
 

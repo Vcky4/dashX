@@ -20,6 +20,8 @@ import Toast from "react-native-toast-message";
 import PendingOrder from "./PendingOrder";
 import mapStyles from "./mapStyles/mapStyles";
 import getStateAndCity from "../../utils/getStateAndCity";
+import { useFocusEffect } from '@react-navigation/native';
+
 
 var Sound = require('react-native-sound');
 
@@ -76,6 +78,7 @@ export default Home = ({ navigation }) => {
     }
 
     const getMyOrder = async () => {
+        setProcessing(true)
         const response = await fetch(endpoints.baseUrl + endpoints.myOrders, {
             method: 'POST',
             headers: {
@@ -87,6 +90,7 @@ export default Home = ({ navigation }) => {
             })
         })
         const json = await response.json()
+        setProcessing(false)
         // console.log(json)
         //check if array
         if (Array.isArray(json.data)) {
@@ -97,10 +101,15 @@ export default Home = ({ navigation }) => {
             // setDispatchItem(json.data[0])
         }
     }
+    useFocusEffect(
+        React.useCallback(() => {
+            getMyOrder()
+        }, [])
+    );
 
-    useEffect(() => {
-        getMyOrder()
-    }, [])
+    // useEffect(() => {
+    //     getMyOrder()
+    // }, [])
 
     const retriveProfile = () => {
         fetch(endpoints.baseUrl + endpoints.retriveProfile, {
@@ -331,7 +340,7 @@ export default Home = ({ navigation }) => {
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
             setAddress(result[0])
-            getStateAndCity(result[0].place_id, (res) => {
+            getStateAndCity(result[0]?.place_id, (res) => {
                 // console.log('res', res)
                 setCity(res.city)
             })

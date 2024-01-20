@@ -127,7 +127,9 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                     keyExtractor={(item, index) => index.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    pagingEnabled
+                    pagingEnabled8
+                    snapToInterval={width - 20}
+                    snapToAlignment={"center"}
                     onMomentumScrollEnd={(e) => {
                         const contentOffset = e.nativeEvent.contentOffset;
                         const viewSize = e.nativeEvent.layoutMeasurement;
@@ -144,10 +146,9 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                                 borderRadius: 10,
                                 shadowColor: '#000000',
                                 padding: 14,
-                                marginEnd: 10,
+                                marginHorizontal: 6,
                                 marginBottom: 20,
-                                marginStart: indx === 0 ? 10 : 0,
-                                width: width - (index === indx ? 40 : 0),
+                                width: width - (40),
                                 // shadowOffset: {
                                 //     width: 30,
                                 //     height: 30
@@ -225,7 +226,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                             </View>
 
                             <View style={{
-                                width: '100%',
+                                width: '90%',
                                 marginTop: 15,
                                 flexDirection: 'row',
                             }}>

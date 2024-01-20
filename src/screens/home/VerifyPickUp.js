@@ -217,11 +217,11 @@ export default VerifyPickUp = ({ navigation, route }) => {
                             color: '#ffffff',
                             alignSelf: 'center',
                             backgroundColor: 'rgba(0,0,0,0.5)',
-                            padding: 6,
+                            padding: 20,
                             borderRadius: 10
                         }}>{isSnaping ? 'Tap to capture' : 'Retake'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
+                {/* <TouchableOpacity onPress={() => {
                     if (isSnaping) {
                         takePicture()
                         return
@@ -240,7 +240,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
                     }}>{
                             isSnaping ? 'Take Picture' : 'Retake Picture'
                         }</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             <Button
