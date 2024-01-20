@@ -65,7 +65,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 // marginTop: 10,
-                marginBottom: 10,
+                marginBottom: 20,
                 justifyContent: 'space-between',
                 paddingHorizontal: 20,
             }}>
@@ -142,6 +142,7 @@ export default Dispatch = ({ onEnd, item }) => {
             <View style={{
                 width: '100%',
                 paddingHorizontal: 20,
+                marginBottom: 10,
             }}>
 
                 <View style={{
@@ -179,9 +180,9 @@ export default Dispatch = ({ onEnd, item }) => {
             </View>
             <View style={{
                 width: '100%',
-                marginTop: 5,
                 flexDirection: 'row',
                 marginLeft: 20,
+                marginBottom: 10,
             }}>
                 <View style={{
                     alignItems: 'center',
@@ -263,7 +264,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 elevation: 10,
                 backgroundColor: colors[colorScheme].background,
                 borderRadius: 10,
-                shadowColor: '#000000',
+                // shadowColor: colors[colorScheme].textGray,
                 paddingHorizontal: 14,
                 marginHorizontal: 10,
                 paddingVertical: 10,
@@ -310,6 +311,7 @@ export default Dispatch = ({ onEnd, item }) => {
                         width: '90%',
                         marginTop: 10,
                         alignSelf: 'center',
+                        marginBottom: 10
                     }}
                     fontSize={16}
                     loading={processing}
@@ -317,7 +319,7 @@ export default Dispatch = ({ onEnd, item }) => {
                 />
             </View>
 
-{/* 
+            {/* 
             <Modal
                 animationType="slide"
                 transparent={true}

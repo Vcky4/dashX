@@ -420,10 +420,6 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
-                if (bottomStep === 2) {
-                    setIsDispatch(false)
-                    panelRef.current.togglePanel()
-                }
                 setBottomStep(bottomStep - 1)
             }}
                 style={{
@@ -431,11 +427,11 @@ export default Home = ({ navigation }) => {
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: bottomStep === 1 ? 350 : 400,
+                    bottom: 350,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
-                    display: bottomStep > 0 && !isOpen ? 'flex' : 'none',
+                    display: bottomStep === 1 && !isOpen ? 'flex' : 'none',
                 }}>
                 <Image
                     source={require('../../../assets/images/down.png')}
@@ -484,38 +480,7 @@ export default Home = ({ navigation }) => {
                 }}>{myOrders.length}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {
-                if (isDispatch || dispatchItem.order_status === 'pickup') {
-                    openDirection(
-                        parseFloat(dispatchItem?.receivercordinate?.receiverlat),
-                        parseFloat(dispatchItem?.receivercordinate?.receiverlong),
-                    )
-                } else {
-                    dispatchItem && openDirection(
-                        parseFloat(dispatchItem?.sendercordinate?.senderlat),
-                        parseFloat(dispatchItem?.sendercordinate?.senderlong),
-                    )
-                }
-            }}
-                style={{
-                    position: 'absolute',
-                    bottom: bottomStep === 1 ? 320 : 400,
-                    right: 80,
-                    zIndex: 100,
-                    backgroundColor: colors[colorScheme].primary,
-                    borderRadius: 40,
-                    padding: 6,
-                    elevation: 10,
-                    paddingHorizontal: 20,
-                    paddingVertical: 6,
-                    display: bottomStep > 1 && !isOpen ? 'flex' : 'none',
-                }} >
-                <Text style={{
-                    color: colors[colorScheme].white,
-                    fontSize: 16,
-                    fontFamily: 'Inter-Bold',
-                }}>Directions</Text>
-            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => {
                 this.mapView.animateToRegion({
                     latitude: coordinate.latitude,
@@ -890,7 +855,7 @@ export default Home = ({ navigation }) => {
                 }}
                     style={{
                         position: 'absolute',
-                        bottom: 400,
+                        bottom: 440,
                         right: 20,
                         zIndex: 100,
                         backgroundColor: colors[colorScheme].white,
@@ -909,6 +874,68 @@ export default Home = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    if (isDispatch || dispatchItem.order_status === 'pickup') {
+                        openDirection(
+                            parseFloat(dispatchItem?.receivercordinate?.receiverlat),
+                            parseFloat(dispatchItem?.receivercordinate?.receiverlong),
+                        )
+                    } else {
+                        dispatchItem && openDirection(
+                            parseFloat(dispatchItem?.sendercordinate?.senderlat),
+                            parseFloat(dispatchItem?.sendercordinate?.senderlong),
+                        )
+                    }
+                }}
+                    style={{
+                        position: 'absolute',
+                        bottom: 440,
+                        right: 80,
+                        zIndex: 100,
+                        backgroundColor: colors[colorScheme].primary,
+                        borderRadius: 40,
+                        padding: 6,
+                        elevation: 10,
+                        paddingHorizontal: 20,
+                        paddingVertical: 6,
+                        display: isDispatch ? 'flex' : 'none',
+                    }} >
+                    <Text style={{
+                        color: colors[colorScheme].white,
+                        fontSize: 16,
+                        fontFamily: 'Inter-Bold',
+                    }}>Directions</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                    if (bottomStep === 2) {
+                        setIsDispatch(false)
+                        panelRef.current.togglePanel()
+                    }
+                    setBottomStep(bottomStep - 1)
+                }}
+                    style={{
+                        backgroundColor: colors[colorScheme].primary,
+                        padding: 14,
+                        borderRadius: 10,
+                        position: 'absolute',
+                        bottom: 440,
+                        left: 20,
+                        zIndex: 100,
+                        elevation: 10,
+                        display: isDispatch ? 'flex' : 'none',
+                    }}>
+                    <Image
+                        source={require('../../../assets/images/down.png')}
+                        style={{
+                            width: 12,
+                            height: 12,
+                            resizeMode: "contain",
+                            transform: [{ rotate: '90deg' }]
+                        }}
+                    />
+                </TouchableOpacity>
+
                 <DispatchSheet
                     item={dispatchItem}
                     onEnd={() => {
