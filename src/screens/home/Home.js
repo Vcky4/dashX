@@ -196,7 +196,8 @@ export default Home = ({ navigation }) => {
             },
             body: JSON.stringify({
                 dispatchid: user?.id,
-                "orderid": id
+                "orderid": id,
+                totalkm: distance,
             }),
         }).then(res => res.json())
             .then(resJson => {
