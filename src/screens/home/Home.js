@@ -19,8 +19,8 @@ import DispatchSheet from "./DispatchSheet";
 import Toast from "react-native-toast-message";
 import PendingOrder from "./PendingOrder";
 import mapStyles from "./mapStyles/mapStyles";
-import getStateAndCity from "../../utils/getStateAndCity";
 import { useFocusEffect } from '@react-navigation/native';
+import getCity from "../../utils/getCity";
 
 
 var Sound = require('react-native-sound');
@@ -344,10 +344,7 @@ export default Home = ({ navigation }) => {
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
             setAddress(result[0])
-            getStateAndCity(result[0]?.place_id, (res) => {
-                // console.log('res', res)
-                setCity(res.city)
-            })
+           setCity(getCity(result[0].formatted_address))
         })
     }
     // console.log('dispatch', dispatchItem)

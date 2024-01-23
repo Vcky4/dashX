@@ -5,9 +5,9 @@ import colors from "../../../assets/colors/colors";
 import PendingOrderItem from "./PendingOrderItem";
 import endpoints from "../../../assets/endpoints/endpoints";
 import profileRouts from "../../navigation/routs/profileRouts";
-import getStateAndCity from "../../utils/getStateAndCity";
 import getAddress from "../../utils/getAddress";
 import Toast from "react-native-toast-message";
+import getCity from "../../utils/getCity";
 
 
 const { width, height } = Dimensions.get('window');
@@ -28,10 +28,8 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
             // console.log('getAddress', result)
-            getStateAndCity(result[0].place_id, (res) => {
-                setCity({
-                    cityName: res.city,
-                })
+            setCity({
+                cityName: getCity(result[0].formatted_address),
             })
         })
     }
