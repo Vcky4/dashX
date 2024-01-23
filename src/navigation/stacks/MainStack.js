@@ -38,6 +38,7 @@ import FleetDetails from '../../screens/business/FleetDetails';
 import Chat from '../../screens/support/Chat';
 import EditFleet from '../../screens/business/EditFleet';
 import Browser from '../../screens/browser/Browser';
+import Analytics from '../../screens/profile/Analytics';
 
 const { width, height } = Dimensions.get('window');
 
@@ -231,6 +232,11 @@ const AuthPassed = () => {
       <Stack.Screen
         name={mainRouts.chat}
         component={Chat}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={profileRouts.analytics}
+        component={Analytics}
         options={{ headerShown: false }}
       />
       <Stack.Screen

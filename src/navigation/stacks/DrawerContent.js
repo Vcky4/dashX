@@ -129,7 +129,8 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 />
                             </TouchableOpacity>
                         </TouchableOpacity>
-                        <View style={{
+                        <TouchableOpacity onPress={() => props.navigation.navigate(profileRouts.analytics)}
+                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'space-between',
@@ -156,7 +157,7 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                     resizeMode: "contain",
                                 }}
                             />
-                        </View>
+                        </TouchableOpacity>
 
 
                         {

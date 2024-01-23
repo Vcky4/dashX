@@ -7,7 +7,7 @@ const profileRouts = {
     orderHistory: 'Order History',
     orderDetails: 'Order Details',
     myRating: 'My Rating',
-    setBank: 'Set Bank',
+    analytics: 'Analytics',
 }
 
 export default profileRouts;
