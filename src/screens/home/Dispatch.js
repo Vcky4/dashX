@@ -127,7 +127,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                     keyExtractor={(item, index) => index.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    pagingEnabled8
+                    pagingEnabled
                     snapToInterval={width - 20}
                     snapToAlignment={"center"}
                     onMomentumScrollEnd={(e) => {
