@@ -29,7 +29,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
         getAddress(lat, lng, (result) => {
             // console.log('getAddress', result)
             setCity({
-                cityName: getCity(result[0].formatted_address),
+                cityName: getCity(result[0]?.formatted_address),
             })
         })
     }

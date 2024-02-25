@@ -344,7 +344,7 @@ export default Home = ({ navigation }) => {
     const getAddres = (lat, lng) => {
         getAddress(lat, lng, (result) => {
             setAddress(result[0])
-           setCity(getCity(result[0].formatted_address))
+            setCity(getCity(result[0]?.formatted_address))
         })
     }
     // console.log('dispatch', dispatchItem)
@@ -414,10 +414,7 @@ export default Home = ({ navigation }) => {
                     textAlign: 'center',
                 }}>{'New\nOrders'}</Text>
 
-                <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 16,
-                    fontFamily: 'Inter-Bold',
+<View style={{
                     backgroundColor: colors[colorScheme].white,
                     position: 'absolute',
                     right: -1,
@@ -425,8 +422,16 @@ export default Home = ({ navigation }) => {
                     borderRadius: 10,
                     height: 20,
                     width: 20,
-                    textAlign: 'center',
-                }}>{newOrders}</Text>
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].primary,
+                        fontSize: 16,
+                        fontFamily: 'Inter-Bold',
+                        textAlign: 'center',
+                    }}>{newOrders}</Text>
+                </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
@@ -475,10 +480,7 @@ export default Home = ({ navigation }) => {
                     fontSize: 16,
                     fontFamily: 'Inter-Bold',
                 }}>Dispatch Orders</Text>
-                <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 16,
-                    fontFamily: 'Inter-Bold',
+                <View style={{
                     backgroundColor: colors[colorScheme].white,
                     position: 'absolute',
                     right: -1,
@@ -486,8 +488,16 @@ export default Home = ({ navigation }) => {
                     borderRadius: 10,
                     height: 20,
                     width: 20,
-                    textAlign: 'center',
-                }}>{myOrders.length}</Text>
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].primary,
+                        fontSize: 16,
+                        fontFamily: 'Inter-Bold',
+                        textAlign: 'center',
+                    }}>{myOrders.length}</Text>
+                </View>
             </TouchableOpacity>
 
 
