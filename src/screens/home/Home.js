@@ -442,7 +442,7 @@ export default Home = ({ navigation }) => {
                     padding: 14,
                     borderRadius: 10,
                     position: 'absolute',
-                    bottom: 350,
+                    bottom: 380,
                     left: 20,
                     zIndex: 100,
                     elevation: 10,
@@ -511,7 +511,7 @@ export default Home = ({ navigation }) => {
             }}
                 style={{
                     position: 'absolute',
-                    bottom: bottomStep > 0 ? 350 : 170,
+                    bottom: bottomStep > 0 ? 380 : 170,
                     right: 20,
                     zIndex: 100,
                     backgroundColor: colors[colorScheme].white,

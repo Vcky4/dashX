@@ -71,17 +71,22 @@ export default History = ({ navigation }) => {
                         fontFamily: 'Inter-Bold',
                     }}>History</Text>
                 </View>
-                <Text style={{
-                    color: colors[colorScheme].primary,
-                    fontSize: 12,
-                    fontFamily: 'Inter-Regular',
-                    alignSelf: 'center',
+                <View style={{
                     backgroundColor: colors[colorScheme].white,
                     padding: 4,
                     borderRadius: 10,
                     paddingHorizontal: 10,
                     marginTop: 6,
-                }}>{user.online_status ? 'Online' : 'Offline'}</Text>
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        color: colors[colorScheme].primary,
+                        fontSize: 12,
+                        fontFamily: 'Inter-Regular',
+                    }}>{user.online_status ? 'Online' : 'Offline'}</Text>
+                </View>
             </View>
 
 

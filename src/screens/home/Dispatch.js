@@ -336,7 +336,7 @@ export default Dispatch = ({ navigation, onIndexChanged, onDispatch, onContinue,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginBottom: 10,
+                    marginBottom: 30,
                 }}>
                     {items.map((item, indx) =>
                         <View key={indx} style={{

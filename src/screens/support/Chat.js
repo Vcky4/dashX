@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, TextInput, RefreshControl, PermissionsAndroid } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput, RefreshControl, PermissionsAndroid, Platform } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
@@ -368,6 +368,7 @@ export default Chat = ({ navigation }) => {
                 paddingHorizontal: 20,
                 paddingVertical: 10,
                 width: '100%',
+                marginBottom: Platform.OS === 'ios' ? 20 : 0,
             }}>
                 <View style={{
                     backgroundColor: 'rgba(217,217,217,0.05)',
@@ -390,6 +391,7 @@ export default Chat = ({ navigation }) => {
                             fontFamily: 'Inter-Regular',
                             // width: '70%',
                             flexGrow: 1,
+                            height: 50,
                             color: colors[colorScheme].textDark,
                         }}
                         value={chat.content}
