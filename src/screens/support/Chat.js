@@ -7,7 +7,7 @@ import endpoints from "../../../assets/endpoints/endpoints";
 // import io from 'socket.io-client';
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Toast from "react-native-toast-message";
-import Permissions from 'react-native-permissions';
+import Permissions, { PERMISSIONS, request } from 'react-native-permissions';
 
 
 export default Chat = ({ navigation }) => {
@@ -177,8 +177,9 @@ export default Chat = ({ navigation }) => {
                     }
                 );
             } else if (Platform.OS === 'ios') {
-                const status = await Permissions.request(Permissions.PERMISSIONS.IOS.CAMERA);
-                granted = status === 'authorized';
+                const status = await request(PERMISSIONS.IOS.CAMERA);
+                // console.log(status, 'status');
+                granted = status === 'granted';
             }
             if (granted === PermissionsAndroid.RESULTS.GRANTED || granted) {
                 launchCamera({
