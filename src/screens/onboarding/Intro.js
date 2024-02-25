@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, useColorScheme } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, useColorScheme, Platform } from "react-native";
 
 import colors from "../../../assets/colors/colors";
 import authRouts from "../../navigation/routs/authRouts";
@@ -30,6 +30,7 @@ export default Intro = ({ navigation }) => {
                     position: 'absolute',
                     zIndex: 10,
                     right: 0,
+                    top: -1,
                 }}>
                 <Image
                     style={styles.image}
@@ -169,6 +170,7 @@ export default Intro = ({ navigation }) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
                 zIndex: 100,
+                marginBottom: Platform.OS === 'ios' ? 20 : 0,
             }}>
                 <TouchableOpacity onPress={() => {
                     onboard()

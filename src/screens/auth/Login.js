@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView, Animated } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView, Animated, Platform } from "react-native";
 import Toast from 'react-native-toast-message';
 
 import colors from "../../../assets/colors/colors";
@@ -78,7 +78,7 @@ export default Login = ({ navigation }) => {
     return (
         <View style={{
             flex: 1,
-            backgroundColor: colors[appearance].background
+            backgroundColor: colors[appearance].background,
         }}>
             <View style={{
                 flexDirection: 'row',

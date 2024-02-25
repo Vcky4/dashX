@@ -18,6 +18,7 @@ const PhoneInput: React.FC<Props> = ({ theme = 'dark', containerStyle, onPress, 
             borderWidth: 1,
             paddingHorizontal: 10,
             height: 50,
+            justifyContent: 'center',
         }, containerStyle]}>
 
             <View style={{

@@ -20,6 +20,7 @@ export default function InputField({ label, theme = 'dark', containerStyle, ...r
             borderWidth: 1,
             paddingHorizontal: 10,
             height: 50,
+            justifyContent: 'center',
         }, containerStyle]}>
             <Text style={{
                 position: 'absolute',

@@ -35,12 +35,16 @@ export default function App() {
     StatusBar.setBarStyle('light-content', true);	//<<--- add this
   }
   return (
-    <>
+    <View style={{
+      flex: 1,
+      backgroundColor: "#A10F7E",
+      paddingTop: Platform.OS === 'ios' ? 50 : 0
+    }}>
       <AuthContextProvider>
-        <StatusBar backgroundColor={"#000"} />
+        <StatusBar backgroundColor={"#A10F7E"} />
         <RootNavigator />
       </AuthContextProvider>
       <Toast />
-    </>
+    </View>
   );
 }
