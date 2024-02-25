@@ -7,6 +7,7 @@ import endpoints from "../../../assets/endpoints/endpoints";
 // import io from 'socket.io-client';
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Toast from "react-native-toast-message";
+import Permissions from 'react-native-permissions';
 
 
 export default Chat = ({ navigation }) => {
@@ -161,18 +162,25 @@ export default Chat = ({ navigation }) => {
 
 
     const snapPic = async () => {
+        
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                {
-                    title: "App Camera Permission",
-                    message: "App needs access to your camera ",
-                    buttonNeutral: "Ask Me Later",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK"
-                }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            let granted;
+            if (Platform.OS === 'android') {
+                granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: "App Camera Permission",
+                        message: "App needs access to your camera ",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+            } else if (Platform.OS === 'ios') {
+                const status = await Permissions.request(Permissions.PERMISSIONS.IOS.CAMERA);
+                granted = status === 'authorized';
+            }
+            if (granted === PermissionsAndroid.RESULTS.GRANTED || granted) {
                 launchCamera({
                     mediaType: 'photo',
                     // includeBase64: true,

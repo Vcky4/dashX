@@ -32,13 +32,20 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow permission to use your camera</string>
+	<string>We need to use your camera</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow location</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>We need your current location</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>we need to use location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow permission to use you camera</string>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow permission to use your camera</string>
+	<string>We like a photo</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Black.ttf</string>
