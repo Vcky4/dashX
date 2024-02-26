@@ -1,5 +1,5 @@
 const endpoints = {
-    gg: 'AIzaSyDJ_sm-EFNvOBvTLMKbDi8CAT8G21GxDvQ',
+    gg: 'AIzaSyDu70nrGBsZTGWdxGm0rLPvAzDwlwMy_B8',
     baseUrl: 'https://dashx-cc5d52b5155a.herokuapp.com',
     socketUrl: 'wss://dashx-cc5d52b5155a.herokuapp.com',
     login: '/dispatch/login',

@@ -21,6 +21,7 @@ import PendingOrder from "./PendingOrder";
 import mapStyles from "./mapStyles/mapStyles";
 import { useFocusEffect } from '@react-navigation/native';
 import getCity from "../../utils/getCity";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 var Sound = require('react-native-sound');
@@ -61,6 +62,7 @@ export default Home = ({ navigation }) => {
         latitude: 0,
         longitude: 0,
     });
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const [positioned, setPositioned] = useState(false)
 
@@ -414,7 +416,7 @@ export default Home = ({ navigation }) => {
                     textAlign: 'center',
                 }}>{'New\nOrders'}</Text>
 
-<View style={{
+                <View style={{
                     backgroundColor: colors[colorScheme].white,
                     position: 'absolute',
                     right: -1,
@@ -864,78 +866,84 @@ export default Home = ({ navigation }) => {
                 sliderMaxHeight={height - 100}
                 sliderMinHeight={isDispatch ? 50 : 0}
                 ref={ref => panelRef.current = ref}>
-                <TouchableOpacity onPress={() => {
-                    this.mapView.animateToRegion({
-                        latitude: coordinate.latitude,
-                        longitude: coordinate.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                    });
-                }}
+                <KeyboardAwareScrollView onKeyboardDidShow={() => setKeyboardVisible(true)}
+                    onKeyboardDidHide={() => setKeyboardVisible(false)}
                     style={{
-                        position: 'absolute',
-                        bottom: 440,
-                        right: 20,
-                        zIndex: 100,
-                        backgroundColor: colors[colorScheme].white,
-                        borderRadius: 40,
-                        padding: 6,
-                        elevation: 10,
-                        display: isDispatch ? 'flex' : 'none',
-                    }} >
-                    <Image
-                        source={require('../../../assets/images/location.png')}
-                        style={{
-                            width: 30,
-                            height: 30,
-                            resizeMode: "contain",
-                            borderRadius: 40,
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => {
-                    if (bottomStep === 2) {
-                        setIsDispatch(false)
-                        panelRef.current.togglePanel()
-                    }
-                    setBottomStep(bottomStep - 1)
-                }}
-                    style={{
-                        backgroundColor: colors[colorScheme].primary,
-                        padding: 14,
-                        borderRadius: 10,
-                        position: 'absolute',
-                        bottom: 440,
-                        left: 20,
-                        zIndex: 100,
-                        elevation: 10,
-                        display: isDispatch ? 'flex' : 'none',
+                        height: isKeyboardVisible && Platform.OS == 'ios' ? height - 200 : undefined,
                     }}>
-                    <Image
-                        source={require('../../../assets/images/down.png')}
+                    <TouchableOpacity onPress={() => {
+                        this.mapView.animateToRegion({
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude,
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.0121,
+                        });
+                    }}
                         style={{
-                            width: 12,
-                            height: 12,
-                            resizeMode: "contain",
-                            transform: [{ rotate: '90deg' }]
-                        }}
-                    />
-                </TouchableOpacity>
+                            position: 'absolute',
+                            bottom: 440,
+                            right: 20,
+                            zIndex: 100,
+                            backgroundColor: colors[colorScheme].white,
+                            borderRadius: 40,
+                            padding: 6,
+                            elevation: 10,
+                            display: isDispatch ? 'flex' : 'none',
+                        }} >
+                        <Image
+                            source={require('../../../assets/images/location.png')}
+                            style={{
+                                width: 30,
+                                height: 30,
+                                resizeMode: "contain",
+                                borderRadius: 40,
+                            }}
+                        />
+                    </TouchableOpacity>
 
-                <DispatchSheet
-                    item={dispatchItem}
-                    onEnd={() => {
-                        getMyOrder()
-                        setBottomStep(0)
-                        setIsDispatch(false)
-                        setPositioned(false)
-                        panelRef.current.togglePanel()
-                        // setHelpCoordinate(null)
+                    <TouchableOpacity onPress={() => {
+                        if (bottomStep === 2) {
+                            setIsDispatch(false)
+                            panelRef.current.togglePanel()
+                        }
+                        setBottomStep(bottomStep - 1)
+                    }}
+                        style={{
+                            backgroundColor: colors[colorScheme].primary,
+                            padding: 14,
+                            borderRadius: 10,
+                            position: 'absolute',
+                            bottom: 440,
+                            left: 20,
+                            zIndex: 100,
+                            elevation: 10,
+                            display: isDispatch ? 'flex' : 'none',
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/down.png')}
+                            style={{
+                                width: 12,
+                                height: 12,
+                                resizeMode: "contain",
+                                transform: [{ rotate: '90deg' }]
+                            }}
+                        />
+                    </TouchableOpacity>
+
+                    <DispatchSheet
+                        item={dispatchItem}
+                        onEnd={() => {
+                            getMyOrder()
+                            setBottomStep(0)
+                            setIsDispatch(false)
+                            setPositioned(false)
+                            panelRef.current.togglePanel()
+                            // setHelpCoordinate(null)
+                        }} />
+                    <View style={{
+                        height: 20
                     }} />
-                <View style={{
-                    height: 20
-                }} />
+                </KeyboardAwareScrollView>
             </BottomSheet>
 
 

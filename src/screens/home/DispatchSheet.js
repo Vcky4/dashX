@@ -13,18 +13,18 @@ export default Dispatch = ({ onEnd, item }) => {
     const [inputCode, setInputCode] = useState(false)
     // console.log(item)
 
-        //open direction on maps
-        const openDirection = (lat, lng) => {
-            const scheme = Platform.select({
-                ios: 'maps:0,0?q=',
-                android: 'geo:0,0?q=',
-            });
-            const latLng = `${lat},${lng}`;
-            const label = 'Dispatch At';
-            const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
-            Linking.openURL(url);
-        }
-    
+    //open direction on maps
+    const openDirection = (lat, lng) => {
+        const scheme = Platform.select({
+            ios: 'maps:0,0?q=',
+            android: 'geo:0,0?q=',
+        });
+        const latLng = `${lat},${lng}`;
+        const label = 'Dispatch At';
+        const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+        Linking.openURL(url);
+    }
+
     const endDispatch = async () => {
         setProcessing(true)
         try {
@@ -323,23 +323,22 @@ export default Dispatch = ({ onEnd, item }) => {
                     marginTop: 10,
                     width: '90%'
                 }}>
-                    <KeyboardAvoidingView>
-                        <TextInput
-                            placeholder="Enter Code"
-                            value={code}
-                            onChangeText={(text) => {
-                                setCode(text)
-                            }}
-                            maxLength={6}
-                            cursorColor={colors[colorScheme].primary}
-                            placeholderTextColor={colors[colorScheme].textGray}
-                            style={{
-                                fontFamily: 'Inter-Medium',
-                                fontSize: 23,
-                                textAlign: 'center',
-                                color: colors[colorScheme].textDark
-                            }} />
-                    </KeyboardAvoidingView>
+
+                    <TextInput
+                        placeholder="Enter Code"
+                        value={code}
+                        onChangeText={(text) => {
+                            setCode(text)
+                        }}
+                        maxLength={6}
+                        cursorColor={colors[colorScheme].primary}
+                        placeholderTextColor={colors[colorScheme].textGray}
+                        style={{
+                            fontFamily: 'Inter-Medium',
+                            fontSize: 23,
+                            textAlign: 'center',
+                            color: colors[colorScheme].textDark
+                        }} />
                 </View>
                 <Button title={'End Dispatch'}
                     onPress={() => {

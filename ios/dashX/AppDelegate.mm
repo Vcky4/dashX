@@ -7,7 +7,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyDJ_sm-EFNvOBvTLMKbDi8CAT8G21GxDvQ"]; // add this line using the api key obtained from Google Console
+  [GMSServices provideAPIKey:@"AIzaSyDu70nrGBsZTGWdxGm0rLPvAzDwlwMy_B8"]; // add this line using the api key obtained from Google Console
 
   self.moduleName = @"dashX";
   // You can add your custom initial props in the dictionary below.
