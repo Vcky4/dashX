@@ -8,6 +8,7 @@ import Toast from "react-native-toast-message";
 import endpoints from "../../../assets/endpoints/endpoints";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 export default EditProfile = ({ navigation }) => {
@@ -309,6 +310,7 @@ export default EditProfile = ({ navigation }) => {
                 <ScrollView style={{
                     display: step === 1 ? 'flex' : 'none',
                 }}>
+                    <KeyboardAwareScrollView>
                     <InputField
                         theme={appearance}
                         value={userData.name.split(' ')[0]}
@@ -357,6 +359,7 @@ export default EditProfile = ({ navigation }) => {
                         containerStyle={styles.input}
                         label="Next of Kin Phone Number"
                     />
+                    </KeyboardAwareScrollView>
                 </ScrollView>
                 <View style={{
                     display: step === 2 ? 'flex' : 'none',
@@ -364,6 +367,7 @@ export default EditProfile = ({ navigation }) => {
                 }}>
                     <TouchableOpacity onPress={() => setSelectVehicleType(true)}>
                         <InputField
+                        onPressIn={() => setSelectVehicleType(true)}
                             theme={appearance}
                             value={vehicleData.vehicle_type}
                             // onChangeText={(text) => setUserData({ ...userData, email: text })}

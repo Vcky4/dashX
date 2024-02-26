@@ -220,6 +220,7 @@ export default OtpVerification = ({ navigation }) => {
                                     color: colors[appearance].primary,
                                     alignSelf: 'center',
                                     marginBottom: 10,
+                                    marginTop: 20,
                                     fontFamily: 'Inter-Semibold',
                                 }}>
                                 <Text style={{

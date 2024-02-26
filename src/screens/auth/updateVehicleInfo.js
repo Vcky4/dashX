@@ -19,6 +19,7 @@ import KekeIconWhite from '../../../assets/icons/keke-white.svg'
 import BikeIcon from '../../../assets/icons/motorcycle.svg'
 import TruckIcon from '../../../assets/icons/truck.svg'
 import profileRouts from '../../navigation/routs/profileRouts';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const { width, height } = Dimensions.get('window')
@@ -131,7 +132,7 @@ export default UpdateVehicleInfo = ({ navigation }) => {
                     justifyContent: 'flex-start',
                     width: '100%',
                 }}>
-                <View style={styles.container}>
+                <KeyboardAwareScrollView style={styles.container}>
                     <View>
                         <Text style={styles.greetings}>{step == 1 ?
                             'Pick Your Wheels'
@@ -316,7 +317,7 @@ export default UpdateVehicleInfo = ({ navigation }) => {
 
                         />
                     </View>
-                </View>
+                </KeyboardAwareScrollView>
             </ScrollView>
         </>
     )

@@ -10,6 +10,7 @@ import PasswordInput from "../../component/PasswordInput";
 import Button from "../../component/Button";
 import authRouts from "../../navigation/routs/authRouts";
 import PhoneInput from "../../component/PhoneInput";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 export default SignUp = ({ navigation }) => {
@@ -189,62 +190,63 @@ export default SignUp = ({ navigation }) => {
                         }}>Business</Text>
                     </TouchableOpacity>
                 </View>
+                <KeyboardAwareScrollView>
+                    <Text style={{
+                        fontFamily: 'Inter-Regular',
+                        fontSize: 16,
+                        color: colors[appearance].textDark,
+                        marginTop: 20,
+                        marginLeft: 15,
+                    }}>You are creating an account as <Text style={{ color: colors[colorScheme].primary }}>
+                            {accountType === 'Business' ? 'a Business' : 'an Individual'}
+                        </Text></Text>
 
-                <Text style={{
-                    fontFamily: 'Inter-Regular',
-                    fontSize: 16,
-                    color: colors[appearance].textDark,
-                    marginTop: 20,
-                    marginLeft: 15,
-                }}>You are creating an account as <Text style={{ color: colors[colorScheme].primary }}>
-                        {accountType === 'Business' ? 'a Business' : 'an Individual'}
-                    </Text></Text>
+                    <InputField
+                        theme={appearance}
+                        value={name}
+                        onChangeText={setName}
+                        placeholder="Full Name"
+                        containerStyle={styles.input}
+                    />
+                    <InputField
+                        theme={appearance}
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Enter e-mail"
+                        containerStyle={styles.input}
+                    />
+                    <PhoneInput
+                        theme={appearance}
+                        value={phone}
+                        onChangeText={setPhone}
+                        placeholder="Phone Number"
+                        containerStyle={styles.input}
+                    />
+                    <PasswordInput
+                        theme={appearance}
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Password"
+                        containerStyle={styles.input}
+                    />
 
-                <InputField
-                    theme={appearance}
-                    value={name}
-                    onChangeText={setName}
-                    placeholder="Full Name"
-                    containerStyle={styles.input}
-                />
-                <InputField
-                    theme={appearance}
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="Enter e-mail"
-                    containerStyle={styles.input}
-                />
-                <PhoneInput
-                    theme={appearance}
-                    value={phone}
-                    onChangeText={setPhone}
-                    placeholder="Phone Number"
-                    containerStyle={styles.input}
-                />
-                <PasswordInput
-                    theme={appearance}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Password"
-                    containerStyle={styles.input}
-                />
-
-                <Button
-                    title="Sign Up"
-                    buttonStyle={{
-                        marginTop: 30,
-                        marginHorizontal: 20,
-                        borderRadius: 30,
-                    }}
-                    loading={processing}
-                    enabled={canProceed && !processing}
-                    textColor={colors[appearance].textDark}
-                    buttonColor={colors[appearance].primary}
-                    onPress={() => {
-                        signUpUser()
-                        // navigation.navigate(authRouts.otpVerification)
-                    }}
-                />
+                    <Button
+                        title="Sign Up"
+                        buttonStyle={{
+                            marginTop: 30,
+                            marginHorizontal: 20,
+                            borderRadius: 30,
+                        }}
+                        loading={processing}
+                        enabled={canProceed && !processing}
+                        textColor={colors[appearance].textDark}
+                        buttonColor={colors[appearance].primary}
+                        onPress={() => {
+                            signUpUser()
+                            // navigation.navigate(authRouts.otpVerification)
+                        }}
+                    />
+                </KeyboardAwareScrollView>
 
                 <Text style={{
                     fontFamily: 'Inter-Regular',

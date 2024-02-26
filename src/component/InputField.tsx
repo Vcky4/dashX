@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, TextInputProps } from "react-native";
+import { View, TextInput, Text, TextInputProps, Platform } from "react-native";
 
 import colors from "../../assets/colors/colors";
 
@@ -29,7 +29,7 @@ export default function InputField({ label, theme = 'dark', containerStyle, ...r
                 display: label ? 'flex' : 'none',
                 color: colors[theme].textGray,
                 transform: [{
-                    translateY: -24,
+                    translateY:  Platform.OS === 'ios' ? -40: -24,
                 }]
             }}>{label}</Text>
             <TextInput
