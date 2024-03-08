@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, BackHandler } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, PermissionsAndroid} from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import InputField from "../../component/InputField";
@@ -39,6 +39,34 @@ export default EditProfile = ({ navigation }) => {
     const step2Pass = vehicleData?.vehicle_number?.length > 0 && vehicleData?.vehicle_type?.length > 0 && driverLicense !== null
     const canProceed = (step1Pass || step > 1) && (step2Pass || (step > 2 || step < 2)) && (image || (step < 3)) && (acceptTerms || (step < 4))
 
+
+    const requestCameraPermission = async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: "App Camera Permission",
+              message:"App needs access to your camera ",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK"
+            }
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("Camera permission given");
+          } else {
+            console.log("Camera permission denied");
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      };
+
+    useEffect(() => {
+        requestCameraPermission()
+    }, [])
+
+   
 
     // BackHandler.addEventListener('hardwareBackPress', () => {
     //     if (step > 1) {
@@ -311,54 +339,54 @@ export default EditProfile = ({ navigation }) => {
                     display: step === 1 ? 'flex' : 'none',
                 }}>
                     <KeyboardAwareScrollView>
-                    <InputField
-                        theme={appearance}
-                        value={userData.name.split(' ')[0]}
-                        onChangeText={(text) => setUserData({ ...userData, name: text + ' ' + userData.name.split(' ')[1] })}
-                        placeholder="Enter first name"
-                        containerStyle={styles.input}
-                        label="First Name"
-                    />
-                    <InputField
-                        theme={appearance}
-                        value={userData.name.split(' ')[1]}
-                        onChangeText={(text) => setUserData({ ...userData, name: userData.name.split(' ')[0] + ' ' + text })}
-                        placeholder="Enter last name"
-                        containerStyle={styles.input}
-                        label="Last Name"
-                    />
-                    <InputField
-                        theme={appearance}
-                        value={userData.phone}
-                        onChangeText={(text) => setUserData({ ...userData, phone: text })}
-                        placeholder="Enter phone number"
-                        containerStyle={styles.input}
-                        label="Phone Number"
-                    />
-                    <InputField
-                        theme={appearance}
-                        value={userData.email}
-                        onChangeText={(text) => setUserData({ ...userData, email: text })}
-                        placeholder="Enter e-mail"
-                        containerStyle={styles.input}
-                        label="Email"
-                    />
-                    <InputField
-                        theme={appearance}
-                        value={userData.kin_name}
-                        onChangeText={(text) => setUserData({ ...userData, kin_name: text })}
-                        placeholder="Enter next of kin"
-                        containerStyle={styles.input}
-                        label="Next of Kin"
-                    />
-                    <InputField
-                        theme={appearance}
-                        value={userData.kin_number}
-                        onChangeText={(text) => setUserData({ ...userData, kin_number: text })}
-                        placeholder="Enter next of kin phone number"
-                        containerStyle={styles.input}
-                        label="Next of Kin Phone Number"
-                    />
+                        <InputField
+                            theme={appearance}
+                            value={userData.name.split(' ')[0]}
+                            onChangeText={(text) => setUserData({ ...userData, name: text + ' ' + userData.name.split(' ')[1] })}
+                            placeholder="Enter first name"
+                            containerStyle={styles.input}
+                            label="First Name"
+                        />
+                        <InputField
+                            theme={appearance}
+                            value={userData.name.split(' ')[1]}
+                            onChangeText={(text) => setUserData({ ...userData, name: userData.name.split(' ')[0] + ' ' + text })}
+                            placeholder="Enter last name"
+                            containerStyle={styles.input}
+                            label="Last Name"
+                        />
+                        <InputField
+                            theme={appearance}
+                            value={userData.phone}
+                            onChangeText={(text) => setUserData({ ...userData, phone: text })}
+                            placeholder="Enter phone number"
+                            containerStyle={styles.input}
+                            label="Phone Number"
+                        />
+                        <InputField
+                            theme={appearance}
+                            value={userData.email}
+                            onChangeText={(text) => setUserData({ ...userData, email: text })}
+                            placeholder="Enter e-mail"
+                            containerStyle={styles.input}
+                            label="Email"
+                        />
+                        <InputField
+                            theme={appearance}
+                            value={userData.kin_name}
+                            onChangeText={(text) => setUserData({ ...userData, kin_name: text })}
+                            placeholder="Enter next of kin"
+                            containerStyle={styles.input}
+                            label="Next of Kin"
+                        />
+                        <InputField
+                            theme={appearance}
+                            value={userData.kin_number}
+                            onChangeText={(text) => setUserData({ ...userData, kin_number: text })}
+                            placeholder="Enter next of kin phone number"
+                            containerStyle={styles.input}
+                            label="Next of Kin Phone Number"
+                        />
                     </KeyboardAwareScrollView>
                 </ScrollView>
                 <View style={{
@@ -367,7 +395,7 @@ export default EditProfile = ({ navigation }) => {
                 }}>
                     <TouchableOpacity onPress={() => setSelectVehicleType(true)}>
                         <InputField
-                        onPressIn={() => setSelectVehicleType(true)}
+                            onPressIn={() => setSelectVehicleType(true)}
                             theme={appearance}
                             value={vehicleData.vehicle_type}
                             // onChangeText={(text) => setUserData({ ...userData, email: text })}

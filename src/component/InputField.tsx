@@ -29,7 +29,7 @@ export default function InputField({ label, theme = 'dark', containerStyle, ...r
                 display: label ? 'flex' : 'none',
                 color: colors[theme].textGray,
                 transform: [{
-                    translateY:  Platform.OS === 'ios' ? -40: -24,
+                    translateY:  Platform.OS === 'ios' ? -40: -38,
                 }]
             }}>{label}</Text>
             <TextInput
