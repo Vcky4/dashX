@@ -1,7 +1,7 @@
 const endpoints = {
-    gg: 'AIzaSyDu70nrGBsZTGWdxGm0rLPvAzDwlwMy_B8',
-    baseUrl: 'https://dashx-cc5d52b5155a.herokuapp.com',
-    socketUrl: 'wss://dashx-cc5d52b5155a.herokuapp.com',
+    gg: process.env.GOOGLE_API_KEY,
+    baseUrl: process.env.NODE_ENV === 'development' ? process.env.BASE_URL_DEV : process.env.BASE_URL,
+    socketUrl: process.env.NODE_ENV === 'development' ? process.env.SOCKET_URL_DEV : process.env.SOCKET_URL,
     login: '/dispatch/login',
     signUp: '/dispatch/signup',
     forgotPassword: '/dispatch/forgot/password',
