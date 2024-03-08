@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, PermissionsAndroid} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, PermissionsAndroid, Platform} from "react-native";
 import { AuthContext } from "../../../context/AuthContext";
 import colors from "../../../assets/colors/colors";
 import InputField from "../../component/InputField";
@@ -63,7 +63,9 @@ export default EditProfile = ({ navigation }) => {
       };
 
     useEffect(() => {
-        requestCameraPermission()
+        if(Platform.OS === 'android'){
+            requestCameraPermission()
+        }
     }, [])
 
    
