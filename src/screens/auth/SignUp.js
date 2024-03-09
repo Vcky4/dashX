@@ -232,7 +232,8 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         fontSize: 12,
-        marginLeft: 20,
+        marginLeft: 24,
+        marginTop: 5
     },
     link: {
         alignItems: 'center',
