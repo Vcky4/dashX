@@ -1,70 +1,66 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView, Animated } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
 
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import endpoints from "../../../assets/endpoints/endpoints";
 import InputField from "../../component/InputField";
-import PasswordInput from "../../component/PasswordInput";
 import Button from "../../component/Button";
 import authRouts from "../../navigation/routs/authRouts";
 
+const validationSchema = yup.object().shape({
+  email: yup.string().email('Enter a valid email').required('Email is required'),
+});
 
 export default ForgetPassword = ({ navigation }) => {
     const { saveToken, saveUser, colorScheme } = useContext(AuthContext)
     const appearance = colorScheme
-    const [email, setEmail] = useState("")
-    let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    const canProceed =
-        emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
 
-    const getCode = async () => {
+    const getCode = async (values) => {
         setProcessing(true)
-        const response = await fetch(endpoints.baseUrl + endpoints.forgotPassword, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    "email": email,
-                }
-            ) // body data type must match "Content-Type" header
-        });
-        response.json()
-            .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
-                setProcessing(false)
-                if (response.ok) {
-                    Toast.show({
-                        type: 'success',
-                        text1: 'Successful',
-                        text2: data.message
-                    })
-                    navigation.replace(authRouts.resetPassword, { email: email })
-                } else {
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Failed',
-                        text2: data.message
-                    });
-                    console.log('response: ', response)
-                    console.log('Login error:', data)
-                }
-
-            })
-            .catch((error) => {
-                setProcessing(false)
+        try {
+            const response = await fetch(endpoints.baseUrl + endpoints.forgotPassword, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                }),
+            });
+            const data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Successful',
+                    text2: data.message
+                })
+                navigation.replace(authRouts.resetPassword, { email: values.email })
+            } else {
                 Toast.show({
                     type: 'error',
                     text1: 'Failed',
-                    text2: error.message
+                    text2: data.message
                 });
                 console.log('response: ', response)
-                console.log('Login error:', error);
-            })
+                console.log('Login error:', data)
+            }
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Failed',
+                text2: error.message
+            });
+            console.log('response: ', response)
+            console.log('Login error:', error);
+        } finally {
+            setProcessing(false)
+        }
     }
     return (
         <View style={{
@@ -119,30 +115,42 @@ export default ForgetPassword = ({ navigation }) => {
                     }}>Recovery.</Text>
                 </View>
 
-                <InputField
-                    theme={appearance}
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="Enter e-mail"
-                    containerStyle={styles.input}
-                />
-
-
-                <Button
-                    title="Send Code"
-                    buttonStyle={{
-                        marginTop: 30,
-                        marginHorizontal: 20,
-                        borderRadius: 30,
+                <Formik
+                    initialValues={{ email: '' }}
+                    validationSchema={validationSchema}
+                    onSubmit={(values, { setSubmitting }) => {
+                        getCode(values);
+                        setSubmitting(false);
                     }}
-                    loading={processing}
-                    enabled={canProceed && !processing}
-                    textColor={colors[appearance].textDark}
-                    buttonColor={colors[appearance].primary}
-                    onPress={() => {
-                        getCode()
-                    }}
-                />
+                >
+                    {({ handleChange, handleBlur, handleSubmit, isValid, values, errors, touched }) => (
+                        <View>
+                            <InputField
+                                theme={appearance}
+                                value={values.email}
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                placeholder="Enter e-mail"
+                                containerStyle={styles.input}
+                            />
+                            {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+
+                            <Button
+                                title="Send Code"
+                                buttonStyle={{
+                                    marginTop: 30,
+                                    marginHorizontal: 20,
+                                    borderRadius: 30,
+                                }}
+                                loading={processing}
+                                enabled={isValid && !processing}
+                                textColor={colors[appearance].textDark}
+                                buttonColor={colors[appearance].primary}
+                                onPress={handleSubmit}
+                            />
+                        </View>
+                    )}
+                </Formik>
 
                 <Text style={{
                     fontFamily: 'Inter-Regular',
@@ -187,5 +195,10 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 20,
         marginHorizontal: 20,
-    }
+    },
+    error: {
+        color: 'red',
+        fontSize: 12,
+        marginLeft: 20,
+    },
 });

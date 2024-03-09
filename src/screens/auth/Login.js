@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView, Animated, Platform } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
 
 import colors from "../../../assets/colors/colors";
@@ -10,71 +12,59 @@ import PasswordInput from "../../component/PasswordInput";
 import Button from "../../component/Button";
 import authRouts from "../../navigation/routs/authRouts";
 
+const validationSchema = yup.object().shape({
+  email: yup.string().email('Enter a valid email').required('Email is required'),
+  password: yup.string().required('Password is required'),
+});
 
 export default Login = ({ navigation }) => {
     const { saveToken, saveUser, colorScheme } = useContext(AuthContext)
     const appearance = colorScheme
-    const [phone, setPhone] = useState("")
-    const [password, setPassword] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [email, setEmail] = useState("")
-    let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    const canProceed =
-        password?.length > 0 &&
-        emailRegex.test(email)
     const [processing, setProcessing] = useState(false);
 
-    const loginUser = async () => {
+    const loginUser = async ({ email, password }) => {
         setProcessing(true)
-        const response = await fetch(endpoints.baseUrl + endpoints.login, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    "email": email,
-                    "password": password,
-                }
-            ) // body data type must match "Content-Type" header
-        });
-        response.json()
-            .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
-                setProcessing(false)
-                if (response.ok) {
-                    Toast.show({
-                        type: 'success',
-                        text1: 'Login successful',
-                        text2: data.message
-                    })
-                    saveUser({
-                        ...data?.data.userDetails,
-                        id: data?.data?.userDetails?._id
-                    })
-                    saveToken(data?.data?.token)
-                } else {
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Login failed',
-                        text2: data.message
-                    });
-                    console.log('response: ', response)
-                    console.log('Login error:', data)
-                }
-
-            })
-            .catch((error) => {
-                setProcessing(false)
+        try {
+            const response = await fetch(endpoints.baseUrl + endpoints.login, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Login successful',
+                    text2: data.message
+                });
+                saveUser({
+                    ...data?.data.userDetails,
+                    id: data?.data?.userDetails?._id
+                });
+                saveToken(data?.data?.token);
+            } else {
                 Toast.show({
                     type: 'error',
                     text1: 'Login failed',
-                    text2: error.message
+                    text2: data.message
                 });
-                console.log('response: ', response)
-                console.log('Login error:', error);
-            })
+                console.log('Login error:', data);
+            }
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Login failed',
+                text2: error.message
+            });
+            console.log('Login error:', error);
+        } finally {
+            setProcessing(false);
+        }
     }
+
     return (
         <View style={{
             flex: 1,
@@ -128,85 +118,99 @@ export default Login = ({ navigation }) => {
                     }}>Sign in.</Text>
                 </View>
 
-                <InputField
-                    theme={appearance}
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="Enter e-mail"
-                    containerStyle={styles.input}
-                />
-                <PasswordInput
-                    theme={appearance}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Password"
-                    containerStyle={styles.input}
-                />
-
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate(authRouts.forgotPassword)
-                }}>
-                    <Text style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: 14,
-                        color: colors[appearance].primary,
-                        marginTop: 16,
-                        marginLeft: 35
-                    }}>Forgot password?</Text>
-                </TouchableOpacity>
-
-
-                <Button
-                    title="Sign in"
-                    buttonStyle={{
-                        marginTop: 30,
-                        marginHorizontal: 20,
-                        borderRadius: 30,
+                <Formik
+                    initialValues={{ email: '', password: '' }}
+                    validationSchema={validationSchema}
+                    onSubmit={(values, { setSubmitting }) => {
+                        loginUser(values);
+                        setSubmitting(false);
                     }}
-                    loading={processing}
-                    enabled={canProceed && !processing}
-                    textColor={colors[appearance].textDark}
-                    buttonColor={colors[appearance].primary}
-                    onPress={() => {
-                        loginUser()
-                        // navigation.navigate(authRouts.otpVerification)
-                    }}
-                />
+                >
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                        <View>
+                            <InputField
+                                theme={appearance}
+                                value={values.email}
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                placeholder="Enter e-mail"
+                                containerStyle={styles.input}
+                            />
+                            {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                            <PasswordInput
+                                theme={appearance}
+                                value={values.password}
+                                onChangeText={handleChange('password')}
+                                onBlur={handleBlur('password')}
+                                placeholder="Password"
+                                containerStyle={styles.input}
+                            />
+                            {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
-                <Text style={{
-                    fontFamily: 'Inter-Regular',
-                    fontSize: 14,
-                    color: colors[appearance].textDark,
-                    textAlign: 'center',
-                    marginTop: 20,
-                    fontStyle: 'italic'
-                }}>Don’t have a DashX Account?
-                    <Text
-                        onPress={() => {
-                            navigation.navigate(authRouts.signUp)
-                        }}
-                        style={{
-                            color: colors[appearance].primary,
-                            fontFamily: 'Inter-Bold',
-                            fontSize: 18,
-                        }}>  Sign Up</Text></Text>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate(authRouts.forgotPassword)
+                            }}>
+                                <Text style={{
+                                    fontFamily: 'Inter-SemiBold',
+                                    fontSize: 14,
+                                    color: colors[appearance].primary,
+                                    marginTop: 16,
+                                    marginLeft: 35
+                                }}>Forgot password?</Text>
+                            </TouchableOpacity>
 
-                <Text style={{
-                    fontFamily: 'Inter-Regular',
-                    fontSize: 14,
-                    color: colors[appearance].textDark,
-                    textAlign: 'center',
-                    marginTop: 30,
-                    fontStyle: 'italic',
-                    paddingHorizontal: 20
-                }}>By continuing, you agree to Dash X
-                    <Text style={{
-                        color: colors[appearance].primary,
-                        fontWeight: 'bold',
-                    }}> Conditions of use </Text> and<Text style={{
-                        color: colors[appearance].primary,
-                        fontWeight: 'bold',
-                    }}> Privacy Notice</Text></Text>
+
+                            <Button
+                                title="Sign in"
+                                buttonStyle={{
+                                    marginTop: 30,
+                                    marginHorizontal: 20,
+                                    borderRadius: 30,
+                                }}
+                                loading={processing}
+                                enabled={!errors.email && !errors.password && !processing}
+                                textColor={colors[appearance].textDark}
+                                buttonColor={colors[appearance].primary}
+                                onPress={handleSubmit}
+                            />
+
+                            <Text style={{
+                                fontFamily: 'Inter-Regular',
+                                fontSize: 14,
+                                color: colors[appearance].textDark,
+                                textAlign: 'center',
+                                marginTop: 20,
+                                fontStyle: 'italic'
+                            }}>Don’t have a DashX Account?
+                                <Text
+                                    onPress={() => {
+                                        navigation.navigate(authRouts.signUp)
+                                    }}
+                                    style={{
+                                        color: colors[appearance].primary,
+                                        fontFamily: 'Inter-Bold',
+                                        fontSize: 18,
+                                    }}>  Sign Up</Text></Text>
+
+                            <Text style={{
+                                fontFamily: 'Inter-Regular',
+                                fontSize: 14,
+                                color: colors[appearance].textDark,
+                                textAlign: 'center',
+                                marginTop: 30,
+                                fontStyle: 'italic',
+                                paddingHorizontal: 20
+                            }}>By continuing, you agree to Dash X
+                                <Text style={{
+                                    color: colors[appearance].primary,
+                                    fontWeight: 'bold',
+                                }}> Conditions of use </Text> and<Text style={{
+                                    color: colors[appearance].primary,
+                                    fontWeight: 'bold',
+                                }}> Privacy Notice</Text></Text>
+                        </View>
+                    )}
+                </Formik>
             </ScrollView>
 
         </View>
@@ -217,5 +221,10 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 20,
         marginHorizontal: 20,
+    },
+    error: {
+        color: 'red',
+        fontSize: 12,
+        marginLeft: 20,
     }
 });
