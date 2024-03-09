@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Formik, Field } from 'formik';
+import * as Yup from 'yup';
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import mainRouts from "../../navigation/routs/mainRouts";
@@ -7,13 +9,17 @@ import endpoints from "../../../assets/endpoints/endpoints";
 import Button from "../../component/Button";
 import InputField from "../../component/InputField";
 
-export default Deposit = ({ navigation }) => {
-    const { colorScheme, user, token } = useContext(AuthContext)
-    const [processing, setProcessing] = React.useState(false)
-    const [amount, setAmount] = React.useState('0')
+const Deposit = ({ navigation }) => {
+    const { colorScheme, user, token } = useContext(AuthContext);
 
-    const deposit = () => {
-        setProcessing(true)
+    const validationSchema = Yup.object().shape({
+        amount: Yup.number()
+            .required('Amount is required')
+            .positive('Amount must be a positive number')
+            .integer('Amount must be an integer')
+    });
+
+    const deposit = (amount) => {
         fetch(endpoints.baseUrl + endpoints.fundwallet, {
             method: 'POST',
             headers: {
@@ -22,111 +28,127 @@ export default Deposit = ({ navigation }) => {
             },
             body: JSON.stringify({
                 dispatchid: user?.id,
-                "amount": parseInt(amount),
-                "email": user?.email,
-                "usertype": "dispatch"
+                amount: parseInt(amount),
+                email: user?.email,
+                usertype: "dispatch"
             }),
         }).then(res => res.json())
             .then(resJson => {
-                setProcessing(false)
-                console.log('resJson', resJson)
+                console.log('resJson', resJson);
                 if (resJson.status) {
                     navigation.navigate(mainRouts.browser, {
                         url: resJson.data,
                         title: 'Deposit'
-                    })
+                    });
                 }
             })
             .catch(err => {
-                setProcessing(false)
-                console.log('err', err)
-            })
-    }
+                console.log('err', err);
+            });
+    };
 
     return (
         <View style={{
             flex: 1,
             backgroundColor: colors[colorScheme].background,
         }}>
-            <View style={{
-                backgroundColor: colors[colorScheme].primary,
-                padding: 20,
-                paddingBottom: 30,
-                borderBottomLeftRadius: 30,
-                borderBottomRightRadius: 30,
-            }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '100%',
-                    justifyContent: 'center',
-                }}>
-                    <TouchableOpacity style={{
-                        position: 'absolute',
-                        left: 0,
-                    }}
-                        onPress={() => navigation.goBack()}>
-                        <Image
-                            source={require('../../../assets/images/back.png')}
-                            style={{
-                                width: 24,
-                                height: 24,
-                                resizeMode: "contain",
-                                tintColor: colors[colorScheme].white,
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <Text style={{
-                        color: colors[colorScheme].white,
-                        fontSize: 24,
-                        fontFamily: 'Inter-Bold',
-                    }}>Deposit</Text>
-                </View>
-            </View>
+            <Formik
+                initialValues={{ amount: '0' }}
+                validationSchema={validationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    deposit(values.amount);
+                    setSubmitting(false);
+                }}
+            >
+                {({ values, handleChange, handleSubmit, errors, touched }) => (
+                    <>
+                        <View style={{
+                            backgroundColor: colors[colorScheme].primary,
+                            padding: 20,
+                            paddingBottom: 30,
+                            borderBottomLeftRadius: 30,
+                            borderBottomRightRadius: 30,
+                        }}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                width: '100%',
+                                justifyContent: 'center',
+                            }}>
+                                <TouchableOpacity style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                }}
+                                    onPress={() => navigation.goBack()}>
+                                    <Image
+                                        source={require('../../../assets/images/back.png')}
+                                        style={{
+                                            width: 24,
+                                            height: 24,
+                                            resizeMode: "contain",
+                                            tintColor: colors[colorScheme].white,
+                                        }}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={{
+                                    color: colors[colorScheme].white,
+                                    fontSize: 24,
+                                    fontFamily: 'Inter-Bold',
+                                }}>Deposit</Text>
+                            </View>
+                        </View>
 
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'space-between'
+                        }}>
+                            <View>
+                                <Text style={{
+                                    color: colors[colorScheme].textDark,
+                                    fontSize: 18,
+                                    fontFamily: 'Inter-Bold',
+                                    marginHorizontal: 20,
+                                    marginTop: 50,
+                                }}>Enter amount to deposit</Text>
 
-            <View style={{
-                flex: 1,
-                justifyContent: 'space-between'
-            }}>
-                <View>
-                    <Text style={{
-                        color: colors[colorScheme].textDark,
-                        fontSize: 18,
-                        fontFamily: 'Inter-Bold',
-                        marginHorizontal: 20,
-                        marginTop: 50,
-                    }}>Enter amount to deposit</Text>
+                                <Field
+                                    name="amount"
+                                >
+                                    {({ field }) => (
+                                        <InputField
+                                            theme={colorScheme}
+                                            value={field.value}
+                                            onChangeText={field.onChange('amount')}
+                                            onBlur={field.onBlur('amount')}
+                                            placeholder="Enter amount"
+                                            containerStyle={styles.input}
+                                            keyboardType="number-pad"
+                                        />
+                                    )}
+                                </Field>
+                            </View>
 
-                    <InputField
-                        theme={colorScheme}
-                        value={amount}
-                        onChangeText={setAmount}
-                        placeholder="Enter amount"
-                        containerStyle={styles.input}
-                        keyboardType="number-pad"
-                    />
-                </View>
-
-                <Button
-                    title={`Deposit ₦ ${parseInt(amount.length > 0 ? amount : '0').toLocaleString()}`}
-                    buttonStyle={{
-                        marginTop: 30,
-                        marginHorizontal: 20,
-                        borderRadius: 30,
-                        marginBottom: 50,
-                    }}
-                    loading={processing}
-                    enabled={amount.length > 0 && !processing}
-                    textColor={colors[colorScheme].textDark}
-                    buttonColor={colors[colorScheme].primary}
-                    onPress={() => deposit()}
-                />
-
-            </View>
+                            <Button
+                                title={`Deposit ₦ ${parseInt(values.amount || 0).toLocaleString()}`}
+                                buttonStyle={{
+                                    marginTop: 30,
+                                    marginHorizontal: 20,
+                                    borderRadius: 30,
+                                    marginBottom: 50,
+                                }}
+                                loading={false}
+                                enabled={!errors.amount}
+                                textColor={colors[colorScheme].textDark}
+                                buttonColor={colors[colorScheme].primary}
+                                onPress={handleSubmit}
+                            />
+                        </View>
+                    </>
+                )}
+            </Formik>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     input: {
@@ -134,3 +156,5 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     }
 });
+
+export default Deposit;
