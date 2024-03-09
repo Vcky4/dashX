@@ -152,7 +152,7 @@ export default Chat = ({ navigation }) => {
         }).then(res => res.json()).
             then(data => {
                 setUploading(false)
-                console.log(data.url)
+                // console.log(data.url)
                 onComplete(data.url)
             }).catch(err => {
                 setUploading(false)
@@ -188,7 +188,7 @@ export default Chat = ({ navigation }) => {
                     // maxHeight: 200,
                     // maxWidth: 200,
                 }, (res) => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.didCancel) {
                         console.log('User cancelled image picker');
                         Toast.show({
@@ -213,7 +213,7 @@ export default Chat = ({ navigation }) => {
                         //     createdAt: new Date().toISOString()
                         // }])
                         uploadImage(res.assets[0], (url) => {
-                            console.log(url);
+                            // console.log(url);
                             sendChat(
                                 url,
                                 'image'
@@ -419,7 +419,7 @@ export default Chat = ({ navigation }) => {
                                 // maxHeight: 200,
                                 // maxWidth: 200,
                             }, (res) => {
-                                console.log(res);
+                                // console.log(res);
                                 if (res.didCancel) {
                                     console.log('User cancelled image picker');
                                     Toast.show({
@@ -444,7 +444,7 @@ export default Chat = ({ navigation }) => {
                                     //     createdAt: new Date().toISOString()
                                     // }])
                                     uploadImage(res.assets[0], (url) => {
-                                        console.log(url);
+                                        // console.log(url);
                                         sendChat(
                                             url,
                                             'image'

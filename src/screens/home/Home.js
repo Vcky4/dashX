@@ -34,7 +34,7 @@ var ding = new Sound(dings, error => {
         return;
     }
     // if loaded successfully
-    console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
+    // console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
 });
 
 export default Home = ({ navigation }) => {
@@ -272,7 +272,7 @@ export default Home = ({ navigation }) => {
         ding.play(success => {
             if (success) {
                 // playPause();
-                console.log('successfully finished playing');
+                // console.log('successfully finished playing');
             } else {
                 console.log('playback failed due to audio decoding errors');
             }
@@ -779,9 +779,9 @@ export default Home = ({ navigation }) => {
                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                         }}
                         onReady={result => {
-                            console.log('result :>>', result?.end_location)
-                            console.log(`Distance: ${result.distance} km`)
-                            console.log(`Duration: ${result.duration} min.`)
+                            // console.log('result :>>', result?.end_location)
+                            // console.log(`Distance: ${result.distance} km`)
+                            // console.log(`Duration: ${result.duration} min.`)
                             setDistance(result.distance);
                             setDuration(result.duration);
                             // setWaypoints(result.coordinates);

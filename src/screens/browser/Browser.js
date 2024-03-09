@@ -40,7 +40,7 @@ export default Browser = ({ route, navigation }) => {
     //handle back button
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => {
-            console.log("Back button is pressed")
+            // console.log("Back button is pressed")
             handleBackButtonPress();
             return true;
         });

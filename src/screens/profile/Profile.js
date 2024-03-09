@@ -5,7 +5,7 @@ import { AuthContext } from "../../../context/AuthContext";
 
 export default Profile = ({ navigation }) => {
     const { colorScheme, user } = useContext(AuthContext)
-    console.log(user)
+    // console.log(user)
     return (
         <View style={{
             flex: 1,

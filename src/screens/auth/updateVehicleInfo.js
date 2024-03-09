@@ -63,7 +63,7 @@ export default UpdateVehicleInfo = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                console.log('driver doc', data); // JSON data parsed by `data.json()` call
+                // console.log('driver doc', data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({

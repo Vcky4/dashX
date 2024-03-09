@@ -169,7 +169,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             })
             const json = await response.json()
             setProcessing(false)
-            console.log(json)
+            // console.log(json)
             if (response.ok) {
                 Toast.show({
                     type: 'success',

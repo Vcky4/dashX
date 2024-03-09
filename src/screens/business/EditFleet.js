@@ -28,7 +28,7 @@ export default DeliveryHistory = ({navigation, route}) => {
   const [processing, setProcessing] = useState(false);
 
   const [fleet, setFleets] = useState({});
-  console.log('text', item);
+  // console.log('text', item);
 
   const [requestData, setRequestData] = useState({
     ridername: item?.name || '',
@@ -56,7 +56,7 @@ export default DeliveryHistory = ({navigation, route}) => {
     response
       .json()
       .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
+        // console.log(data); // JSON data parsed by `data.json()` call
         setProcessing(false);
         if (response.ok) {
           navigation.goBack()

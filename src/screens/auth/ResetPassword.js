@@ -57,7 +57,7 @@ export default ResetPassword = ({ navigation, route }) => {
             .json()
             .then(data => {
                 setProcessing(false);
-                console.log(data);
+                // console.log(data);
                 if (response.ok) {
                     Toast.show({
                         type: 'success',

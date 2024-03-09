@@ -59,7 +59,7 @@ const OtpFields: React.FC<Props> = ({
                 selectionColor={'transparent'}
                 style={{ color: 'transparent', fontSize: 0, height: 0, width: 0 }}
                 onChangeText={text => {
-                    console.log(text);
+                    // console.log(text);
                     onChangeText(text.length <= nuberOfFields ? text: value);
                 }} />
         </>

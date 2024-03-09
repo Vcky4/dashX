@@ -88,7 +88,7 @@ export default Monitor = ({ navigation }) => {
         })
         const json = await response.json()
         setProcessing(false)
-        console.log(json.data)
+        // console.log(json.data)
         //check if array
         if (Array.isArray(json.data)) {
             setOrder(json.data[0])
@@ -499,12 +499,12 @@ export default Monitor = ({ navigation }) => {
                         // waypoints={waypoints}
                         onStart={(params) => {
                             // console.log('params :>>', params)
-                            console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                            // console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                         }}
                         onReady={result => {
-                            console.log('result :>>', result?.end_location)
-                            console.log(`Distance: ${result.distance} km`)
-                            console.log(`Duration: ${result.duration} min.`)
+                            // console.log('result :>>', result?.end_location)
+                            // console.log(`Distance: ${result.distance} km`)
+                            // console.log(`Duration: ${result.duration} min.`)
                             // setDistance(result.distance);
                             // setDuration(result.duration);
                             // setWaypoints(result.coordinates);

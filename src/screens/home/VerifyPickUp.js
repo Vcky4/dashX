@@ -39,7 +39,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
 
             try {
                 const data = await camera.current.takePictureAsync(options);
-                console.log('Success', JSON.stringify(data));
+                // console.log('Success', JSON.stringify(data));
                 setPackageImage({
                     uri: data.uri,
                     type: 'image/jpeg',
@@ -79,7 +79,7 @@ export default VerifyPickUp = ({ navigation, route }) => {
         }).then(res => res.json()).
             then(data => {
                 setProcessing(false)
-                console.log(data.url)
+                // console.log(data.url)
                 onComplete(data.url)
             }).catch(err => {
                 setProcessing(false)

@@ -65,7 +65,7 @@ export default DeliveryHistory = ({navigation}) => {
     response
       .json()
       .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
+        // console.log(data); // JSON data parsed by `data.json()` call
         setLoading(false);
         if (response.ok) {
           setBlock(!block);
@@ -112,7 +112,7 @@ export default DeliveryHistory = ({navigation}) => {
     response
       .json()
       .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
+        // console.log(data); // JSON data parsed by `data.json()` call
         setLoading2(false);
         if (response.ok) {
           setUnBlock(!unBlock);

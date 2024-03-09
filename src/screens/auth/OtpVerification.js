@@ -100,7 +100,7 @@ export default OtpVerification = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
+                // console.log(data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({

@@ -112,7 +112,7 @@ export default EditProfile = ({ navigation }) => {
         }).then(res => res.json()).
             then(data => {
                 setProcessing(false)
-                console.log(data.url)
+                // console.log(data.url)
                 onComplete(data.url)
             }).catch(err => {
                 setProcessing(false)
@@ -133,7 +133,7 @@ export default EditProfile = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
+                // console.log(data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({
@@ -183,7 +183,7 @@ export default EditProfile = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
+                // console.log(data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({
@@ -234,7 +234,7 @@ export default EditProfile = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
+                // console.log(data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({
@@ -434,7 +434,7 @@ export default EditProfile = ({ navigation }) => {
                             // maxHeight: 200,
                             // maxWidth: 200,
                         }, (res) => {
-                            console.log(res);
+                            // console.log(res);
                             if (res.didCancel) {
                                 console.log('User cancelled image picker');
                                 Toast.show({
@@ -499,7 +499,7 @@ export default EditProfile = ({ navigation }) => {
                             // maxHeight: 200,
                             // maxWidth: 200,
                         }, (res) => {
-                            console.log(res);
+                            // console.log(res);
                             if (res.didCancel) {
                                 console.log('User cancelled image picker');
                                 Toast.show({

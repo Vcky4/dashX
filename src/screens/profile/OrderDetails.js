@@ -11,10 +11,10 @@ export default OrderDetails = ({ navigation, route }) => {
     const { colorScheme, user, token } = useContext(AuthContext)
     const [modalVisible, setModalVisible] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
-    console.log(order)
+    // console.log(order)
 
     const cancel = async () => {
-        console.log(order._id)
+        // console.log(order._id)
         try {
             setProcessing(true)
             const response = await fetch(endpoints.baseUrl + endpoints.cancelOrder, {
@@ -30,7 +30,7 @@ export default OrderDetails = ({ navigation, route }) => {
             })
             const json = await response.json()
             setProcessing(false)
-            console.log(json)
+            // console.log(json)
             if (json.status === 'success') {
                 navigation.goBack()
                 Toast.show({

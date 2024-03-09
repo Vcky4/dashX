@@ -33,7 +33,7 @@ export default Login = ({ navigation }) => {
                 body: JSON.stringify({ email, password }),
             });
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             if (response.ok) {
                 Toast.show({
                     type: 'success',
