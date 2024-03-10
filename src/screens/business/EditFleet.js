@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import colors from '../../../assets/colors/colors';
 import InputField from '../../component/InputField';
-import PasswordInput from '../../component/PasswordInput';
 import Button from '../../component/Button';
 import endpoints from '../../../assets/endpoints/endpoints';
 import Toast from 'react-native-toast-message';

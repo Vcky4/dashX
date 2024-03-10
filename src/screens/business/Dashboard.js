@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View, Dimensions, RefreshControl } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View, Dimensions, RefreshControl } from 'react-native';
 import { AuthContext } from '../../../context/AuthContext';
 import colors from '../../../assets/colors/colors';
 import businessRoutes from '../../navigation/routs/businessRouts';
