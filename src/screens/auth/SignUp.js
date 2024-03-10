@@ -48,7 +48,7 @@ export default SignUp = ({ navigation }) => {
                     text1: 'SignUp successful',
                     text2: data.data
                 })
-                navigation.navigate(authRouts.otpVerification)
+                navigation.navigate(authRouts.otpVerification, { email: values.email })
             } else {
                 Toast.show({
                     type: 'error',

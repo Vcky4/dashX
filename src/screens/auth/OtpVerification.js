@@ -11,7 +11,8 @@ import mainRouts from "../../navigation/routs/mainRouts";
 import endpoints from "../../../assets/endpoints/endpoints";
 
 
-export default OtpVerification = ({ navigation }) => {
+export default OtpVerification = ({ navigation, route }) => {
+    const {email} = route.params
     const { saveToken, user, colorScheme } = useContext(AuthContext)
     const appearance = colorScheme
     const [otp, setOtp] = useState("")
@@ -37,55 +38,56 @@ export default OtpVerification = ({ navigation }) => {
         };
     }, [activator]);
 
-    // const resend = async () => {
-    //     setTimer(60);
-    //     setActivator(Math.random());
-    //     const response = await fetch(endpoints.baseUrl + endpoints.resend, {
-    //         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + token,
-    //         },
-    //         body: JSON.stringify({
-    //             email: user.email,
-    //         }),
-    //     });
-    //     response
-    //         .json()
-    //         .then(data => {
-    //             setProcessing(false);
-    //             console.log(data);
-    //             if (response.ok) {
-    //                 Toast.show({
-    //                     type: 'success',
-    //                     text1: 'Resend Successful',
-    //                     text2: data.message,
-    //                 });
-    //                 setTimer(60);
-    //                 setActivator(Math.random());
-    //             } else {
-    //                 Toast.show({
-    //                     type: 'error',
-    //                     text1: 'Resend Failed',
-    //                     text2: data.message,
-    //                 });
-    //             }
-    //         })
-    //         .catch(err => {
-    //             setTimer(0);
-    //             setActivator(Math.random());
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: 'Code resend Failed',
-    //                 text2: err.message,
-    //             });
-    //             console.log(err.message);
-    //         });
-    // };
+    const resend = async () => {
+        setTimer(60);
+        setActivator(Math.random());
+        const response = await fetch(endpoints.baseUrl + endpoints.forgotPassword, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                email: email,
+            }),
+        });
+        response
+            .json()
+            .then(data => {
+                setProcessing(false);
+                console.log(data);
+                if (response.ok) {
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Resend Successful',
+                        text2: data.message,
+                    });
+                    setTimer(60);
+                    setActivator(Math.random());
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Resend Failed',
+                        text2: data.message,
+                    });
+                }
+            })
+            .catch(err => {
+                setTimer(0);
+                setActivator(Math.random());
+                Toast.show({
+                    type: 'error',
+                    text1: 'Code resend Failed',
+                    text2: err.message,
+                });
+                console.log(err.message);
+            });
+    };
 
 
     const verify = async () => {
         setProcessing(true)
+        console.log('otp', otp)
         const response = await fetch(endpoints.baseUrl + endpoints.verify, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -100,7 +102,7 @@ export default OtpVerification = ({ navigation }) => {
         });
         response.json()
             .then((data) => {
-                // console.log(data); // JSON data parsed by `data.json()` call
+                console.log(data); // JSON data parsed by `data.json()` call
                 setProcessing(false)
                 if (response.ok) {
                     Toast.show({
