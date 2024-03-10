@@ -24,6 +24,7 @@ const DeliveryHistory = ({ navigation }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log(values);
     try {
       const response = await fetch(endpoints.baseUrl + endpoints.addRider, {
         method: 'POST',
@@ -72,7 +73,7 @@ const DeliveryHistory = ({ navigation }) => {
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isSubmitting }) => (
+      {({ handleChange, handleBlur, handleSubmit,isValid, values, errors, touched, isSubmitting }) => (
         <View style={{ flex: 1, backgroundColor: colors[colorScheme].background }}>
           <View
             style={{
@@ -245,7 +246,7 @@ const DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        handleChange('vehicle_type')('small truck');
+                        handleChange('vehicle_type')('Small truck');
                         // setRequestData(prestate => ({
                         //   ...prestate,
                         //   vehicle_type: 'Small truck',
@@ -269,7 +270,7 @@ const DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        handleChange('vehicle_type')('medium truck');
+                        handleChange('vehicle_type')('Medium truck');
                         // setRequestData(prestate => ({
                         //   ...prestate,
                         //   vehicle_type: 'Medium truck',
@@ -293,7 +294,7 @@ const DeliveryHistory = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        handleChange('vehicle_type')('big truck');
+                        handleChange('vehicle_type')('Big truck');
                         // setRequestData(prestate => ({
                         //   ...prestate,
                         //   vehicle_type: 'Big truck',
@@ -358,7 +359,7 @@ const DeliveryHistory = ({ navigation }) => {
                     alignSelf: 'flexEnd',
                   }}
                   loading={isSubmitting}
-                  enabled={!isSubmitting}
+                  enabled={isValid && !isSubmitting}
                   textColor={colors[colorScheme].textDark}
                   buttonColor={colors[colorScheme].primary}
                   onPress={handleSubmit}
