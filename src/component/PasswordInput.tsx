@@ -34,7 +34,7 @@ const PasswordInput: React.FC<Props> = ({ theme='dark', containerStyle, label, .
                         color: colors[theme].textDark,
                         width: "90%"
                     }}
-                    cursorColor={colors[theme].primary}
+                    placeholderTextColor={colors[theme].textGray}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     {...rest}

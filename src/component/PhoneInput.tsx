@@ -35,6 +35,7 @@ const PhoneInput: React.FC<Props> = ({ theme = 'dark', containerStyle, onPress, 
                         flexGrow: 1,
                         paddingLeft: 8,
                     }}
+                    placeholderTextColor={colors[theme].textGray}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     {...rest}

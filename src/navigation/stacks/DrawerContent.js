@@ -129,14 +129,17 @@ export default function DrawerContent(props, onPendingOrderPress = () => { }) {
                                 />
                             </TouchableOpacity>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => props.navigation.navigate(profileRouts.analytics)}
-                         style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            // width: '90%',
-                            marginTop: 20,
-                        }}>
+                        <TouchableOpacity onPress={() => {
+                            //uncomment to navigate to analytics
+                            // props.navigation.navigate(profileRouts.analytics)
+                        }}
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                // width: '90%',
+                                marginTop: 20,
+                            }}>
                             <View>
                                 <Text style={{
                                     color: colors[colorScheme].textGray,
