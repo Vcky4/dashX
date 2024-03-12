@@ -245,6 +245,20 @@ export default Wallet = ({ navigation }) => {
                         }}>₦{item.amount.toLocaleString()}</Text>
                     </View>
                 }
+                ListEmptyComponent={
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 60,
+                    }}>
+                        <Text style={{
+                           color: colors[colorScheme].textGray,
+                            fontSize: 14,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>No transactions yet</Text>
+                    </View>
+                }
             />
 
         </View>
