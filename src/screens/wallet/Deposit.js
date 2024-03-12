@@ -53,14 +53,14 @@ const Deposit = ({ navigation }) => {
             backgroundColor: colors[colorScheme].background,
         }}>
             <Formik
-                initialValues={{ amount: '0' }}
+                initialValues={{ amount: '' }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     deposit(values.amount);
                     setSubmitting(false);
                 }}
             >
-                {({ values, handleChange, handleSubmit, errors, touched }) => (
+                {({ values, handleChange,isSubmitting, isValid, handleSubmit, errors, touched }) => (
                     <>
                         <View style={{
                             backgroundColor: colors[colorScheme].primary,
@@ -129,15 +129,15 @@ const Deposit = ({ navigation }) => {
                             </View>
 
                             <Button
-                                title={`Deposit ₦ ${parseInt(values.amount || 0).toLocaleString()}`}
+                                title={`Proceed`}
                                 buttonStyle={{
                                     marginTop: 30,
                                     marginHorizontal: 20,
                                     borderRadius: 30,
                                     marginBottom: 50,
                                 }}
-                                loading={false}
-                                enabled={!errors.amount}
+                                loading={isSubmitting}
+                                enabled={isValid && !isSubmitting}
                                 textColor={colors[colorScheme].textDark}
                                 buttonColor={colors[colorScheme].primary}
                                 onPress={handleSubmit}
