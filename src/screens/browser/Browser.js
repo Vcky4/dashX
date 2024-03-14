@@ -74,6 +74,13 @@ export default Browser = ({ route, navigation }) => {
                 onNavigationStateChange={(navState) => {
                     console.log(navState.url)
                     setCurrentUrl(navState.url);
+                    if (navState.url.includes('smartbestaltinsmart')) {
+                        //send data to parent
+                        navigation.goBack()
+                        // navigation.navigate(parent, {
+                        //     status: 'success'
+                        // })
+                    }
                 }}
                 //ref
                 ref={myWebView}
