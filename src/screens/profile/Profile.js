@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
+import mainRouts from "../../navigation/routs/mainRouts";
+import profileRouts from "../../navigation/routs/profileRouts";
+import Button from "../../component/Button";
 
 export default Profile = ({ navigation }) => {
     const { colorScheme, user } = useContext(AuthContext)
@@ -60,7 +63,7 @@ export default Profile = ({ navigation }) => {
                             height: 100,
                             resizeMode: "cover",
                             borderRadius: 50,
-                            marginRight: 14,
+                            // marginRight: 14,
                             borderRadius: 100,
                             borderWidth: 3,
                             borderColor: colors[colorScheme].white,
@@ -209,6 +212,21 @@ export default Profile = ({ navigation }) => {
                     marginLeft: 10,
                 }}>{user.email}</Text>
             </View>
+            <Button title={'Edit profile'}
+                onPress={() => {
+                    navigation.navigate(profileRouts.editProfile)
+                }}
+                buttonStyle={{
+                    borderRadius: 20,
+                    height: 36,
+                    width: '60%',
+                    alignSelf:'center',
+                    marginTop: 30
+                }}
+                fontSize={16}
+                loading={false}
+                enabled={true}
+            />
         </View>
     )
 }
