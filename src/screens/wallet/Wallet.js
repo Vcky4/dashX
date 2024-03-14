@@ -41,6 +41,7 @@ export default Wallet = ({ navigation }) => {
                 setIsLoading(false)
                 console.log('resJson', resJson);
                 if (resJson.status) {
+                    panelRef.current.togglePanel()
                     navigation.navigate(mainRouts.browser, {
                         url: resJson.data,
                         title: 'Deposit'
@@ -391,7 +392,6 @@ export default Wallet = ({ navigation }) => {
                             textColor={colors[appearance].white}
                             buttonColor={colors[appearance].primary}
                             onPress={() => {
-                                panelRef.current.togglePanel()
                                 deposit()
                             }}
                             fontSize={16}
