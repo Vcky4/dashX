@@ -27,6 +27,7 @@ const endpoints = {
     chat: '/dispatch/chat/support',
     getBanks: '/dispatch/retrieve/bank',
     verifyBank: '/dispatch/confirm/account',
+    withdraw: '/dispatch/withdraw/fund',
 
     //business
     addRider: '/bussiness/add/dispatch',

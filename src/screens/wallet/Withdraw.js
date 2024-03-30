@@ -6,6 +6,7 @@ import InputField from "../../component/InputField";
 import Button from "../../component/Button";
 import BottomSheet from 'react-native-simple-bottom-sheet';
 import endpoints from "../../../assets/endpoints/endpoints";
+import Toast from "react-native-toast-message";
 
 
 const { width, height } = Dimensions.get('window')
@@ -18,6 +19,7 @@ export default Withdraw = ({ navigation }) => {
         account_name: '',
         amount: '',
         bank_code: '',
+        recipient: '',
     })
     const [isOpen, setIsOpen] = React.useState(false)
     const panelRef = useRef();
@@ -25,7 +27,7 @@ export default Withdraw = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
     const [banks, setBanks] = useState([])
 
-    const canProceed = account.amount.length > 0 && account.account_number.length == 10 && account.bank_name.length > 0 && account.account_name.length > 0
+    const canProceed = account.amount.length > 0 && account.account_number.length == 10 && account.bank_name.length > 0 && account.account_name.length > 0 && account.recipient.length > 0
 
     const getBanks = () => {
         setLoading(true)
@@ -41,9 +43,9 @@ export default Withdraw = ({ navigation }) => {
         }).then(res => res.json())
             .then(resJson => {
                 setLoading(false)
-                // console.log('resJson', resJson.data)
-                if (Array.isArray(resJson.data.data)) {
-                    setBanks(resJson?.data?.data)
+                console.log('resJson', resJson.data)
+                if (Array.isArray(resJson.data)) {
+                    setBanks(resJson?.data)
                 }
             })
             .catch(err => {
@@ -69,6 +71,62 @@ export default Withdraw = ({ navigation }) => {
             .then(resJson => {
                 setLoading(false)
                 console.log('verify bank', resJson)
+                setAccount({
+                    ...account,
+                    account_name: resJson?.data?.details?.account_name,
+                    recipient: resJson?.data?.recipientcode,
+                })
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log('err', err)
+            })
+    }
+
+    const withdraw = () => {
+        setLoading(true)
+        fetch(endpoints.baseUrl + endpoints.withdraw, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                account_number: account.account_number,
+                bank_code: account.bank_code,
+                "bank_name": account.bank_name,
+                "recipient": account.recipient,
+                "account_name": account.account_name,
+                "amount": account.amount,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setLoading(false)
+                console.log('withdraw', resJson)
+                if (resJson.status_code == 200) {
+                    Toast.show({
+                        type: 'success',
+                        position: 'top',
+                        text1: 'Withdrawal successful',
+                        visibilityTime: 4000,
+                        autoHide: true,
+                    })
+                    navigation.goBack()
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        position: 'top',
+                        text1: 'Withdrawal failed',
+                        text2: resJson.message,
+                        visibilityTime: 4000,
+                        autoHide: true,
+                    })
+                }
+                // setAccount({
+                //     ...account,
+                //     account_name: resJson?.data?.details?.account_name,
+                //     })
             })
             .catch(err => {
                 setLoading(false)
@@ -199,6 +257,7 @@ export default Withdraw = ({ navigation }) => {
                     textColor={colors[colorScheme].textDark}
                     buttonColor={colors[colorScheme].primary}
                     onPress={() => {
+                        withdraw()
                         // loginUser()
                         // navigation.navigate(authRouts.otpVerification)
                     }}
@@ -239,12 +298,12 @@ export default Withdraw = ({ navigation }) => {
                 }}>
 
                     <FlatList
-                        data={banks.filter(bank => bank.name.toLowerCase().includes(query.toLowerCase()))}
+                        data={banks.filter(bank => bank.bankname.toLowerCase().includes(query.toLowerCase()))}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 style={{ paddingVertical: 6 }}
                                 onPress={() => {
-                                    setAccount({ ...account, bank_name: item?.name, bank_code: item?.code })
+                                    setAccount({ ...account, bank_name: item?.bankname, bank_code: item?.bankcode })
                                     panelRef.current.togglePanel()
                                 }}
                             >
@@ -253,7 +312,7 @@ export default Withdraw = ({ navigation }) => {
                                     fontSize: 16,
                                     fontFamily: 'Inter-Regular',
                                 }}>
-                                    {item?.name}
+                                    {item?.bankname}
                                 </Text>
                             </TouchableOpacity>
                         )}

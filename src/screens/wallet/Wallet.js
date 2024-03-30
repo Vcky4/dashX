@@ -70,7 +70,7 @@ export default Wallet = ({ navigation }) => {
             .then(resJson => {
                 setProcessing(false)
                 if (Array.isArray(resJson.data)) {
-                    console.log('resJson', resJson)
+                    // console.log('resJson', resJson)
                     setHistory(resJson.data)
                 }
             })
@@ -94,7 +94,7 @@ export default Wallet = ({ navigation }) => {
         }).then(res => res.json())
             .then(resJson => {
                 setProcessing(false)
-                // console.log('resJson', resJson.data)
+                // console.log('balance', resJson.data)
                 if (resJson.status) {
                     setBalance(resJson.data)
                     getHistory(resJson.data._id)
