@@ -1,22 +1,89 @@
-import React, { useContext, useRef, useState } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { AuthContext } from "../../../context/AuthContext";
 import InputField from "../../component/InputField";
 import Button from "../../component/Button";
 import BottomSheet from 'react-native-simple-bottom-sheet';
+import endpoints from "../../../assets/endpoints/endpoints";
 
+
+const { width, height } = Dimensions.get('window')
 
 export default Withdraw = ({ navigation }) => {
-    const { colorScheme, user } = useContext(AuthContext)
+    const { colorScheme, user, token } = useContext(AuthContext)
     const [account, setAccount] = useState({
         bank_name: '',
         account_number: '',
         account_name: '',
-        amount: ''
+        amount: '',
+        bank_code: '',
     })
     const [isOpen, setIsOpen] = React.useState(false)
     const panelRef = useRef();
+    const [query, setQuery] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [banks, setBanks] = useState([])
+
+    const canProceed = account.amount.length > 0 && account.account_number.length == 10 && account.bank_name.length > 0 && account.account_name.length > 0
+
+    const getBanks = () => {
+        setLoading(true)
+        fetch(endpoints.baseUrl + endpoints.getBanks, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setLoading(false)
+                // console.log('resJson', resJson.data)
+                if (Array.isArray(resJson.data.data)) {
+                    setBanks(resJson?.data?.data)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log('err', err)
+            })
+    }
+
+    const verifyAccount = () => {
+        setLoading(true)
+        fetch(endpoints.baseUrl + endpoints.verifyBank, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dispatchid: user?.id,
+                account_number: account.account_number,
+                bank_code: account.bank_code,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                setLoading(false)
+                console.log('verify bank', resJson)
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log('err', err)
+            })
+    }
+
+    useEffect(() => {
+        if (account.account_number.length == 10 && account.bank_code.length > 0) {
+            verifyAccount()
+        }
+    }, [account.account_number, account.bank_code])
+    useEffect(() => {
+        getBanks()
+    }, [])
     return (
         <View style={{
             flex: 1,
@@ -75,15 +142,22 @@ export default Withdraw = ({ navigation }) => {
                         label="Amount"
                     />
 
-
-
                     <InputField
                         theme={colorScheme}
                         value={account.account_number}
-                        onChangeText={(text) => setAccount({ ...account, account_number: text })}
+                        onChangeText={(text) => {
+                            if (text.length < 11) {
+                                setAccount({ ...account, account_number: text })
+                            }
+                            // if (text.length === 10) {
+                            //     //hide keyboard
+                            //     panelRef.current.togglePanel()
+                            // }
+                        }}
                         placeholder="23456789023"
                         containerStyle={styles.input}
                         label="Account number"
+                        inputMode="numeric"
                     />
                     <TouchableOpacity
                         onPress={() => {
@@ -109,6 +183,7 @@ export default Withdraw = ({ navigation }) => {
                         placeholder="Adeola Adeyemi"
                         containerStyle={styles.input}
                         label="Account name"
+                        editable={false}
                     />
                 </View>
 
@@ -119,8 +194,8 @@ export default Withdraw = ({ navigation }) => {
                         marginHorizontal: 20,
                         borderRadius: 30,
                     }}
-                    loading={false}
-                    enabled={true}
+                    loading={loading}
+                    enabled={canProceed}
                     textColor={colors[colorScheme].textDark}
                     buttonColor={colors[colorScheme].primary}
                     onPress={() => {
@@ -141,6 +216,7 @@ export default Withdraw = ({ navigation }) => {
                     flex: 1,
                 }}
                 sliderMinHeight={0}
+                sliderMaxHeight={height * 0.5}
                 onOpen={() => {
                     setIsOpen(true)
                 }}
@@ -149,23 +225,36 @@ export default Withdraw = ({ navigation }) => {
                 }}
                 ref={ref => panelRef.current = ref}
             >
-                <View style={{ width: '100%', backgroundColor: colors[colorScheme].background, alignSelf: "center" }}>
+                <InputField
+                    theme={colorScheme}
+                    value={query}
+                    onChangeText={(text) => setQuery(text)}
+                    placeholder="Search bank"
+                    containerStyle={{}}
+                />
+                <View style={{
+                    width: '100%', backgroundColor: colors[colorScheme].background,
+                    alignSelf: "center",
+                    height: height * 0.5 - 50,
+                }}>
 
                     <FlatList
-                        data={[1, 2, 3, 4,5,6,7,8,9]}
-                        renderItem={() => (
+                        data={banks.filter(bank => bank.name.toLowerCase().includes(query.toLowerCase()))}
+                        renderItem={({ item }) => (
                             <TouchableOpacity
-                            style={{paddingVertical:6}}
-                            onPress={()=>{}}
+                                style={{ paddingVertical: 6 }}
+                                onPress={() => {
+                                    setAccount({ ...account, bank_name: item?.name, bank_code: item?.code })
+                                    panelRef.current.togglePanel()
+                                }}
                             >
-
-                            <Text style={{
-                                color: colors[colorScheme].textDark,
-                                fontSize: 16,
-                                fontFamily: 'Inter-Regular',
-                            }}>
-                                Bank name
-                            </Text>
+                                <Text style={{
+                                    color: colors[colorScheme].textDark,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter-Regular',
+                                }}>
+                                    {item?.name}
+                                </Text>
                             </TouchableOpacity>
                         )}
                     />

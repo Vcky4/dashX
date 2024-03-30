@@ -25,6 +25,8 @@ const endpoints = {
     getBalance: '/dispatch/wallet/balance',
     walletHistory: '/dispatch/fund/history',
     chat: '/dispatch/chat/support',
+    getBanks: '/dispatch/retrieve/bank',
+    verifyBank: '/dispatch/confirm/account',
 
     //business
     addRider: '/bussiness/add/dispatch',
