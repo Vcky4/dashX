@@ -352,10 +352,10 @@ export default Wallet = ({ navigation }) => {
                     />
                     {/* Note for amount */}
                     {
-                        amount.length > 1 && amount <= 1000 &&
+                        amount.length > 1 && amount <= 100 &&
                         <Text style={{
                             color: colors[appearance].error,
-                        }}>Note: Amount cannot be less than #1000</Text>
+                        }}>Note: Amount cannot be less than #100</Text>
                     }
 
                     {/* Buttons for Cancel and Recharge Wallet */}
