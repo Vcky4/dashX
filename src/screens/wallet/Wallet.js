@@ -166,52 +166,21 @@ export default Wallet = ({ navigation }) => {
                     marginTop: 20,
                     marginHorizontal: 20,
                 }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                    }}>
-                        <View>
-                            <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 16,
-                                fontFamily: 'Inter-SemiBold',
-                            }}>Total Balance</Text>
-                            <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 24,
-                                fontFamily: 'Inter-Bold',
-                                marginVertical: 15,
-                            }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
-                        </View>
 
-                        <View>
-                            <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 16,
-                                fontFamily: 'Inter-Bold',
-                            }}>A/No.: <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 14,
-                                fontFamily: 'Inter-SemiBold',
-                            }}>{user?.bank_section?.accountnumber}</Text></Text>
-
-                            <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 16,
-                                fontFamily: 'Inter-Bold',
-                            }}>A/N: <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 14,
-                                fontFamily: 'Inter-SemiBold',
-                            }}>{user?.bank_section?.accountname}</Text></Text>
-                            <Text style={{
-                                color: colors[colorScheme].white,
-                                fontSize: 16,
-                                fontFamily: 'Inter-Bold',
-                            }}>{user?.bank_section?.bankname}</Text>
-                        </View>
+                    <View>
+                        <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 16,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>Total Balance</Text>
+                        <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 24,
+                            fontFamily: 'Inter-Bold',
+                            marginVertical: 15,
+                        }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
                     </View>
+
                     <View style={{
                         marginTop: 10,
                         flexDirection: 'row',
@@ -257,6 +226,43 @@ export default Wallet = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+
+                <View style={{
+                    backgroundColor: colors[colorScheme].black,
+                    padding: 20,
+                    borderRadius: 20,
+                    marginTop: 10,
+                    marginHorizontal: 20,
+                }}>
+
+                    <View>
+                        <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 16,
+                            fontFamily: 'Inter-Bold',
+                        }}>A/No.: <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 14,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>{user?.bank_section?.accountnumber}</Text></Text>
+
+                        <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 16,
+                            fontFamily: 'Inter-Bold',
+                        }}>A/N: <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 14,
+                            fontFamily: 'Inter-SemiBold',
+                        }}>{user?.bank_section?.accountname}</Text></Text>
+                        <Text style={{
+                            color: colors[colorScheme].white,
+                            fontSize: 16,
+                            fontFamily: 'Inter-Bold',
+                        }}>{user?.bank_section?.bankname}</Text>
+                    </View>
+                </View>
+
 
                 <Text style={{
                     color: colors[colorScheme].textDark,
