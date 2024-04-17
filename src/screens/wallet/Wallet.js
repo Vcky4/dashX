@@ -17,7 +17,7 @@ export default Wallet = ({ navigation }) => {
     const [balance, setBalance] = React.useState({})
     const [history, setHistory] = React.useState([])
     const [amount, setAmount] = React.useState('')
-    const canproceed = amount.length >= 4 // Check if amount is greater than or equal to 4 digits
+    const canproceed = amount.length >= 3 // Check if amount is greater than or equal to 3 digits
     const [isOpen, setIsOpen] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
     const panelRef = useRef();
@@ -352,7 +352,7 @@ export default Wallet = ({ navigation }) => {
                     />
                     {/* Note for amount */}
                     {
-                        amount.length > 1 && amount <= 100 &&
+                        amount.length > 1 && amount <= 99 &&
                         <Text style={{
                             color: colors[appearance].error,
                         }}>Note: Amount cannot be less than #100</Text>
