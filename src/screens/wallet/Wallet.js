@@ -22,6 +22,8 @@ export default Wallet = ({ navigation }) => {
     const [isLoading, setIsLoading] = React.useState(false)
     const panelRef = useRef();
 
+    console.log('uxer', user)
+
     const deposit = () => {
         setIsLoading(true)
         fetch(endpoints.baseUrl + endpoints.fundwallet, {
@@ -164,17 +166,52 @@ export default Wallet = ({ navigation }) => {
                     marginTop: 20,
                     marginHorizontal: 20,
                 }}>
-                    <Text style={{
-                        color: colors[colorScheme].white,
-                        fontSize: 16,
-                        fontFamily: 'Inter-SemiBold',
-                    }}>Total Balance</Text>
-                    <Text style={{
-                        color: colors[colorScheme].white,
-                        fontSize: 24,
-                        fontFamily: 'Inter-Bold',
-                        marginVertical: 15,
-                    }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                    }}>
+                        <View>
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 16,
+                                fontFamily: 'Inter-SemiBold',
+                            }}>Total Balance</Text>
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 24,
+                                fontFamily: 'Inter-Bold',
+                                marginVertical: 15,
+                            }}>₦ {balance?.balance?.toLocaleString() || '0.00'}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 16,
+                                fontFamily: 'Inter-Bold',
+                            }}>A/No.: <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 14,
+                                fontFamily: 'Inter-SemiBold',
+                            }}>{user?.bank_section?.accountnumber}</Text></Text>
+
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 16,
+                                fontFamily: 'Inter-Bold',
+                            }}>A/N: <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 14,
+                                fontFamily: 'Inter-SemiBold',
+                            }}>{user?.bank_section?.accountname}</Text></Text>
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 16,
+                                fontFamily: 'Inter-Bold',
+                            }}>{user?.bank_section?.bankname}</Text>
+                        </View>
+                    </View>
                     <View style={{
                         marginTop: 10,
                         flexDirection: 'row',
@@ -195,29 +232,29 @@ export default Wallet = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate(mainRouts.withdraw)}
-                        style={{
-                            backgroundColor: colors[colorScheme].primary,
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                            borderRadius: 20,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}>
-                        <Image
-                            source={require('../../../assets/images/down.png')}
                             style={{
-                                width: 12,
-                                height: 12,
-                                resizeMode: "contain",
-                            }}
-                        />
-                        <Text style={{
-                            color: colors[colorScheme].white,
-                            fontSize: 16,
-                            fontFamily: 'Inter-SemiBold',
-                            marginLeft: 5,
-                        }}>Withdraw</Text>
-                    </TouchableOpacity>
+                                backgroundColor: colors[colorScheme].primary,
+                                paddingHorizontal: 16,
+                                paddingVertical: 8,
+                                borderRadius: 20,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}>
+                            <Image
+                                source={require('../../../assets/images/down.png')}
+                                style={{
+                                    width: 12,
+                                    height: 12,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                            <Text style={{
+                                color: colors[colorScheme].white,
+                                fontSize: 16,
+                                fontFamily: 'Inter-SemiBold',
+                                marginLeft: 5,
+                            }}>Withdraw</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -274,12 +311,12 @@ export default Wallet = ({ navigation }) => {
                                         color: colors[colorScheme].textDark,
                                         fontSize: 16,
                                         fontFamily: 'Inter-SemiBold',
-                                    }}>Deposit</Text>
+                                    }}>{item?.trx_type === 'credit' ? 'Deposit' : 'Debit'}</Text>
                                     <Text style={{
                                         color: colors[colorScheme].textDark,
                                         fontSize: 14,
                                         fontFamily: 'Inter-Regular',
-                                    }}>To wallet</Text>
+                                    }}>{item?.trx_type === 'credit' ? 'To' : 'From'} wallet</Text>
                                 </View>
                             </View>
                             <Text style={{
