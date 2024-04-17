@@ -991,10 +991,12 @@ export default Home = ({ navigation }) => {
                     onClose={() => {
                         panelRef2.current?.togglePanel()
                     }}
-                    onNewOrderChange={(it) => {
+                    onNewOrderChange={(it, state) => {
                         setNewOrders(it)
                         getMyOrder()
-                        playPause()
+                        if (state === true) {
+                            playPause()
+                        }
                     }}
                     socketM={socket}
                     navigation={navigation} />

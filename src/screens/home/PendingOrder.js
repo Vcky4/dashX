@@ -68,7 +68,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                 //check if array
                 if (Array.isArray(e)) {
                     setOrders(e)
-                    onNewOrderChange(e.length)
+                    onNewOrderChange(e.length, true)
                 }
             })
 
@@ -135,7 +135,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
             if (Array.isArray(json.data)) {
                 if (orders.length !== json.data.length) {
                     setOrders(json.data)
-                    onNewOrderChange(json.data.length)
+                    onNewOrderChange(json.data.length, false)
                 }
             }
         } catch (error) {
@@ -176,7 +176,7 @@ export default PendingOrder = ({ navigation, onClose, onNewOrderChange = () => {
                     text1: 'Order accepted',
                     text2: json.message
                 })
-                onNewOrderChange(orders.length - 1)
+                onNewOrderChange(orders.length - 1, false)
                 setOrders(orders.filter((item) => item._id !== id))
             } else {
                 Toast.show({

@@ -178,7 +178,7 @@ export default History = ({ navigation }) => {
                                             color: colors[colorScheme].white,
                                             fontSize: 12,
                                             fontFamily: 'Inter-Regular',
-                                        }}>Paid</Text>
+                                        }}>{item?.payment_method ? 'Paid' : 'COD'}</Text>
                                     </View>
                                 </View>
                                 <View style={{
